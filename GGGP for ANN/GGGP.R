@@ -1,6 +1,7 @@
 library("gramEvol")
 library("neuralnet")
 
+data <- NULL
 train <- NULL      #70%
 validation <- NULL #20%
 test <- NULL       #10%
@@ -9,7 +10,7 @@ input <- NULL
 output <- NULL
 
 data_cleaning <- function(url, sep){
-  data <- read.csv(url, header=T, sep=sep)
+  data <<- read.csv(url, header=T, sep=sep)
   colnames(data) <- gsub("[^a-zA-Z]*", "", colnames(data))
   input <<- paste(head(colnames(data),-1), collapse="+")
   output <<- paste(tail(colnames(data),1))
@@ -18,7 +19,6 @@ data_cleaning <- function(url, sep){
   min <- apply(data, 2, min)
   scaled_data <- scale(data, center=min, scale=max-min) # Normalization for numeric datasets.
   shuffled_df <- as.data.frame(scaled_data[sample(n),])
-  str(sh)
   train_indices <- 1:round(0.7*n)
   validation_indices <- (round(0.7*n)+1):round(0.9*n)
   test_indices <- (round(0.9*n)+1):n
@@ -26,6 +26,7 @@ data_cleaning <- function(url, sep){
   validation <<-  shuffled_df[validation_indices,]
   test <<- shuffled_df[test_indices,]
 }
+data_cleaning("./cereals.csv", ",")
 
 extract_neurons <- function(word) {
   layers <- strsplit(word, "/")[[1]]
@@ -38,12 +39,22 @@ extract_neurons <- function(word) {
   return(hidden_l)
 }
 
+# https://www.analyticsvidhya.com/blog/2017/09/creating-visualizing-neural-network-in-r/
 evaluation <- function(word) {
   hidden_layers <- extract_neurons(word)
-  nn <- neuralnet(rating~calories+protein+fat+sodium+fiber, trainNN, hidden=hidden_l, linear.output=T)
-  nn <- neuralnet(output~input, data=train, hidden=hidden_layers, linear.output=T)
+  
+  # https://www.rdocumentation.org/packages/neuralnet/versions/1.33/topics/neuralnet PARAMETERS
+  nn <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers, linear.output=T)
   plot(nn)
+  nn$result.matrix
+  fitness <- compute(nn, validation[,c(1:(length(colnames(train))-1))])
+  fitness <- (fitness$net.result * (max(data[output]) - min(data[output]))) + min(data[output])
+  validation_data <- data[(round(0.7*nrow(data))+1):round(0.9*nrow(data)),]
+  plot(validation_data$ratng, fitness, col='blue', pch=16, ylab="predicted rating", xlab="real rating")
+  RME <- (sum((validation_data[output] - fitness)/nrow(validation_data)))^0.5
+  return(fitness)
 }
+evaluation("nnnn/nnnn/n")
 
 monitor <- function(results){
   cat("--------------------\n")
