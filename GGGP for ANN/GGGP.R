@@ -47,11 +47,9 @@ evaluation <- function(word) {
   validation_prediction <- compute(nn, validation[,c(1:(length(colnames(validation))-1))])
   validation_prediction_l <- validation_prediction$net.result*(max(data[output])-min(data[output]))+min(data[output])
   results <- (validation[output])*(max(data[output])-min(data[output]))+min(data[output])
-  
   fitness <- (sum(results - validation_prediction_l)^2)/nrow(validation)
   return(fitness)
 }
-evaluation("nnnn/nnnnn/n")
 
 monitor <- function(results){
   cat("--------------------\n")
