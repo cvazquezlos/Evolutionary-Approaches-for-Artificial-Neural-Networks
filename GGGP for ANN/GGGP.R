@@ -12,19 +12,16 @@ output <- NULL
 data_cleaning <- function(url, sep){
   data <<- read.csv(url, header=T, sep=sep)
   colnames(data) <- gsub("[^a-zA-Z]*", "", colnames(data))
+  n <- nrow(data)
   input <<- paste(head(colnames(data),-1), collapse="+")
   output <<- paste(tail(colnames(data),1))
-  n <- nrow(data)
   max <- apply(data, 2, max)
   min <- apply(data, 2, min)
   scaled_data <- scale(data, center=min, scale=max-min) # Normalization for numeric datasets.
   shuffled_df <- as.data.frame(scaled_data[sample(n),])
-  train_indices <- 1:round(0.7*n)
-  validation_indices <- (round(0.7*n)+1):round(0.9*n)
-  test_indices <- (round(0.9*n)+1):n
-  train <<- shuffled_df[train_indices,]
-  validation <<-  shuffled_df[validation_indices,]
-  test <<- shuffled_df[test_indices,]
+  train <<- shuffled_df[1:round(0.7*n),]
+  validation <<-  shuffled_df[(round(0.7*n)+1):round(0.9*n),]
+  test <<- shuffled_df[(round(0.9*n)+1):n,]
 }
 data_cleaning("./cereals.csv", ",")
 
@@ -45,16 +42,16 @@ evaluation <- function(word) {
   
   # https://www.rdocumentation.org/packages/neuralnet/versions/1.33/topics/neuralnet PARAMETERS
   nn <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers, linear.output=T)
-  plot(nn)
-  nn$result.matrix
-  fitness <- compute(nn, validation[,c(1:(length(colnames(train))-1))])
-  fitness <- (fitness$net.result * (max(data[output]) - min(data[output]))) + min(data[output])
-  validation_data <- data[(round(0.7*nrow(data))+1):round(0.9*nrow(data)),]
-  plot(validation_data$ratng, fitness, col='blue', pch=16, ylab="predicted rating", xlab="real rating")
-  RME <- (sum((validation_data[output] - fitness)/nrow(validation_data)))^0.5
+  
+  # https://gist.github.com/abresler/d2c324b44d7319b58309 VALIDATION
+  validation_prediction <- compute(nn, validation[,c(1:(length(colnames(validation))-1))])
+  validation_prediction_l <- validation_prediction$net.result*(max(data[output])-min(data[output]))+min(data[output])
+  results <- (validation[output])*(max(data[output])-min(data[output]))+min(data[output])
+  
+  fitness <- (sum(results - validation_prediction_l)^2)/nrow(validation)
   return(fitness)
 }
-evaluation("nnnn/nnnn/n")
+evaluation("nnnn/nnnnn/n")
 
 monitor <- function(results){
   cat("--------------------\n")
