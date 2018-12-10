@@ -9,11 +9,16 @@ test <- NULL       #10%
 input <- NULL
 output <- NULL
 
+A <- NULL
+Z <- NULL
+
 data_cleaning <- function(url, sep){
   data <<- read.csv(url, header=T, sep=sep)
   colnames(data) <- gsub("[^a-zA-Z]*", "", colnames(data))
   n <- nrow(data)
   input <<- paste(head(colnames(data),-1), collapse="+")
+  I <<- length(colnames(data)) - 1
+  O <<- 1
   output <<- paste(tail(colnames(data),1))
   max <- apply(data, 2, max)
   min <- apply(data, 2, min)
@@ -56,26 +61,17 @@ monitor <- function(results){
   print(results)
 }
 
+
+
 grammar <- list(
   S = gsrule("<a><h>/<z>"),
-  a = gsrule(replicate(INPUT, "n")),
-  z = gsrule(replicate(OUTPUT, "n")),
+  a = grule(replicate(I, "n")),
+  z = grule(replicate(O, "n")),
   h = gsrule("<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
 
 grammarDef <- CreateGrammar(grammar)
 
-EvolutionStrategy.int(genomeLen=5, genomeMin=2, genomeMax=8, suggestion=NULL,
-                      popSize = 2,
-                      newPerGen = 4,
-                      iterations = 500,
-                      terminationCost = NA,
-                      mutationChance = 0.05,
-                      monitorFunc = monitor,
-                      evalFunc = evaluation,
-                      allowrepeat = TRUE,
-                      showSettings = TRUE,
-                      verbose = TRUE,
-                      plapply = 
-                     )
+exp <- GrammarRandomExpression(grammarDef, numExpr=3, max.depth = 5)
+exp
