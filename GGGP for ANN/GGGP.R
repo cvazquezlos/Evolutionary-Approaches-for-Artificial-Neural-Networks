@@ -9,8 +9,8 @@ test <- NULL       #10%
 input <- NULL
 output <- NULL
 
-A <- NULL
-Z <- NULL
+I <- NULL
+O <- NULL
 
 data_cleaning <- function(url, sep){
   data <<- read.csv(url, header=T, sep=sep)
@@ -31,7 +31,7 @@ data_cleaning <- function(url, sep){
 data_cleaning("./cereals.csv", ",")
 
 extract_neurons <- function(word) {
-  layers <- strsplit(word, "/")[[1]]
+  layers <- strsplit(toString(word), "/")[[1]]
   i <- 0
   hidden_l <- numeric(0) # Contains the number of hidden layers and the number of neurons of each hidden layer.
   for(j in head(layers, -1)) {
@@ -61,8 +61,6 @@ monitor <- function(results){
   print(results)
 }
 
-
-
 grammar <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule(replicate(I, "n")),
@@ -73,5 +71,8 @@ grammar <- list(
 
 grammarDef <- CreateGrammar(grammar)
 
-exp <- GrammarRandomExpression(grammarDef, numExpr=3, max.depth = 5)
+exp <- GrammarRandomExpression(grammarDef, numExpr=3)
+exp
+
+exp <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPerGen=30, mutationChance=0.05, monitorFunc = monitor)
 exp
