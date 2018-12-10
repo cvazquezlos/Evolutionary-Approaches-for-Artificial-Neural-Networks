@@ -73,6 +73,8 @@ grammarDef <- CreateGrammar(grammar)
 
 optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPerGen=30, mutationChance=0.05, monitorFunc = monitor)
 optimal_word
-hidden_layers_optimal_word <- extract_neurons(optimal_word)
-optimal <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers_optimal_word, linear.output=T)
+
+
+hidden_layers_optimal_word <- extract_neurons("n/nnn/n/n")
+optimal <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers_optimal_word, 0.01, stepmax=1e+09, rep=1, linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
 plot(optimal)
