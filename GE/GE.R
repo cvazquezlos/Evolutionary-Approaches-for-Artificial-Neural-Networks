@@ -71,8 +71,8 @@ grammar <- list(
 
 grammarDef <- CreateGrammar(grammar)
 
-exp <- GrammarRandomExpression(grammarDef, numExpr=3)
-exp
-
-exp <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPerGen=30, mutationChance=0.05, monitorFunc = monitor)
-exp
+optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPerGen=30, mutationChance=0.05, monitorFunc = monitor)
+optimal_word
+hidden_layers_optimal_word <- extract_neurons(optimal_word)
+optimal <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers_optimal_word, linear.output=T)
+plot(optimal)
