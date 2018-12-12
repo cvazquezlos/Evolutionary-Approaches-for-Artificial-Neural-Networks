@@ -46,13 +46,22 @@ evaluation <- function(word) {
   hidden_layers <- extract_neurons(word)
   
   # https://www.rdocumentation.org/packages/neuralnet/versions/1.33/topics/neuralnet PARAMETERS
-  nn <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers, linear.output=T)
+  nn <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers, 0.01, stepmax=1e+05, rep=1, 
+                  linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
   
   # https://gist.github.com/abresler/d2c324b44d7319b58309 VALIDATION
-  validation_prediction <- compute(nn, validation[,c(1:(length(colnames(validation))-1))])
-  validation_prediction_l <- validation_prediction$net.result*(max(data[output])-min(data[output]))+min(data[output])
-  results <- (validation[output])*(max(data[output])-min(data[output]))+min(data[output])
-  fitness <- (sum(results - validation_prediction_l)^2)/nrow(validation)
+  nn.results <- compute(nn, validation[,c(1:(length(colnames(validation))-1))])
+  # results <- data.frame(actual = validation[output], predicted = nn.results$net.result)
+  # print(results)
+  # fitness <- (sum((results$actual-results$predicted)^2))/as.double(nrow(validation))
+  # print(fitness)
+  print(data.frame(actual=validation[output], predicted=nn.results$net.result))
+  fitness <- (sum((validation[output]-nn.results$net.result)^2))/as.double(nrow(validation))
+  
+  # print(validation_prediction$net.result)
+  # validation_prediction_l <- validation_prediction$net.result*(max(data[output])-min(data[output]))+min(data[output])
+  # results <- (validation[output])*(max(data[output])-min(data[output]))+min(data[output])
+  # fitness <- (sum(results - validation_prediction_l)^2)/nrow(validation)
   return(fitness)
 }
 
@@ -72,9 +81,16 @@ grammar <- list(
 grammarDef <- CreateGrammar(grammar)
 
 optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPerGen=30, mutationChance=0.05, monitorFunc = monitor)
-optimal_word
-
-
-hidden_layers_optimal_word <- extract_neurons("n/nnn/n/n")
-optimal <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers_optimal_word, 0.01, stepmax=1e+09, rep=1, linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
+hidden_layers_optimal_word <- extract_neurons(optimal_word)
+optimal <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers_optimal_word, 0.01, stepmax=1e+09, 
+                     rep=1, linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
+optimal.results <- compute(optimal, validation[,c(1:(length(colnames(validation))-1))])
+# results <- data.frame(actual = validation[output], predicted = nn.results$net.result)
+# print(results)
+# fitness <- (sum((results$actual-results$predicted)^2))/as.double(nrow(validation))
+# print(fitness)
+print(data.frame(actual=validation[output], predicted=optimal.results$net.result))
+fitness <- (sum((validation[output]-optimal.results$net.result)^2))/as.double(nrow(validation))
+print(fitness)
 plot(optimal)
+
