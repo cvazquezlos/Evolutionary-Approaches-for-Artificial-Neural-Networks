@@ -41,21 +41,18 @@ extract_neurons <- function(word) {
   return(hidden_l)
 }
 
-# https://www.analyticsvidhya.com/blog/2017/09/creating-visualizing-neural-network-in-r/
 evaluation <- function(word) {
   hidden_layers <- extract_neurons(word)
   
-  # https://www.rdocumentation.org/packages/neuralnet/versions/1.33/topics/neuralnet PARAMETERS
   nn <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers, 0.01, stepmax=1e+05, rep=1, 
                   linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
   
-  # https://gist.github.com/abresler/d2c324b44d7319b58309 VALIDATION
   nn.results <- compute(nn, validation[,c(1:(length(colnames(validation))-1))])
   # results <- data.frame(actual = validation[output], predicted = nn.results$net.result)
   # print(results)
   # fitness <- (sum((results$actual-results$predicted)^2))/as.double(nrow(validation))
   # print(fitness)
-  print(data.frame(actual=validation[output], predicted=nn.results$net.result))
+  #### print(data.frame(actual=validation[output], predicted=nn.results$net.result))
   fitness <- (sum((validation[output]-nn.results$net.result)^2))/as.double(nrow(validation))
   
   # print(validation_prediction$net.result)
@@ -84,13 +81,8 @@ optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPe
 hidden_layers_optimal_word <- extract_neurons(optimal_word)
 optimal <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers_optimal_word, 0.01, stepmax=1e+09, 
                      rep=1, linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
-optimal.results <- compute(optimal, validation[,c(1:(length(colnames(validation))-1))])
-# results <- data.frame(actual = validation[output], predicted = nn.results$net.result)
-# print(results)
-# fitness <- (sum((results$actual-results$predicted)^2))/as.double(nrow(validation))
-# print(fitness)
-print(data.frame(actual=validation[output], predicted=optimal.results$net.result))
-fitness <- (sum((validation[output]-optimal.results$net.result)^2))/as.double(nrow(validation))
+optimal.results <- compute(optimal, test[,c(1:(length(colnames(test))-1))])
+print(data.frame(actual=test[output], predicted=optimal.results$net.result))
+fitness <- (sum((test[output]-optimal.results$net.result)^2))/as.double(nrow(test))
 print(fitness)
 plot(optimal)
-
