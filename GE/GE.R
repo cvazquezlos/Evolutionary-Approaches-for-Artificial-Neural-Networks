@@ -48,6 +48,7 @@ evaluation <- function(word) {
                   linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
   
   nn.results <- compute(nn, validation[,c(1:(length(colnames(validation))-1))])
+  plot(nn)
   # results <- data.frame(actual = validation[output], predicted = nn.results$net.result)
   # print(results)
   # fitness <- (sum((results$actual-results$predicted)^2))/as.double(nrow(validation))
@@ -86,3 +87,18 @@ print(data.frame(actual=test[output], predicted=optimal.results$net.result))
 fitness <- (sum((test[output]-optimal.results$net.result)^2))/as.double(nrow(test))
 print(fitness)
 plot(optimal)
+
+
+
+# Añadir la arquitectura resultante. 30% una arquitectura dada, u n20% otra arquitectura... etc
+#   30% una arquitectura
+#   20% otra...
+#    ... 
+# Añadir también el tamaño de la red de neuronas.
+# Añadir relación entre la profundidad y el error cuántico medio. Usar fórmula del artículo de redes de neuronas.
+
+# LUZY REPOSITORY IRIS FLOWER.
+# Usar RELU en las capas ocultas y una función lineal a la salida en las redes de neuronas para REGRESIÓN.
+# Para clasificación, usar RELU en las capas ocultas y la función softmax en la salida para devolver un vector de probabilidades para CLASIFICACIÓN y no usar el error cuántico medio con softmax porque es injusto
+# para la función de error habría que usar el log-loss & cross-entropy. Nos quedamos con el J(W) que es la media.
+# Ahora podemos dividir los problemas en regresión y clasificación para la memoria.
