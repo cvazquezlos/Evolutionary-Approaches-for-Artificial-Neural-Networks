@@ -1,3 +1,0 @@
-Used references:
-
-1. 
