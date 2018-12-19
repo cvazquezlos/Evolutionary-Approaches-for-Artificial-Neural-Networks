@@ -28,7 +28,7 @@ data_cleaning <- function(url, sep){
   validation <<-  shuffled_df[(round(0.7*n)+1):round(0.9*n),]
   test <<- shuffled_df[(round(0.9*n)+1):n,]
 }
-data_cleaning("./cereals.csv", ",")
+data_cleaning("../datasets/regression/rating-cereals.csv", ",")
 
 extract_neurons <- function(word) {
   layers <- strsplit(toString(word), "/")[[1]]
