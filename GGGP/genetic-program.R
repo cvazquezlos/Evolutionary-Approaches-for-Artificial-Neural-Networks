@@ -1,11 +1,15 @@
 library("gramEvol")
 library("neuralnet")
+library("stringr")
 library("tensorflow")
 
 data <- NULL
-train <- NULL      #70%
-validation <- NULL #20%
-test <- NULL       #10%
+X_train <- NULL      # 70%
+y_train <- NULL
+X_validation <- NULL # 20%
+y_validation <- NULL
+X_test <- NULL       # 10%
+y_test <- NULL
 
 input <- NULL
 output <- NULL
@@ -13,9 +17,8 @@ output <- NULL
 I <- NULL
 O <- NULL
 
-neural_network_type <- 0 # 0: Regression
-                         # 1: Classification
-                         # 2: Multi-label classification
+classification_type <- 0 # 0: Single-label classification
+                         # 1: Multi-label classification
 
 data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
@@ -25,7 +28,7 @@ data_cleaning <- function(url, sep) {
   I <<- length(colnames(data)) - 1
   O <<- 1
   output <<- paste(tail(colnames(data), 1))
-  if (neural_network_type == 0) {
+  if (str_detect(url, "regression")) {
     max <- apply(data, 2, max)
     min <- apply(data, 2, min)
     scaled_data <- scale(data, center=min, scale=max-min)
@@ -33,10 +36,19 @@ data_cleaning <- function(url, sep) {
   } else {
     shuffled_df <- as.data.frame(data[sample(n),])
   }
-  train <<- shuffled_df[1: round(0.7*n),]
-  validation <<- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
-  test <<- shuffled_df[(round(0.9*n)+1):n,]
+  train <- shuffled_df[1: round(0.7*n),]
+  X_train <<- train[,head(colnames(data), -1)]
+  y_train <<- train[,tail(colnames(data), 1)]
+  validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
+  X_validation <<- validation[,head(colnames(data), -1)]
+  y_validation <<- validation[,tail(colnames(data), 1)]
+  test <- shuffled_df[(round(0.9*n)+1):n,]
+  X_test <<- test[,head(colnames(data), -1)]
+  y_test <<- test[,tail(colnames(data), 1)]
 }
+
+
+
 data_cleaning("../datasets/regression/rating-cereals.csv", ",")
 
 extract_neurons <- function(word) {
