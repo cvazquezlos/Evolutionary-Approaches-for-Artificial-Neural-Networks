@@ -1,4 +1,6 @@
+library("dummies")
 library("gramEvol")
+library("keras")
 library("neuralnet")
 library("stringr")
 library("tensorflow")
@@ -17,7 +19,7 @@ output <- NULL
 I <- NULL
 O <- NULL
 
-classification_type <- 0 # 0: Single-label classification
+classification_type <- 1 # 0: Single-label classification
                          # 1: Multi-label classification
 
 data_cleaning <- function(url, sep) {
@@ -34,22 +36,23 @@ data_cleaning <- function(url, sep) {
     scaled_data <- scale(data, center=min, scale=max-min)
     shuffled_df <- as.data.frame(scaled_data[sample(n),])
   } else {
+    if (classification_type == 1) {
+      aux <- dummy.data.frame(data, names=c("class"), sep="")
+      rm("data")
+      data <<- aux
+    }
     shuffled_df <- as.data.frame(data[sample(n),])
   }
   train <- shuffled_df[1: round(0.7*n),]
-  X_train <<- train[,head(colnames(data), -1)]
-  y_train <<- train[,tail(colnames(data), 1)]
   validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
-  X_validation <<- validation[,head(colnames(data), -1)]
-  y_validation <<- validation[,tail(colnames(data), 1)]
   test <- shuffled_df[(round(0.9*n)+1):n,]
-  X_test <<- test[,head(colnames(data), -1)]
-  y_test <<- test[,tail(colnames(data), 1)]
+  X_train <<- train[,head(colnames(data), -3)]
+  y_train <<- train[,tail(colnames(data), 3)]
+  X_validation <<- validation[,head(colnames(data), -3)]
+  y_validation <<- validation[,tail(colnames(data), 3)]
+  X_test <<- test[,head(colnames(data), -3)]
+  y_test <<- test[,tail(colnames(data), 3)]
 }
-
-
-
-data_cleaning("../datasets/regression/rating-cereals.csv", ",")
 
 extract_neurons <- function(word) {
   layers <- strsplit(toString(word), "/")[[1]]
@@ -61,6 +64,11 @@ extract_neurons <- function(word) {
   }
   return(hidden_l)
 }
+
+
+
+data_cleaning("../datasets/classification/iris.csv", ",")
+
 
 evaluation <- function(word) {
   hidden_layers <- extract_neurons(word)
