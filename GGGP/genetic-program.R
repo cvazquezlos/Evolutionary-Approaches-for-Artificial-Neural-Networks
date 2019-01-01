@@ -13,20 +13,28 @@ output <- NULL
 I <- NULL
 O <- NULL
 
-data_cleaning <- function(url, sep){
+neural_network_type <- 0 # 0: Regression
+                         # 1: Classification
+                         # 2: Multi-label classification
+
+data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
   colnames(data) <- gsub("[^a-zA-Z]*", "", colnames(data))
   n <- nrow(data)
-  input <<- paste(head(colnames(data),-1), collapse="+")
+  input <<- paste(head(colnames(data), -1), collapse="+")
   I <<- length(colnames(data)) - 1
   O <<- 1
-  output <<- paste(tail(colnames(data),1))
-  max <- apply(data, 2, max)
-  min <- apply(data, 2, min)
-  scaled_data <- scale(data, center=min, scale=max-min) # Normalization for numeric datasets.
-  shuffled_df <- as.data.frame(scaled_data[sample(n),])
-  train <<- shuffled_df[1:round(0.7*n),]
-  validation <<-  shuffled_df[(round(0.7*n)+1):round(0.9*n),]
+  output <<- paste(tail(colnames(data), 1))
+  if (neural_network_type == 0) {
+    max <- apply(data, 2, max)
+    min <- apply(data, 2, min)
+    scaled_data <- scale(data, center=min, scale=max-min)
+    shuffled_df <- as.data.frame(scaled_data[sample(n),])
+  } else {
+    shuffled_df <- as.data.frame(data[sample(n),])
+  }
+  train <<- shuffled_df[1: round(0.7*n),]
+  validation <<- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
   test <<- shuffled_df[(round(0.9*n)+1):n,]
 }
 data_cleaning("../datasets/regression/rating-cereals.csv", ",")
