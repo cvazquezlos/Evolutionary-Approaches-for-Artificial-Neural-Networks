@@ -42,12 +42,12 @@ data_cleaning <- function(url, sep) {
   train <- shuffled_df[1: round(0.7*n),]
   validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
   test <- shuffled_df[(round(0.9*n)+1):n,]
-  X_train <<- train[,head(colnames(data), -3)]
-  y_train <<- train[,tail(colnames(data), 3)]
-  X_validation <<- validation[,head(colnames(data), -3)]
-  y_validation <<- validation[,tail(colnames(data), 3)]
-  X_test <<- test[,head(colnames(data), -3)]
-  y_test <<- test[,tail(colnames(data), 3)]
+  X_train <<- train[,head(colnames(data), -3)] %>% as.matrix()
+  y_train <<- train[,tail(colnames(data), 3)] %>% as.matrix()
+  X_validation <<- validation[,head(colnames(data), -3)] %>% as.matrix()
+  y_validation <<- validation[,tail(colnames(data), 3)] %>% as.matrix()
+  X_test <<- test[,head(colnames(data), -3)] %>% as.matrix()
+  y_test <<- test[,tail(colnames(data), 3)] %>% as.matrix()
   I <<- length(colnames(X_train))
   O <<- length(colnames(y_train))
 }
@@ -89,33 +89,9 @@ evaluation <- function(word) {
       metrics = c('accuracy')
     )
   }
-  history <- model %>% fit(X_train, y_train, validation_data = list(X_validation, y_validation), epochs = epochs, batch_size = batch_size)
-  summary(model)
-}
-
-data_cleaning("../datasets/classification/iris.csv", ",")
-
-
-evaluation <- function(word) {
-  hidden_layers <- extract_neurons(word)
-  
-  nn <- neuralnet(paste(output,input,sep="~"), data=train, hidden=hidden_layers, 0.01, stepmax=1e+05, rep=1, 
-                  linear.output=T, learningrate=0.01, algorithm = "backprop", err.fct="sse")
-  
-  nn.results <- compute(nn, validation[,c(1:(length(colnames(validation))-1))])
-  plot(nn)
-  # results <- data.frame(actual = validation[output], predicted = nn.results$net.result)
-  # print(results)
-  # fitness <- (sum((results$actual-results$predicted)^2))/as.double(nrow(validation))
-  # print(fitness)
-  #### print(data.frame(actual=validation[output], predicted=nn.results$net.result))
-  fitness <- (sum((validation[output]-nn.results$net.result)^2))/as.double(nrow(validation))
-  
-  # print(validation_prediction$net.result)
-  # validation_prediction_l <- validation_prediction$net.result*(max(data[output])-min(data[output]))+min(data[output])
-  # results <- (validation[output])*(max(data[output])-min(data[output]))+min(data[output])
-  # fitness <- (sum(results - validation_prediction_l)^2)/nrow(validation)
-  return(fitness)
+  history <- model %>% fit(X_train, y_train, epochs = epochs)
+  score <- model %>% evaluate(X_validation, y_validation, batch_size = batch_size)
+  print(score)
 }
 
 monitor <- function(results){
@@ -123,6 +99,8 @@ monitor <- function(results){
   print(results)
 }
 
+data_cleaning("../datasets/classification/iris.csv", ",")
+evaluation('nn/nnnn/n/n')
 grammar <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule(replicate(I, "n")),
@@ -130,7 +108,6 @@ grammar <- list(
   h = gsrule("<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
-
 grammarDef <- CreateGrammar(grammar)
 
 optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPerGen=30, mutationChance=0.05, monitorFunc = monitor)
@@ -142,18 +119,3 @@ print(data.frame(actual=test[output], predicted=optimal.results$net.result))
 fitness <- (sum((test[output]-optimal.results$net.result)^2))/as.double(nrow(test))
 print(fitness)
 plot(optimal)
-
-
-
-# Añadir la arquitectura resultante. 30% una arquitectura dada, u n20% otra arquitectura... etc
-#   30% una arquitectura
-#   20% otra...
-#    ... 
-# Añadir también el tamaño de la red de neuronas.
-# Añadir relación entre la profundidad y el error cuántico medio. Usar fórmula del artículo de redes de neuronas.
-
-# LUZY REPOSITORY IRIS FLOWER.
-# Usar RELU en las capas ocultas y una función lineal a la salida en las redes de neuronas para REGRESIÓN.
-# Para clasificación, usar RELU en las capas ocultas y la función softmax en la salida para devolver un vector de probabilidades para CLASIFICACIÓN y no usar el error cuántico medio con softmax porque es injusto
-# para la función de error habría que usar el log-loss & cross-entropy. Nos quedamos con el J(W) que es la media.
-# Ahora podemos dividir los problemas en regresión y clasificación para la memoria.
