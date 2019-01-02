@@ -8,3 +8,5 @@
 30/12/2018 19:03
 5. https://machinelearningmastery.com/how-to-one-hot-encode-sequence-data-in-python/
 30/12/2018 23:17
+6. https://keras.rstudio.com/index.html
+02/01/2018 11:34
