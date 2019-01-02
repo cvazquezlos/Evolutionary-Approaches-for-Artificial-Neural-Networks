@@ -4,6 +4,8 @@ library("keras")
 library("neuralnet")
 library("stringr")
 
+epochs <- 10
+batch_size <- 4
 data <- NULL
 X_train <- NULL      # 70%
 y_train <- NULL
@@ -87,6 +89,7 @@ evaluation <- function(word) {
       metrics = c('accuracy')
     )
   }
+  history <- model %>% fit(X_train, y_train, validation_data = list(X_validation, y_validation), epochs = epochs, batch_size = batch_size)
   summary(model)
 }
 
