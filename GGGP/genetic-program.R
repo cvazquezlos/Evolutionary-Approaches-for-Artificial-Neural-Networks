@@ -4,7 +4,7 @@ library("keras")
 library("neuralnet")
 library("stringr")
 
-epochs <- 10
+epochs <- 50
 batch_size <- 4
 data <- NULL
 X_train <- NULL      # 70%
@@ -91,7 +91,7 @@ evaluation <- function(word) {
   }
   history <- model %>% fit(X_train, y_train, epochs = epochs)
   score <- model %>% evaluate(X_validation, y_validation, batch_size = batch_size)
-  print(score)
+  return(score['loss'][[1]])
 }
 
 monitor <- function(results){
@@ -100,7 +100,7 @@ monitor <- function(results){
 }
 
 data_cleaning("../datasets/classification/iris.csv", ",")
-evaluation('nn/nnnn/n/n')
+evaluation('nn/nnnnn/n')
 grammar <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule(replicate(I, "n")),
