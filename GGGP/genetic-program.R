@@ -3,7 +3,6 @@ library("gramEvol")
 library("keras")
 library("neuralnet")
 library("stringr")
-library("tensorflow")
 
 data <- NULL
 X_train <- NULL      # 70%
@@ -13,24 +12,19 @@ y_validation <- NULL
 X_test <- NULL       # 10%
 y_test <- NULL
 
-input <- NULL
-output <- NULL
-
 I <- NULL
 O <- NULL
 
-classification_type <- 1 # 0: Single-label classification
+classification_type <- 1 # -1: Regression
+                         # 0: Single-label classification
                          # 1: Multi-label classification
 
 data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
   colnames(data) <- gsub("[^a-zA-Z]*", "", colnames(data))
   n <- nrow(data)
-  input <<- paste(head(colnames(data), -1), collapse="+")
-  I <<- length(colnames(data)) - 1
-  O <<- 1
-  output <<- paste(tail(colnames(data), 1))
   if (str_detect(url, "regression")) {
+    classification_type <<- -1
     max <- apply(data, 2, max)
     min <- apply(data, 2, min)
     scaled_data <- scale(data, center=min, scale=max-min)
@@ -52,6 +46,8 @@ data_cleaning <- function(url, sep) {
   y_validation <<- validation[,tail(colnames(data), 3)]
   X_test <<- test[,head(colnames(data), -3)]
   y_test <<- test[,tail(colnames(data), 3)]
+  I <<- length(colnames(X_train))
+  O <<- length(colnames(y_train))
 }
 
 extract_neurons <- function(word) {
@@ -65,7 +61,34 @@ extract_neurons <- function(word) {
   return(hidden_l)
 }
 
-
+evaluation <- function(word) {
+  hidden_layers <- extract_neurons(word)
+  print(hidden_layers)
+  for (layer in hidden_layers) {
+    print(layer)
+  }
+  model <- keras_model_sequential()
+  model %>% layer_dense(units = hidden_layers[1], input_shape = c(I), activation = 'relu')
+  for (layer in tail(hidden_layers, 1)) {
+    model %>% layer_dense(units = layer, activation = 'relu')
+  }
+  if (classification_type == -1) {
+    model %>% layer_dense(units = O, activation = 'linear')
+    model %>% compile(
+      optimizer = 'adam',
+      loss = 'mse',
+      metrics = c('accuracy')
+    )
+  } else {
+    model %>% layer_dense(units = O, activation = 'softmax')
+    model %>% compile(
+      optimizer = 'adam',
+      loss = 'categorical_crossentropy',
+      metrics = c('accuracy')
+    )
+  }
+  summary(model)
+}
 
 data_cleaning("../datasets/classification/iris.csv", ",")
 
