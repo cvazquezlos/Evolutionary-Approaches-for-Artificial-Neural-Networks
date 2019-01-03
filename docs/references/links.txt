@@ -9,4 +9,6 @@
 5. https://machinelearningmastery.com/how-to-one-hot-encode-sequence-data-in-python/
 30/12/2018 23:17
 6. https://keras.rstudio.com/index.html
-02/01/2018 11:34
+02/01/2019 11:34
+7. https://cran.r-project.org/web/packages/keras/vignettes/faq.html
+03/01/2019 15:03

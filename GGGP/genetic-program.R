@@ -2,11 +2,13 @@ library("dummies")
 library("gramEvol")
 library("keras")
 library("neuralnet")
+library("rjson")
 library("stringr")
 
 epochs <- 100
 data <- NULL
 I <- NULL
+j <- 1
 input <- NULL
 mode <- 0
 O <- NULL
@@ -19,10 +21,17 @@ y_validation <- NULL
 X_test <- NULL       # 10%
 y_test <- NULL
 
-
 classification_type <- 1 # -1: Regression
                          # 0: Single-label classification
                          # 1: Multi-label classification
+sol_train_accuracy <- list()
+avg_train_accuracy <- list()
+sol_validation_accuracy <- list()
+avg_validation_accuracy <- list()
+sol_test_accuracy <- list()
+avg_test_accuracy <- list()
+sol_nn_structure <- list()
+sol_model_name <- list()
 
 data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
@@ -67,7 +76,7 @@ extract_neurons <- function(word) {
   }
   return(hidden_l)
 }
-
+history_df <- NULL
 evaluation <- function(word) {
   hidden_layers <- extract_neurons(word)
   model <- keras_model_sequential()
@@ -90,13 +99,17 @@ evaluation <- function(word) {
       metrics = c('accuracy')
     )
   }
-  history <- model %>% fit(X_train, y_train, epochs = epochs)
+  # https://keras.rstudio.com/articles/training_callbacks.html - STOP TRAINING.
+  history <- model %>% fit(X_train, y_train, epochs = epochs, verbose = 0)
+  history_df <<- as.data.frame(history)
   if (mode == 0) {
     score <- model %>% evaluate(X_validation, y_validation)
+    return(score['loss'][[1]])
   } else {
     score <- model %>% evaluate(X_test, y_test)
+    save_model_hdf5(model, paste0('iris_model_', j, '.h5'))
+    return(score['loss'][[1]])
   }
-  return(score['loss'][[1]])
 }
 
 monitor <- function(results){
@@ -104,7 +117,6 @@ monitor <- function(results){
   print(results)
 }
 
-data_cleaning("../datasets/classification/iris.csv", ",")
 grammar <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule(replicate(I, "n")),
@@ -114,9 +126,12 @@ grammar <- list(
 )
 grammarDef <- CreateGrammar(grammar)
 
-optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, mutationChance=0.05, monitorFunc = monitor)
+data_cleaning("../datasets/classification/iris.csv", ",")
+for (i in c(1:100)) {
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, mutationChance=0.05, monitorFunc = monitor)
+  
+}
+optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, mutationChance=0.05, monitorFunc = monitor)
 hidden_layers_optimal_word <- extract_neurons(optimal_word)
-arch_optimal <- neuralnet(paste(output, input, sep = "~"), data = train, hidden = hidden_layers_optimal_word)
-plot(arch_optimal)
 mode <- 1
 print(evaluation(optimal_word))
