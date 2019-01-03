@@ -4,7 +4,6 @@ library("keras")
 library("neuralnet")
 library("stringr")
 
-batch_size <- 4
 epochs <- 100
 data <- NULL
 I <- NULL
@@ -27,7 +26,6 @@ classification_type <- 1 # -1: Regression
 
 data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
-  colnames(data) <- gsub("[^a-zA-Z]*", "", colnames(data))
   n <- nrow(data)
   if (str_detect(url, "regression")) {
     classification_type <<- -1
@@ -43,19 +41,20 @@ data_cleaning <- function(url, sep) {
     }
     shuffled_df <- as.data.frame(data[sample(n),])
   }
+  colnames(shuffled_df) <- gsub("[^a-zA-Z]*", "", colnames(shuffled_df))
   train <<- shuffled_df[1: round(0.7*n),]
   validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
   test <- shuffled_df[(round(0.9*n)+1):n,]
-  X_train <<- train[,head(colnames(data), -3)] %>% as.matrix()
-  y_train <<- train[,tail(colnames(data), 3)] %>% as.matrix()
-  X_validation <<- validation[,head(colnames(data), -3)] %>% as.matrix()
-  y_validation <<- validation[,tail(colnames(data), 3)] %>% as.matrix()
-  X_test <<- test[,head(colnames(data), -3)] %>% as.matrix()
-  y_test <<- test[,tail(colnames(data), 3)] %>% as.matrix()
+  X_train <<- train[,head(colnames(shuffled_df), -3)] %>% as.matrix()
+  y_train <<- train[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
+  X_validation <<- validation[,head(colnames(shuffled_df), -3)] %>% as.matrix()
+  y_validation <<- validation[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
+  X_test <<- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
+  y_test <<- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
   I <<- length(colnames(X_train))
-  input <<- paste(colnames(X_train))
+  input <<- paste(colnames(X_train), collapse="+")
   O <<- length(colnames(y_train))
-  output <<- paste(colnames(y_train))
+  output <<- paste(colnames(y_train), collapse="+")
 }
 
 extract_neurons <- function(word) {
@@ -93,7 +92,7 @@ evaluation <- function(word) {
   }
   history <- model %>% fit(X_train, y_train, epochs = epochs)
   if (mode == 0) {
-    score <- model %>% evaluate(X_validation, y_validation, batch_size = batch_size)
+    score <- model %>% evaluate(X_validation, y_validation)
   } else {
     score <- model %>% evaluate(X_test, y_test)
   }
@@ -115,7 +114,7 @@ grammar <- list(
 )
 grammarDef <- CreateGrammar(grammar)
 
-optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, newPerGen=30, mutationChance=0.05, monitorFunc = monitor)
+optimal_word <- GrammaticalEvolution(grammarDef, evaluation, 1, popSize=5, mutationChance=0.05, monitorFunc = monitor)
 hidden_layers_optimal_word <- extract_neurons(optimal_word)
 arch_optimal <- neuralnet(paste(output, input, sep = "~"), data = train, hidden = hidden_layers_optimal_word)
 plot(arch_optimal)
