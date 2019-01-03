@@ -1,8 +1,8 @@
 library("dummies")
 library("gramEvol")
+library("jsonlite")
 library("keras")
 library("neuralnet")
-library("rjson")
 library("stringr")
 
 epochs <- 100
