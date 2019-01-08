@@ -12,7 +12,8 @@ gen_no <- 1
 gen_pop_err <- list()
 gen_evolution <- NULL
 I <- NULL
-j <- 6
+j <- 1
+k <- 0
 input <- NULL
 mode <- 0
 O <- NULL
@@ -85,6 +86,11 @@ extract_neurons <- function(word) {
 }
 
 evaluation <- function(word) {
+  k <<- k + 1
+  if (k > 10) {
+    k_clear_session()
+    k <<- 0
+  }
   hidden_layers <- extract_neurons(word)
   model <- keras_model_sequential()
   model %>% layer_dense(units = hidden_layers[1], input_shape = c(I), activation = 'relu')
@@ -146,7 +152,7 @@ grammar <- list(
   h = gsrule("<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
-
+k_clear_session()
 grammarDef <- CreateGrammar(grammar)
 data_cleaning("../datasets/classification/iris.csv", ",")
 results <- data.frame(gp_plot_data = character(),
@@ -158,11 +164,11 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:5)) {
+for (i in c(1:30)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, mutationChance = 0.05, monitorFunc = monitor)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 12, mutationChance = 0.05, monitorFunc = monitor, iterations = 80)
   end_time <- Sys.time()
   mode <- 1
   hidden_layers_optimal_word <- extract_neurons(optimal_word)
@@ -174,6 +180,7 @@ for (i in c(1:5)) {
   results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, sol_nn_architecture, sol_model_name,
                                    sol_plot_data, exec_time)
   k_clear_session()
+  k <- 0
 }
-#write.csv(results, file = "../results/iris.csv") # Empty CSV.
-write.table(results, "../results/iris.csv", sep = ",", col.names = F, append = T)
+write.csv(results, file = "../results/iris.csv", row.names = FALSE) # Empty CSV.
+#write.table(results, "../results/iris.csv", sep = ",", col.names = F, append = T, row.names = FALSE) # Concat CSV.
