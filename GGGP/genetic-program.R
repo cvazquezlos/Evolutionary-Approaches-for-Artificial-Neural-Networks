@@ -12,7 +12,7 @@ gen_no <- 1
 gen_pop_err <- list()
 gen_evolution <- NULL
 I <- NULL
-j <- 1
+j <- 6
 input <- NULL
 mode <- 0
 O <- NULL
@@ -158,7 +158,7 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:30)) {
+for (i in c(1:5)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
@@ -173,6 +173,7 @@ for (i in c(1:30)) {
   j <- j + 1
   results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, sol_nn_architecture, sol_model_name,
                                    sol_plot_data, exec_time)
+  k_clear_session()
 }
-write.csv(results, file = "../results/iris.csv") # Empty CSV.
-#write.table(results, "../results/iris.csv", sep = ",", col.names = F, append = T)
+#write.csv(results, file = "../results/iris.csv") # Empty CSV.
+write.table(results, "../results/iris.csv", sep = ",", col.names = F, append = T)
