@@ -168,7 +168,7 @@ for (i in c(1:5)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 12, mutationChance = 0.05, monitorFunc = monitor, iterations = 40)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 12, mutationChance = 0.05, monitorFunc = monitor, iterations = 20)
   end_time <- Sys.time()
   mode <- 1
   hidden_layers_optimal_word <- extract_neurons(optimal_word)
