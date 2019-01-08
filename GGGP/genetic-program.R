@@ -164,11 +164,11 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:30)) {
+for (i in c(1:5)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 12, mutationChance = 0.05, monitorFunc = monitor, iterations = 80)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 12, mutationChance = 0.05, monitorFunc = monitor, iterations = 40)
   end_time <- Sys.time()
   mode <- 1
   hidden_layers_optimal_word <- extract_neurons(optimal_word)
