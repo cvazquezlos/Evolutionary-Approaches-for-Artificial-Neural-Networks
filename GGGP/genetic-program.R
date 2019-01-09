@@ -12,7 +12,7 @@ gen_no <- 1
 gen_pop_err <- list()
 gen_evolution <- NULL
 I <- NULL
-j <- 1
+j <- 0
 k <- 0
 input <- NULL
 mode <- 0
@@ -119,7 +119,7 @@ evaluation <- function(word) {
     gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
     return(score['loss'][[1]])
   } else {
-    gp_plot_data <<- toJSON(gen_evolution)
+    gp_plot_data <<- toString(toJSON(gen_evolution))
     history_df <- as.data.frame(history)
     score <- model %>% evaluate(X_train, y_train)
     sol_train_accuracy <<- score['acc'][[1]]
@@ -129,7 +129,7 @@ evaluation <- function(word) {
     sol_test_accuracy <<- score['acc'][[1]]
     model_name <- paste0('../results/models/iris_model_', j, '.h5')
     save_model_hdf5(model, model_name)
-    sol_plot_data <<- toJSON(history_df)
+    sol_plot_data <<- toString(toJSON(history_df))
     sol_model_name <<- model_name
     return(score['loss'][[1]])
   }
@@ -138,7 +138,7 @@ evaluation <- function(word) {
 monitor <- function(results){
   pop_train <- Reduce("+", gen_pop_err) / length(gen_pop_err)
   best_train <- evaluation(results$best$expressions[[1]])
-  gen_evolution <<- c(gen_evolution, toJSON(data.frame(gen_no, pop_train, best_train)))
+  gen_evolution <<- c(gen_evolution, toString(toJSON(data.frame(gen_no, pop_train, best_train))))
   cat("--------------------\n")
   print(results)
   gen_pop_err <<- list()
@@ -164,11 +164,11 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:5)) {
+for (i in c(1:1)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 12, mutationChance = 0.05, monitorFunc = monitor, iterations = 20)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 10, mutationChance = 0.05, monitorFunc = monitor, iterations = 20)
   end_time <- Sys.time()
   mode <- 1
   hidden_layers_optimal_word <- extract_neurons(optimal_word)
@@ -182,5 +182,5 @@ for (i in c(1:5)) {
   k_clear_session()
   k <- 0
 }
-write.csv(results, file = "../results/iris.csv", row.names = FALSE) # Empty CSV.
-#write.table(results, "../results/iris.csv", sep = ",", col.names = F, append = T, row.names = FALSE) # Concat CSV.
+write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
+#write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
