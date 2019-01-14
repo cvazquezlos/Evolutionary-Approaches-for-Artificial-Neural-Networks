@@ -12,7 +12,7 @@ gen_no <- 1
 gen_pop_err <- list()
 gen_evolution <- NULL
 I <- NULL
-j <- 0
+j <- 30 # Update it in each execution
 k <- 0
 input <- NULL
 mode <- 0
@@ -78,8 +78,8 @@ extract_neurons <- function(word) {
   layers <- strsplit(toString(word), "/")[[1]]
   i <- 0
   hidden_l <- numeric(0) # Contains the number of hidden layers and the number of neurons of each hidden layer.
-  for(j in head(layers, -1)) {
-    if (i!=0) {hidden_l[i] <- nchar(j)}
+  for(l in head(layers, -1)) {
+    if (i!=0) {hidden_l[i] <- nchar(l)}
     i <- i+1
   }
   return(hidden_l)
@@ -164,7 +164,7 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:1)) {
+for (i in c(1:10)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
@@ -182,5 +182,5 @@ for (i in c(1:1)) {
   k_clear_session()
   k <- 0
 }
-write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
-#write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
+#write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
+write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
