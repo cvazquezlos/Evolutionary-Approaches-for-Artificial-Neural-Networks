@@ -113,7 +113,9 @@ evaluation <- function(word) {
     )
   }
   # https://keras.rstudio.com/articles/training_callbacks.html - STOP TRAINING.
-  history <- model %>% fit(X_train, y_train, epochs = epochs, verbose = 0)
+  history <- model %>% fit(X_train, y_train, epochs = epochs, verbose = 0, callbacks = list(
+    callback_early_stopping()
+  ))
   if (mode == 0) {
     score <- model %>% evaluate(X_validation, y_validation)
     gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
