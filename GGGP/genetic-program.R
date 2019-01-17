@@ -6,7 +6,7 @@ library("neuralnet")
 library("stringr")
 
 classification_type <- 1 # -1: Regression, 0: Single-label classification, 1: Multi-label classification
-epochs <- 100
+epochs <- 1000
 data <- NULL
 gen_no <- 1
 gen_pop_err <- list()
