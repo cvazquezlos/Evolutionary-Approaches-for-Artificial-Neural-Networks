@@ -166,11 +166,11 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:10)) {
+for (i in c(1:1)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 10, mutationChance = 0.05, monitorFunc = monitor, iterations = 20)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 3, mutationChance = 0.05, monitorFunc = monitor, iterations = 1)
   end_time <- Sys.time()
   mode <- 1
   hidden_layers_optimal_word <- extract_neurons(optimal_word)
@@ -184,5 +184,5 @@ for (i in c(1:10)) {
   k_clear_session()
   k <- 0
 }
-#write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
-write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
+write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
+#write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
