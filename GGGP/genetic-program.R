@@ -165,10 +165,10 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:1)) {
+for (i in c(1:2)) {
   gen_evolution <- list()
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 15, newPerGen = 3, elitism = 3, mutationChance = 0.05, monitorFunc = monitor, iterations = 1)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 5, newPerGen = 3, elitism = 3, mutationChance = 0.05, monitorFunc = monitor, iterations = 1)
   end_time <- Sys.time()
   gp_plot_data <- toString(toJSON(gen_evolution))
   ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc),]
@@ -190,6 +190,7 @@ for (i in c(1:1)) {
   j <- j + 1
   results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, sol_nn_architecture, sol_model_name,
                                    sol_plot_data, exec_time)
+  fitness_calculations <- fitness_calculations[0,]
   k_clear_session()
   k <- 0
 }
