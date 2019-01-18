@@ -12,7 +12,7 @@ classification_type <- 1 # -1: Regression, 0: Single-label classification, 1: Mu
 data <- NULL
 epochs <- 1000
 fitness_calculations <- data.frame(individual = character(), 
-                                   n_times_used = integer(), 
+                                   gen_check = integer(), 
                                    acc = double(), 
                                    loss = double(), 
                                    saved_model = character(),
@@ -101,9 +101,10 @@ extract_neurons <- function(word) {
 
 evaluation <- function(word) {
   if (!isAssessable(word)) {
-    fitness_calculations <- within(fitness_calculations, n_times_used[individual == word & n_times_used == (gen_no - 1)] <- gen_no)
-    # df[1,] - first row and all columns
-    return(fitness_calculations)
+    i1 <- with(fitness_calculations, individual == word & gen_check == (gen_no -1))
+    i2 <- !duplicated(i1) & i1
+    fitness_calculations$gen_check[i2] <- gen_no
+    return(fitness_calculations$loss[i2])
   }
   k <<- k + 1
   if (k > 10) {
@@ -157,7 +158,7 @@ evaluation <- function(word) {
 }
 
 isAssessable <- function(word) {
-  filtered_fitness_calculations <- subset(fitness_calculations, individual == word & n_times_used == (gen_no - 1))
+  filtered_fitness_calculations <- subset(fitness_calculations, individual == word & gen_check == (gen_no - 1))
   return(if(nrow(filtered_fitness_calculations) == 0) TRUE else FALSE)
 }
 
