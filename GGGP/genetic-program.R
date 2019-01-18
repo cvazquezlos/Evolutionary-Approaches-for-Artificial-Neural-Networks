@@ -16,6 +16,7 @@ fitness_calculations <- data.frame(individual = character(),
                                    acc = double(), 
                                    loss = double(), 
                                    saved_model = character(),
+                                   history = character(),
                                    stringsAsFactors = FALSE)
 gen_no <- 1
 gen_pop_err <- list()
@@ -33,24 +34,6 @@ X_validation <- NULL # 20%
 y_validation <- NULL
 X_test <- NULL       # 10%
 y_test <- NULL
-
-# ----------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------------------- DATA TO SAVE -------------------------------------------------- #
-# ----------------------------------------------------------------------------------------------------------------- #
-# 1. GP population evolution.
-gp_plot_data <- NULL
-# 2. Accuracy of each final solution: train, validation and test.
-sol_train_accuracy <- NULL
-sol_validation_accuracy <- NULL
-sol_test_accuracy <- NULL
-# 3. Solution architecture.
-sol_nn_architecture <- NULL
-# 4. Name of the saved model at ./models.
-sol_model_name <- NULL
-# 5. Both loss and accuracy data at each epoch of the solution.
-sol_plot_data <- NULL
-# 6. Execution time.
-exec_time <- NULL
 
 # ----------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------- AUXILIARY FUNCTIONS ---------------------------------------------- #
@@ -106,6 +89,7 @@ evaluation <- function(word) {
     fitness_calculations$gen_check[i2] <- gen_no
     return(fitness_calculations$loss[i2])
   }
+  # Cleaning up the TensorFlow graph.
   k <<- k + 1
   if (k > 10) {
     k_clear_session()
@@ -136,25 +120,12 @@ evaluation <- function(word) {
   history <- model %>% fit(X_train, y_train, epochs = epochs, verbose = 0, callbacks = list(
     callback_early_stopping()
   ))
-  if (mode == 0) {
-    score <- model %>% evaluate(X_validation, y_validation)
-    gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
-    return(score['loss'][[1]])
-  } else {
-    gp_plot_data <<- toString(toJSON(gen_evolution))
-    history_df <- as.data.frame(history)
-    score <- model %>% evaluate(X_train, y_train)
-    sol_train_accuracy <<- score['acc'][[1]]
-    score <- model %>% evaluate(X_validation, y_validation)
-    sol_validation_accuracy <<- score['acc'][[1]]
-    score <- model %>% evaluate(X_test, y_test)
-    sol_test_accuracy <<- score['acc'][[1]]
-    model_name <- paste0('../results/models/iris_model_', j, '.h5')
-    save_model_hdf5(model, model_name)
-    sol_plot_data <<- toString(toJSON(history_df))
-    sol_model_name <<- model_name
-    return(score['loss'][[1]])
-  }
+  model_name <- paste0('./gp_models/', j, '/', gen_no, '/', gsub("\"", "", gsub("/", "_", word)), '.h5')
+  save_model_hdf5(model, model_name)
+  score <- model %>% evaluate(X_validation, y_validation)
+  fitness_calculations[nrow(fitness_calculations) + 1,] <- c(word, gen_no, score['acc'][[1]], score['loss'][[1]], model_name, toString(toSON(s.data.frame(history))))
+  gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
+  return(score['loss'][[1]])
 }
 
 isAssessable <- function(word) {
@@ -195,15 +166,25 @@ results <- data.frame(gp_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
 for (i in c(1:1)) {
-  mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
   optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 15, newPerGen = 3, elitism = 3, mutationChance = 0.05, monitorFunc = monitor, iterations = 1)
   end_time <- Sys.time()
-  mode <- 1
-  hidden_layers_optimal_word <- extract_neurons(optimal_word)
-  sol_nn_architecture <- paste(I, paste0(hidden_layers_optimal_word, collapse = ":"), O, sep = ":")
-  evaluation(optimal_word)
+  gp_plot_data <- toString(toJSON(gen_evolution))
+  ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc),]
+  optimal_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == "nnn/nn/nn/nn",], 1)
+  model %>% load_model_hdf5(optimal_individual$saved_model)
+  score <- model %>% evaluate(X_train, y_train)
+  sol_train_accuracy <- score['acc'][[1]]
+  score <- model %>% evaluate(X_validation, y_validation)
+  sol_validation_accuracy <- score['acc'][[1]]
+  score <- model %>% evaluate(X_test, y_test)
+  sol_test_accuracy <- score['acc'][[1]]
+  sol_nn_architecture <- paste(I, paste0(extract_neurons(optimal_word), collapse = ":"), O, sep = ":")
+  model_name <- paste0('../results/models/iris_model_', j, '.h5')
+  save_model_hdf5(model, model_name)
+  sol_model_name <- model_name
+  sol_plot_data <- optimal_individual$history
   exec_time <- as.double(toString(end_time - start_time))
   gen_no <- 1
   j <- j + 1
