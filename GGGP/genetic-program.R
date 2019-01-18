@@ -10,14 +10,9 @@ library("stringr")
 # ----------------------------------------------------------------------------------------------------------------- #
 classification_type <- 1 # -1: Regression, 0: Single-label classification, 1: Multi-label classification
 data <- NULL
-epochs <- 1000
-fitness_calculations <- data.frame(individual = character(), 
-                                   gen_check = integer(), 
-                                   acc = double(), 
-                                   loss = double(), 
-                                   saved_model = character(),
-                                   history = character(),
-                                   stringsAsFactors = FALSE)
+epochs <- 750
+fitness_calculations <- data.frame(individual = character(), gen_check = integer(), acc = double(), loss = double(), 
+                                   saved_model = character(), history = character(), stringsAsFactors = FALSE)
 gen_no <- 1
 gen_pop_err <- list()
 gen_evolution <- NULL
@@ -71,31 +66,38 @@ data_cleaning <- function(url, sep) {
   output <<- paste(colnames(y_train), collapse="+")
 }
 
-extract_neurons <- function(word) {
+extract_neurons <- function(word, mode) {
   layers <- strsplit(toString(word), "/")[[1]]
+  linear_mode <- strrep("n", I)
   i <- 0
   hidden_l <- numeric(0) # Contains the number of hidden layers and the number of neurons of each hidden layer.
   for(l in head(layers, -1)) {
-    if (i!=0) {hidden_l[i] <- nchar(l)}
+    if (i!=0) {
+      hidden_l[i] <- nchar(l)
+      linear_mode <- paste0(linear_mode, '/', l)
+    }
     i <- i+1
   }
-  return(hidden_l)
+  if (mode == 0) {
+    return(hidden_l)
+  } else {
+    return(paste0(linear_mode, strrep("n", O)))
+  }
 }
 
 evaluation <- function(word) {
+  hidden_layers <- extract_neurons(word, 0)
+  word <- extract_neurons(word, 1)
   if (!isAssessable(word)) {
-    i1 <- with(fitness_calculations, individual == word & gen_check == (gen_no -1))
+    i1 <- with(fitness_calculations, individual == hidden_layers & gen_check == (gen_no -1))
     i2 <- !duplicated(i1) & i1
     fitness_calculations$gen_check[i2] <- gen_no
     return(fitness_calculations$loss[i2])
   }
   # Cleaning up the TensorFlow graph.
   k <<- k + 1
-  if (k > 10) {
-    k_clear_session()
-    k <<- 0
-  }
-  hidden_layers <- extract_neurons(word)
+  if(k > 5) {k_clear_session()
+    k <<- 0} else k <<- k + 1
   model <- keras_model_sequential()
   model %>% layer_dense(units = hidden_layers[1], input_shape = c(I), activation = 'relu')
   for (layer in tail(hidden_layers, 1)) {
@@ -116,14 +118,14 @@ evaluation <- function(word) {
       metrics = c('accuracy')
     )
   }
-  # https://keras.rstudio.com/articles/training_callbacks.html - STOP TRAINING.
   history <- model %>% fit(X_train, y_train, epochs = epochs, verbose = 0, callbacks = list(
     callback_early_stopping()
   ))
-  model_name <- paste0('./gp_models/', j, '/', gen_no, '/', gsub("\"", "", gsub("/", "_", word)), '.h5')
+  model_name <- paste0('gp_models/', j, '/', gen_no, '/', gsub("\"", "", gsub("/", "_", word)), '.h5')
   save_model_hdf5(model, model_name)
   score <- model %>% evaluate(X_validation, y_validation)
-  fitness_calculations[nrow(fitness_calculations) + 1,] <- c(word, gen_no, score['acc'][[1]], score['loss'][[1]], model_name, toString(toSON(s.data.frame(history))))
+  fitness_calculations[nrow(fitness_calculations) + 1,] <<- c(word, gen_no, score['acc'][[1]], score['loss'][[1]], 
+                                                             model_name, toString(toJSON(as.data.frame(history))))
   gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
   return(score['loss'][[1]])
 }
@@ -141,6 +143,7 @@ monitor <- function(results){
   print(results)
   gen_pop_err <<- list()
   gen_no <<- gen_no + 1
+  dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
 }
 
 # ----------------------------------------------------------------------------------------------------------------- #
@@ -148,8 +151,8 @@ monitor <- function(results){
 # ----------------------------------------------------------------------------------------------------------------- #
 grammar <- list(
   S = gsrule("<a><h>/<z>"),
-  a = grule(strrep(I, "n")),
-  z = grule(strrep(O, "n")),
+  a = grule(strrep("n", I)),
+  z = grule(strrep("n", O)),
   h = gsrule("<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
@@ -166,13 +169,20 @@ results <- data.frame(gp_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
 for (i in c(1:2)) {
+  dir.create(paste0("gp_models/", j), showWarnings = FALSE)
   gen_evolution <- list()
+  gen_no <- 1
+  dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 5, newPerGen = 3, elitism = 3, mutationChance = 0.05, monitorFunc = monitor, iterations = 1)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 5, newPerGen = 0, elitism = 3, mutationChance = 0.05, 
+                                       monitorFunc = monitor, iterations = 1)
+  optimal_word_layers <- extract_neurons(optimal_word, 0)
+  optimal_word <- extract_neurons(optimal_word, 1)
   end_time <- Sys.time()
   gp_plot_data <- toString(toJSON(gen_evolution))
   ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc),]
-  optimal_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == "nnn/nn/nn/nn",], 1)
+  optimal_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == optimal_word,], 1)
+  model <- keras_model_sequential()
   model %>% load_model_hdf5(optimal_individual$saved_model)
   score <- model %>% evaluate(X_train, y_train)
   sol_train_accuracy <- score['acc'][[1]]
@@ -180,13 +190,12 @@ for (i in c(1:2)) {
   sol_validation_accuracy <- score['acc'][[1]]
   score <- model %>% evaluate(X_test, y_test)
   sol_test_accuracy <- score['acc'][[1]]
-  sol_nn_architecture <- paste(I, paste0(extract_neurons(optimal_word), collapse = ":"), O, sep = ":")
+  sol_nn_architecture <- paste(I, paste0(optimal_word_layers, collapse = ":"), O, sep = ":")
   model_name <- paste0('../results/models/iris_model_', j, '.h5')
   save_model_hdf5(model, model_name)
   sol_model_name <- model_name
   sol_plot_data <- optimal_individual$history
   exec_time <- as.double(toString(end_time - start_time))
-  gen_no <- 1
   j <- j + 1
   results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, sol_nn_architecture, sol_model_name,
                                    sol_plot_data, exec_time)

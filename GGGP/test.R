@@ -1,3 +1,8 @@
+fitness_calculations <- data.frame(individual = character(), gen_check = integer(), acc = double(), loss = double(), 
+                                   saved_model = character(), history = character(), stringsAsFactors = FALSE)
+filtered_fitness_calculations <- subset(fitness_calculations, individual == "nn/nnnn/nn" & gen_check == 2)
+
+
 fitness_calculations <- structure(list(individual = c("nnn/nn/nn/nn", "nnn/n/nn", "nnn/nn/nn/nn"), 
                                         gen_check = c(2L, 2L, 2L), 
                                         acc = c(0.9889, 0.7845, 0.564), 
