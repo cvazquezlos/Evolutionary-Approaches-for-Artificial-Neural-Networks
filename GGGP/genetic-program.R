@@ -11,12 +11,17 @@ library("stringr")
 classification_type <- 1 # -1: Regression, 0: Single-label classification, 1: Multi-label classification
 data <- NULL
 epochs <- 1000
-fitness_calculations <- data.frame("individual", "n_times_used", "acc", "loss", "saved_model")
+fitness_calculations <- data.frame(individual = character(), 
+                                   n_times_used = integer(), 
+                                   acc = double(), 
+                                   loss = double(), 
+                                   saved_model = character(),
+                                   stringsAsFactors = FALSE)
 gen_no <- 1
 gen_pop_err <- list()
 gen_evolution <- NULL
 I <- NULL
-j <- 30 # Update it in each execution
+j <- 1 # Update it in each execution as: last execution + 1
 k <- 0
 input <- NULL
 mode <- 0
@@ -48,7 +53,7 @@ sol_plot_data <- NULL
 exec_time <- NULL
 
 # ----------------------------------------------------------------------------------------------------------------- #
-# ----------------------------------------------- AUXILIARY METHODS ----------------------------------------------- #
+# ---------------------------------------------- AUXILIARY FUNCTIONS ---------------------------------------------- #
 # ----------------------------------------------------------------------------------------------------------------- #
 data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
@@ -95,6 +100,11 @@ extract_neurons <- function(word) {
 }
 
 evaluation <- function(word) {
+  if (!isAssessable(word)) {
+    fitness_calculations <- within(fitness_calculations, n_times_used[individual == word & n_times_used == (gen_no - 1)] <- gen_no)
+    # df[1,] - first row and all columns
+    return(fitness_calculations)
+  }
   k <<- k + 1
   if (k > 10) {
     k_clear_session()
@@ -144,6 +154,11 @@ evaluation <- function(word) {
     sol_model_name <<- model_name
     return(score['loss'][[1]])
   }
+}
+
+isAssessable <- function(word) {
+  filtered_fitness_calculations <- subset(fitness_calculations, individual == word & n_times_used == (gen_no - 1))
+  return(if(nrow(filtered_fitness_calculations) == 0) TRUE else FALSE)
 }
 
 monitor <- function(results){
