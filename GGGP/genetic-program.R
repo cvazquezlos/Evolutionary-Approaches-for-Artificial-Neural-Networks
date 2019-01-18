@@ -81,26 +81,23 @@ extract_neurons <- function(word, mode) {
   if (mode == 0) {
     return(hidden_l)
   } else {
-    return(paste0(linear_mode, strrep("n", O)))
+    return(paste0(linear_mode, '/', strrep("n", O)))
   }
 }
 
 evaluation <- function(word) {
-  hidden_layers <- extract_neurons(word, 0)
-  word <- extract_neurons(word, 1)
-  if (!isAssessable(word)) {
-    i1 <- with(fitness_calculations, individual == hidden_layers & gen_check == (gen_no -1))
+  h <- extract_neurons(word, 0)
+  w <- extract_neurons(word, 1)
+  if (!isAssessable(w)) {
+    i1 <- with(fitness_calculations, individual == w & gen_check == (gen_no -1))
     i2 <- !duplicated(i1) & i1
     fitness_calculations$gen_check[i2] <- gen_no
     return(fitness_calculations$loss[i2])
   }
   # Cleaning up the TensorFlow graph.
-  k <<- k + 1
-  if(k > 5) {k_clear_session()
-    k <<- 0} else k <<- k + 1
   model <- keras_model_sequential()
-  model %>% layer_dense(units = hidden_layers[1], input_shape = c(I), activation = 'relu')
-  for (layer in tail(hidden_layers, 1)) {
+  model %>% layer_dense(units = h[1], input_shape = c(I), activation = 'relu')
+  for (layer in tail(h, 1)) {
     model %>% layer_dense(units = layer, activation = 'relu')
   }
   if (classification_type == -1) {
@@ -121,10 +118,10 @@ evaluation <- function(word) {
   history <- model %>% fit(X_train, y_train, epochs = epochs, verbose = 0, callbacks = list(
     callback_early_stopping()
   ))
-  model_name <- paste0('gp_models/', j, '/', gen_no, '/', gsub("\"", "", gsub("/", "_", word)), '.h5')
+  model_name <- paste0('gp_models/', j, '/', gen_no, '/', gsub("\"", "", gsub("/", "_", w)), '.h5')
   save_model_hdf5(model, model_name)
   score <- model %>% evaluate(X_validation, y_validation)
-  fitness_calculations[nrow(fitness_calculations) + 1,] <<- c(word, gen_no, score['acc'][[1]], score['loss'][[1]], 
+  fitness_calculations[nrow(fitness_calculations) + 1,] <<- c(w, gen_no, score['acc'][[1]], score['loss'][[1]], 
                                                              model_name, toString(toJSON(as.data.frame(history))))
   gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
   return(score['loss'][[1]])
@@ -200,7 +197,6 @@ for (i in c(1:2)) {
   results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, sol_nn_architecture, sol_model_name,
                                    sol_plot_data, exec_time)
   fitness_calculations <- fitness_calculations[0,]
-  k_clear_session()
   k <- 0
 }
 write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
