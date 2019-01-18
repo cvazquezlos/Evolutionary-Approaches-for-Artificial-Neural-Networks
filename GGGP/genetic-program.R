@@ -5,9 +5,13 @@ library("keras")
 library("neuralnet")
 library("stringr")
 
+# ----------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------- ALGORITHM VARIABLES ---------------------------------------------- #
+# ----------------------------------------------------------------------------------------------------------------- #
 classification_type <- 1 # -1: Regression, 0: Single-label classification, 1: Multi-label classification
-epochs <- 1000
 data <- NULL
+epochs <- 1000
+fitness_calculations <- data.frame("individual", "n_times_used", "acc", "loss", "saved_model")
 gen_no <- 1
 gen_pop_err <- list()
 gen_evolution <- NULL
@@ -25,7 +29,9 @@ y_validation <- NULL
 X_test <- NULL       # 10%
 y_test <- NULL
 
-# Data to save
+# ----------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------- DATA TO SAVE -------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------------------------- #
 # 1. GP population evolution.
 gp_plot_data <- NULL
 # 2. Accuracy of each final solution: train, validation and test.
@@ -41,6 +47,9 @@ sol_plot_data <- NULL
 # 6. Execution time.
 exec_time <- NULL
 
+# ----------------------------------------------------------------------------------------------------------------- #
+# ----------------------------------------------- AUXILIARY METHODS ----------------------------------------------- #
+# ----------------------------------------------------------------------------------------------------------------- #
 data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
   n <- nrow(data)
@@ -147,10 +156,13 @@ monitor <- function(results){
   gen_no <<- gen_no + 1
 }
 
+# ----------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------ MAIN ALGORITHM ------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------------------------- #
 grammar <- list(
   S = gsrule("<a><h>/<z>"),
-  a = grule(replicate(I, "n")),
-  z = grule(replicate(O, "n")),
+  a = grule(strrep(I, "n")),
+  z = grule(strrep(O, "n")),
   h = gsrule("<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
@@ -170,7 +182,7 @@ for (i in c(1:1)) {
   mode <- 0
   gen_evolution <- list()
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 3, mutationChance = 0.05, monitorFunc = monitor, iterations = 1)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 15, newPerGen = 3, elitism = 3, mutationChance = 0.05, monitorFunc = monitor, iterations = 1)
   end_time <- Sys.time()
   mode <- 1
   hidden_layers_optimal_word <- extract_neurons(optimal_word)
