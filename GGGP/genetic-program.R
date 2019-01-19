@@ -154,8 +154,7 @@ grammar <- list(
 k_clear_session()
 grammarDef <- CreateGrammar(grammar)
 data_cleaning("../datasets/classification/iris.csv", ",")
-results <- data.frame(gp_plot_data = character(),
-                      sol_train_accuracy = double(),
+results <- data.frame(sol_train_accuracy = double(),
                       sol_validation_accuracy = double(),
                       sol_test_accuracy = double(),
                       sol_nn_architecture = character(),
@@ -169,7 +168,7 @@ for (i in c(1:1)) {
   gen_no <- 1
   dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 15, newPerGen = 3, elitism = 5, mutationChance = 0.05, 
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 15, elitism = 5, mutationChance = 0.05, 
                                        monitorFunc = monitor, iterations = 20)
   optimal_word_l <- extract_neurons(optimal_word, 0)
   optimal_word_w <- extract_neurons(optimal_word, 1)
