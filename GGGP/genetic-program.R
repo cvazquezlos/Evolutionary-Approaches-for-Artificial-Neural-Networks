@@ -14,8 +14,6 @@ epochs <- 750
 fitness_calculations <- data.frame(individual = character(), gen_check = integer(), acc = double(), loss = double(), 
                                    saved_model = character(), history = character(), stringsAsFactors = FALSE)
 gen_no <- 1
-gen_pop_err <- list()
-gen_evolution <- NULL
 I <- NULL
 j <- 1 # Update it in each execution as: last execution + 1
 k <- 0
@@ -126,7 +124,6 @@ evaluation <- function(word) {
   score <- model %>% evaluate(X_validation, y_validation)
   fitness_calculations[nrow(fitness_calculations) + 1,] <<- c(w, gen_no, score['acc'][[1]], score['loss'][[1]], 
                                                              model_name, gsub(" ", "", toString(toJSON(as.data.frame(history)))))
-  gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
   return(double(score['loss'][[1]]))
 }
 
@@ -137,15 +134,8 @@ isAssessable <- function(word) {
 
 monitor <- function(results){
   k_clear_session()
-  pop_train <- Reduce("+", gen_pop_err) / length(gen_pop_err)
-  best_train <-  (results$best$expressions[[1]])
-  arch <- extract_neurons(toString(deparse(expr = best_train)), 1)
-  ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc),]
-  best_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == arch,], 1)
-  gen_evolution <<- c(gen_evolution, toString(toJSON(data.frame(gen_no, pop_train, best_individual$acc))))
   cat("--------------------\n")
   print(results)
-  gen_pop_err <<- list()
   gen_no <<- gen_no + 1
   dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
 }
@@ -174,17 +164,16 @@ results <- data.frame(gp_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
 
-for (i in c(1:10)) {
+for (i in c(1:1)) {
   dir.create(paste0("gp_models/", j), showWarnings = FALSE)
-  gen_evolution <- list()
   gen_no <- 1
   dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 7, mutationChance = 0.05, monitorFunc = monitor, iterations = 20)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 15, newPerGen = 3, elitism = 5, mutationChance = 0.05, 
+                                       monitorFunc = monitor, iterations = 20)
   optimal_word_l <- extract_neurons(optimal_word, 0)
   optimal_word_w <- extract_neurons(optimal_word, 1)
   end_time <- Sys.time()
-  gp_plot_data <- toString(toJSON(gen_evolution))
   ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc),]
   optimal_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == optimal_word_w,], 1)
   model <- load_model_hdf5(optimal_individual$saved_model)
@@ -201,7 +190,7 @@ for (i in c(1:10)) {
   sol_plot_data <- optimal_individual$history
   exec_time <- as.double(toString(end_time - start_time))
   j <- j + 1
-  results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, 
+  results[nrow(results) + 1,] <- c(sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, 
                                    sol_nn_architecture, sol_model_name, sol_plot_data, exec_time)
   write.csv(fitness_calculations, file = paste0(i, ".csv"))
   fitness_calculations <- fitness_calculations[0,]
