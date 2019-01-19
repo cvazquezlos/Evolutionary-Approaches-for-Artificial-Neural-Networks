@@ -79,6 +79,7 @@ extract_neurons <- function(word, mode) {
     i <- i+1
   }
   if (mode == 0) {
+    print(hidden_l)
     return(hidden_l)
   } else {
     return(paste0(linear_mode, '/', strrep("n", O)))
@@ -86,13 +87,17 @@ extract_neurons <- function(word, mode) {
 }
 
 evaluation <- function(word) {
+  #if (typeof(word) == "language") {
+  #  return(1.00)
+  #}
   h <- extract_neurons(word, 0)
   w <- extract_neurons(word, 1)
   if (!isAssessable(w)) {
     i1 <- with(fitness_calculations, individual == w & gen_check == (gen_no -1))
     i2 <- !duplicated(i1) & i1
     fitness_calculations$gen_check[i2] <- gen_no
-    return(fitness_calculations$loss[i2])
+    print(paste0("Val: ", fitness_calculations$loss[i2]))
+    return(double(fitness_calculations$loss[i2]))
   }
   # Cleaning up the TensorFlow graph.
   model <- keras_model_sequential()
@@ -122,9 +127,10 @@ evaluation <- function(word) {
   save_model_hdf5(model, model_name)
   score <- model %>% evaluate(X_validation, y_validation)
   fitness_calculations[nrow(fitness_calculations) + 1,] <<- c(w, gen_no, score['acc'][[1]], score['loss'][[1]], 
-                                                             model_name, toString(toJSON(as.data.frame(history))))
+                                                             model_name, gsub(" ", "", toString(toJSON(as.data.frame(history)))))
   gen_pop_err <<- c(gen_pop_err, score['loss'][[1]])
-  return(score['loss'][[1]])
+  return(double(score['loss'][[1]]))
+  print(paste0("Val1: ", score['loss'][[1]]))
 }
 
 isAssessable <- function(word) {
@@ -133,6 +139,7 @@ isAssessable <- function(word) {
 }
 
 monitor <- function(results){
+  k_clear_session()
   pop_train <- Reduce("+", gen_pop_err) / length(gen_pop_err)
   best_train <- evaluation(results$best$expressions[[1]])
   gen_evolution <<- c(gen_evolution, toString(toJSON(data.frame(gen_no, pop_train, best_train))))
@@ -153,6 +160,7 @@ grammar <- list(
   h = gsrule("<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
+
 k_clear_session()
 grammarDef <- CreateGrammar(grammar)
 data_cleaning("../datasets/classification/iris.csv", ",")
@@ -165,22 +173,21 @@ results <- data.frame(gp_plot_data = character(),
                       sol_plot_data = character(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
-for (i in c(1:2)) {
+
+for (i in c(1:10)) {
   dir.create(paste0("gp_models/", j), showWarnings = FALSE)
   gen_evolution <- list()
   gen_no <- 1
   dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 5, newPerGen = 0, elitism = 3, mutationChance = 0.05, 
-                                       monitorFunc = monitor, iterations = 1)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 7, mutationChance = 0.05, monitorFunc = monitor, iterations = 20)
   optimal_word_layers <- extract_neurons(optimal_word, 0)
   optimal_word <- extract_neurons(optimal_word, 1)
   end_time <- Sys.time()
   gp_plot_data <- toString(toJSON(gen_evolution))
   ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc),]
   optimal_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == optimal_word,], 1)
-  model <- keras_model_sequential()
-  model %>% load_model_hdf5(optimal_individual$saved_model)
+  model <- load_model_hdf5(optimal_individual$saved_model)
   score <- model %>% evaluate(X_train, y_train)
   sol_train_accuracy <- score['acc'][[1]]
   score <- model %>% evaluate(X_validation, y_validation)
@@ -194,10 +201,12 @@ for (i in c(1:2)) {
   sol_plot_data <- optimal_individual$history
   exec_time <- as.double(toString(end_time - start_time))
   j <- j + 1
-  results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, sol_nn_architecture, sol_model_name,
-                                   sol_plot_data, exec_time)
+  results[nrow(results) + 1,] <- c(gp_plot_data, sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, 
+                                   sol_nn_architecture, sol_model_name, sol_plot_data, exec_time)
+  write.csv(fitness_calculations, file = paste0(i, ".csv"))
   fitness_calculations <- fitness_calculations[0,]
   k <- 0
 }
+
 write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
 #write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
