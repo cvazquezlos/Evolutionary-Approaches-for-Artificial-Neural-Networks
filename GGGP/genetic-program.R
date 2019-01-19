@@ -10,7 +10,7 @@ library("stringr")
 # ----------------------------------------------------------------------------------------------------------------- #
 classification_type <- 1 # -1: Regression, 0: Single-label classification, 1: Multi-label classification
 data <- NULL
-epochs <- 750
+epochs <- 500
 fitness_calculations <- data.frame(individual = character(), gen_check = integer(), acc = double(), loss = double(), 
                                    saved_model = character(), history = character(), stringsAsFactors = FALSE)
 gen_no <- 1
