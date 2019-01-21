@@ -163,7 +163,7 @@ results <- data.frame(sol_train_accuracy = double(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
 
-for (i in c(1:1)) {
+for (i in c(1:2)) {
   dir.create(paste0("gp_models/", j), showWarnings = FALSE)
   gen_no <- 1
   dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
@@ -173,7 +173,7 @@ for (i in c(1:1)) {
   optimal_word_l <- extract_neurons(optimal_word, 0)
   optimal_word_w <- extract_neurons(optimal_word, 1)
   end_time <- Sys.time()
-  ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc),]
+  ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc, decreasing = TRUE),]
   optimal_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == optimal_word_w,], 1)
   model <- load_model_hdf5(optimal_individual$saved_model)
   score <- model %>% evaluate(X_train, y_train)
@@ -191,7 +191,6 @@ for (i in c(1:1)) {
   j <- j + 1
   results[nrow(results) + 1,] <- c(sol_train_accuracy, sol_validation_accuracy, sol_test_accuracy, 
                                    sol_nn_architecture, sol_model_name, sol_plot_data, exec_time)
-  write.csv(fitness_calculations, file = paste0(i, ".csv"))
   fitness_calculations <- fitness_calculations[0,]
   k <- 0
 }
