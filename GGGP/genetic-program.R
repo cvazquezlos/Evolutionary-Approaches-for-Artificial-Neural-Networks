@@ -163,24 +163,28 @@ results <- data.frame(sol_train_accuracy = double(),
                       exec_time = double(),
                       stringsAsFactors = FALSE)
 
-for (i in c(1:2)) {
+for (i in c(1:20)) {
   dir.create(paste0("gp_models/", j), showWarnings = FALSE)
   gen_no <- 1
   dir.create(paste0("gp_models/", j, "/", gen_no), showWarnings = FALSE)
   start_time <- Sys.time()
-  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 15, elitism = 5, mutationChance = 0.05, 
-                                       monitorFunc = monitor, iterations = 20)
+  optimal_word <- GrammaticalEvolution(grammarDef, evaluation, popSize = 20, elitism = 5, mutationChance = 0.05, 
+                                       monitorFunc = monitor, iterations = 20, terminationCost = 0)
   optimal_word_l <- extract_neurons(optimal_word, 0)
   optimal_word_w <- extract_neurons(optimal_word, 1)
   end_time <- Sys.time()
   ordered_fitness_calculations <- fitness_calculations[order(fitness_calculations$acc, decreasing = TRUE),]
   optimal_individual <- head(ordered_fitness_calculations[ordered_fitness_calculations$individual == optimal_word_w,], 1)
+  print(paste0("Base accuracy: ", optimal_individual$acc))
   model <- load_model_hdf5(optimal_individual$saved_model)
   score <- model %>% evaluate(X_train, y_train)
+  print(paste0("Train accuracy: ", optimal_individual$acc))
   sol_train_accuracy <- score['acc'][[1]]
   score <- model %>% evaluate(X_validation, y_validation)
+  print(paste0("Valid. accuracy: ", optimal_individual$acc))
   sol_validation_accuracy <- score['acc'][[1]]
   score <- model %>% evaluate(X_test, y_test)
+  print(paste0("Test accuracy: ", optimal_individual$acc))
   sol_test_accuracy <- score['acc'][[1]]
   sol_nn_architecture <- paste(I, paste0(optimal_word_l, collapse = ":"), O, sep = ":")
   model_name <- paste0('../results/models/iris_model_', j, '.h5')
@@ -195,5 +199,5 @@ for (i in c(1:2)) {
   k <- 0
 }
 
-write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
-#write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
+#write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
+write.table(results, "../results/iris.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
