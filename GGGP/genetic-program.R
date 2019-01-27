@@ -8,14 +8,14 @@ library("stringr")
 # ----------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------- ALGORITHM VARIABLES ---------------------------------------------- #
 # ----------------------------------------------------------------------------------------------------------------- #
-classification_type <- 1 # -1: Regression, 0: Single-label classification, 1: Multi-label classification
+classification_type <- -1 # -1: Regression, 0: Single-label classification, 1: Multi-label classification
 data <- NULL
 epochs <- 500
 fitness_calculations <- data.frame(individual = character(), gen_check = integer(), acc = double(), loss = double(), 
                                    saved_model = character(), history = character(), stringsAsFactors = FALSE)
 gen_no <- 1
 I <- NULL
-j <- 64 # Update it in each execution as: last execution + 1
+j <- 1 # Update it in each execution as: last execution + 1
 k <- 0
 input <- NULL
 mode <- 0
@@ -52,12 +52,12 @@ data_cleaning <- function(url, sep) {
   train <- shuffled_df[1: round(0.7*n),]
   validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
   test <- shuffled_df[(round(0.9*n)+1):n,]
-  X_train <<- train[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-  y_train <<- train[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
-  X_validation <<- validation[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-  y_validation <<- validation[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
-  X_test <<- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-  y_test <<- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
+  X_train <<- train[,head(colnames(shuffled_df), -1)] %>% as.matrix()
+  y_train <<- train[,tail(colnames(shuffled_df), 1)] %>% as.matrix()
+  X_validation <<- validation[,head(colnames(shuffled_df), -1)] %>% as.matrix()
+  y_validation <<- validation[,tail(colnames(shuffled_df), 1)] %>% as.matrix()
+  X_test <<- test[,head(colnames(shuffled_df), -1)] %>% as.matrix()
+  y_test <<- test[,tail(colnames(shuffled_df), 1)] %>% as.matrix()
   I <<- length(colnames(X_train))
   input <<- paste(colnames(X_train), collapse="+")
   O <<- length(colnames(y_train))
@@ -116,8 +116,8 @@ evaluation <- function(word) {
       metrics = c('accuracy')
     )
   }
-  history <- model %>% fit(X_train, y_train, epochs = epochs, verbose = 0, callbacks = list(
-    callback_early_stopping()
+  history <- model %>% fit(c(X_train, X_validation), c(y_train, y_validation), validation_split = 0.235294, epochs = epochs, verbose = 0, callbacks = list(
+    callback_early_stopping(monitor = 'val_loss', min_delta = 0, patience = 3, verbose = 1, mode = 'auto')
   ))
   model_name <- paste0('gp_models/', j, '/', gen_no, '/', gsub("\"", "", gsub("/", "_", w)), '.h5')
   save_model_hdf5(model, model_name)
@@ -153,7 +153,7 @@ grammar <- list(
 
 k_clear_session()
 grammarDef <- CreateGrammar(grammar)
-data_cleaning("../datasets/classification/iris.csv", ",")
+data_cleaning("../datasets/regression/rating-cereals.csv", ",")
 results <- data.frame(sol_train_accuracy = double(),
                       sol_validation_accuracy = double(),
                       sol_test_accuracy = double(),
