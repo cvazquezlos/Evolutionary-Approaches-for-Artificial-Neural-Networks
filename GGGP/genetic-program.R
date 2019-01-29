@@ -20,7 +20,6 @@ k <- 0
 input <- NULL
 mode <- 0
 O <- NULL
-output <- NULL
 X_train <- NULL      # 70%
 y_train <- NULL
 X_validation <- NULL # 20%
@@ -31,6 +30,7 @@ y_test <- NULL
 # ----------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------- AUXILIARY FUNCTIONS ---------------------------------------------- #
 # ----------------------------------------------------------------------------------------------------------------- #
+c <- NULL
 data_cleaning <- function(url, sep) {
   data <<- read.csv(url, header=T, sep=sep)
   n <- nrow(data)
@@ -49,19 +49,22 @@ data_cleaning <- function(url, sep) {
     shuffled_df <- as.data.frame(data[sample(n),])
   }
   colnames(shuffled_df) <- gsub("[^a-zA-Z]*", "", colnames(shuffled_df))
+  c <<- colnames(shuffled_df)
   train <- shuffled_df[1: round(0.7*n),]
   validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
   test <- shuffled_df[(round(0.9*n)+1):n,]
   X_train <<- train[,head(colnames(shuffled_df), -1)] %>% as.matrix()
   y_train <<- train[,tail(colnames(shuffled_df), 1)] %>% as.matrix()
+  colnames(y_train) <<- c("rating")
   X_validation <<- validation[,head(colnames(shuffled_df), -1)] %>% as.matrix()
   y_validation <<- validation[,tail(colnames(shuffled_df), 1)] %>% as.matrix()
+  colnames(y_validation) <<- c("rating")
   X_test <<- test[,head(colnames(shuffled_df), -1)] %>% as.matrix()
   y_test <<- test[,tail(colnames(shuffled_df), 1)] %>% as.matrix()
+  colnames(y_test) <<- c("rating")
   I <<- length(colnames(X_train))
   input <<- paste(colnames(X_train), collapse="+")
   O <<- length(colnames(y_train))
-  output <<- paste(colnames(y_train), collapse="+")
 }
 
 extract_neurons <- function(word, mode) {
@@ -102,11 +105,11 @@ evaluation <- function(word) {
     model %>% layer_dense(units = layer, activation = 'relu')
   }
   if (classification_type == -1) {
-    model %>% layer_dense(units = O, activation = 'linear')
+    model %>% layer_dense(units = O)
     model %>% compile(
       optimizer = 'adam',
       loss = 'mse',
-      metrics = c('accuracy')
+      metrics = c('mae', 'mape', 'cosine')
     )
   } else {
     model %>% layer_dense(units = O, activation = 'softmax')
@@ -116,7 +119,7 @@ evaluation <- function(word) {
       metrics = c('accuracy')
     )
   }
-  history <- model %>% fit(c(X_train, X_validation), c(y_train, y_validation), validation_split = 0.235294, epochs = epochs, verbose = 0, callbacks = list(
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = epochs, verbose = 0, callbacks = list(
     callback_early_stopping(monitor = 'val_loss', min_delta = 0, patience = 3, verbose = 1, mode = 'auto')
   ))
   model_name <- paste0('gp_models/', j, '/', gen_no, '/', gsub("\"", "", gsub("/", "_", w)), '.h5')
@@ -183,7 +186,7 @@ for (i in c(1:5)) {
   score <- model %>% evaluate(X_test, y_test)
   sol_test_accuracy <- score['acc'][[1]]
   sol_nn_architecture <- paste(I, paste0(optimal_word_l, collapse = ":"), O, sep = ":")
-  model_name <- paste0('../results/models/irisss_model_', j, '.h5')
+  model_name <- paste0('../results/models/rating-cereals_model_', j, '.h5')
   save_model_hdf5(model, model_name)
   sol_model_name <- model_name
   sol_plot_data <- optimal_individual$history
@@ -195,5 +198,5 @@ for (i in c(1:5)) {
   fitness_calculations <- fitness_calculations[0,]
 }
 
-#write.table(results, file = "../results/iris.csv", sep = ";", row.names = FALSE) # Empty CSV.
-write.table(results, "../results/irisss.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
+write.table(results, file = "../results/rating-cereals.csv", sep = ";", row.names = FALSE) # Empty CSV.
+#write.table(results, "../results/rating-cereals.csv", sep = ";", col.names = F, append = T, row.names = FALSE) # Concat CSV.
