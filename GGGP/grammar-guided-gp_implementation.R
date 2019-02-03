@@ -1,10 +1,11 @@
 library("dummies")
+library("ggplot2")
 library("gramEvol")
 library("jsonlite")
 library("keras")
 library("neuralnet")
+library("sqldf")
 library("stringr")
-library("ggplot2")
 #install_keras(tensorflow = "gpu")
 
 # Grammar definition
@@ -24,19 +25,24 @@ generation <- function(n) {
   population <- GrammarRandomExpression(CreateGrammar(GRAMMAR), n)
   i <- 1
   for (individual in population) {
-    population[[i]] <- list(id = id, architecture = gsub("\"", "", toString(individual)), evaluated = FALSE,
-                            loss = NULL, metric = NULL, saved_model = NULL)
+    population[[i]] <- list(id = id, architecture = gsub("\"", "", toString(individual)), evaluated = FALSE, loss = NA, metric = NA, 
+                            saved_model = NA)
     i <- i + 1
     id <<- id + 1
   }
   return(as.data.frame(do.call(rbind, population)))
 }
 
-evaluation <- function(individual, mode) {
+evaluation <- function(individual, split_crit, mode) {
   # Neurons extraction
   hidden_layers <- numeric(0)
   i <- 0
-  for (layer in head(strsplit(individual$architecture[[1]], "/")[[1]], -1)) {
+  if (split_crit == 0) {
+    splitting <- head(strsplit(individual$architecture[[1]], "/")[[1]], -1)
+  } else {
+    splitting <- head(strsplit(toString(individual$architecture), "/")[[1]], -1)
+  }
+  for (layer in splitting) {
     if (i != 0) {
       hidden_layers[i] <- nchar(layer)
     }
@@ -58,7 +64,8 @@ evaluation <- function(individual, mode) {
   } else {
     # TODO: Regression NN output layer.
   }
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 1000, verbose = 0, callbacks = list(
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 1000, 
+                           verbose = 0, callbacks = list(
     callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 100, verbose = 1, mode = "auto")
   ))
   plot(history)
@@ -73,7 +80,6 @@ evaluation <- function(individual, mode) {
   return(individual)
 }
 
-# Tournament selection
 selection <- function(no_childs) {
   no_parents <- no_childs
   matting_pool <- data.frame()
@@ -86,21 +92,30 @@ selection <- function(no_childs) {
 }
 
 crossover <- function(parents) {
-  p1_parts <- strsplit(parents$architecture[[1]], split = "/")
-  s_p1_parts <- tail(head(p1_parts[[1]], -1), -1)
+  s_p1_parts <- extract_hidden_layers(parents$architecture[[1]])
+  s_p2_parts <- extract_hidden_layers(parents$architecture[[2]])
   random_s_p1 <- sample(s_p1_parts, 1)
-  p2_parts <- strsplit(parents$architecture[[2]], split = "/")
-  s_p2_parts <- tail(head(p2_parts[[1]], -1), -1)
   random_s_p2 <- sample(s_p2_parts, 1)
-  p1_parts <- lapply(s_p1_parts, function(x)if(x==random_s_p1)random_s_p2)
-  p2_parts <- lapply(s_p2_parts, function(x)if(x==random_s_p2)random_s_p1)
-  children <- NULL
-  for (k in c(1:2)) {
-    children[k] <- list(id = id, architecture = add_static_layers(p1_parts), evaluated = FALSE,
-                        loss = NULL, metric = NULL, saved_model = NULL)
-    id <<- id + 1
-  }
-  return(children)
+  s_p1_parts <- lapply(s_p1_parts, function(x) {if(x==random_s_p1) {random_s_p2} else {x}})
+  s_p2_parts <- lapply(s_p2_parts, function(x) {if(x==random_s_p2) {random_s_p1} else {x}})
+  df <- data.frame(id = integer(),
+                   architecture = character(),
+                   evaluated = logical(),
+                   loss = double(),
+                   metric = double(),
+                   saved_model = character(),
+                   stringsAsFactors = FALSE)
+  df <- rbind(df, data.frame(id = id, architecture = toString(add_inout_layers(s_p1_parts)), evaluated = FALSE, loss = NA, metric = NA, saved_model = NA))
+  id <<- id + 1
+  df <- rbind(df, data.frame(id = id, architecture = toString(add_inout_layers(s_p2_parts)), evaluated = FALSE, loss = NA, metric = NA, saved_model = NA))
+  id <<- id + 1
+  return(df)
+}
+
+replacement <- function(children) {
+  max_population <- rbind(population, children)
+  ordered_max_population <- max_population[order(unlist(max_population$loss)),]
+  return(ordered_max_population[c(1:50),])
 }
 
 ######################################################### AUXILIARY FUNCTIONS #########################################################
@@ -109,10 +124,13 @@ add_inout_layers <- function(hidden) {
 }
 
 extract_hidden_layers <- function(architecture) {
-  return(strsplit(architecture, split = "/"))
+  split <- strsplit(architecture, split = "/")
+  return(tail(head(split[[1]], -1), -1))
 }
 
-# MAIN ALGORITHM
+#######################################################################################################################################
+########################################################### MAIN ALGORITHM ############################################################
+#######################################################################################################################################
 data <- read.csv("../datasets/classification/iris.csv", header = T, sep = ",")
 n <- nrow(data)
 aux <- dummy.data.frame(data, names = c("class"), sep = "")
@@ -137,14 +155,64 @@ O <- length(colnames(y_train))
 # Population creation
 population <- generation(50)
 for (individual in 1:nrow(population)) {
-  population[individual,] = evaluation(population[individual,], 0)
+  population[individual,] = evaluation(population[individual,], 0, 0)
 }
 #save.image("01022019 - Population creation.RData")
-load("01022019 - Population creation.RData")
+#load("01022019 - Population creation.RData")
 # First generation
+#save.image("02022019 - Changes over operators.RData")
+#load("02022019 - Changes over operators.RData")
+# Selection process
 matting_pool <- selection(10)
-children <- data.frame()
+# Crossover process
+children <- data.frame(id = integer(),
+                       architecture = character(),
+                       evaluated = logical(),
+                       loss = numeric(),
+                       metric = numeric(),
+                       saved_model = character(),
+                       stringsAsFactors = FALSE)
 for (i in c(1:(nrow(matting_pool)/2))) {
   j <- (i*2)-1
   children <- rbind(children, crossover(matting_pool[c(j:(j+1)),]))
+}
+# Children training process
+for (individual in 1:nrow(children)) {
+  children[individual,] = evaluation(children[individual,], 1, 0)
+}
+# Elitist selection
+population <- replacement(children)
+population <- population[order(unlist(population$id)),]
+#save.image("03022019 - Required functions implemented.RData")
+load("03022019 - Required functions implemented.RData")
+i <- 0
+while (T) {
+  results <- sqldf("select * from population where loss <= 0.02 AND metric = 1 order by id")
+  if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
+    solution <- results[1,]
+    break
+  } else if (iteration == 50) {
+    results <- population[order(unlist(population$loss, -population$metric)),]
+    solution <- results[1,]
+    break
+  } else {
+    i <- i + 1
+    matting_pool <- selection(10)
+    children <- data.frame(id = integer(),
+                           architecture = character(),
+                           evaluated = logical(),
+                           loss = numeric(),
+                           metric = numeric(),
+                           saved_model = character(),
+                           stringsAsFactors = FALSE)
+    for (i in c(1:(nrow(matting_pool)/2))) {
+      j <- (i*2)-1
+      children <- rbind(children, crossover(matting_pool[c(j:(j+1)),]))
+    }
+    for (individual in 1:nrow(children)) {
+      children[individual,] = evaluation(children[individual,], 1, 0)
+    }
+    population <- replacement(children)
+    population <- population[order(unlist(population$id)),]
+  }
 }
