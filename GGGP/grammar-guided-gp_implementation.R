@@ -20,7 +20,7 @@ I <- 4
 id <- 0
 O <- 3
 
-######################################################## EVOLUTIONARY OPERATORS ########################################################
+############################################################# EVOLUTIONARY  OPERATORS #############################################################
 generation <- function(n) {
   population <- GrammarRandomExpression(CreateGrammar(GRAMMAR), n)
   i <- 1
@@ -118,7 +118,7 @@ replacement <- function(children) {
   return(ordered_max_population[c(1:50),])
 }
 
-######################################################### AUXILIARY FUNCTIONS #########################################################
+############################################################### AUXILIARY FUNCTIONS ###############################################################
 add_inout_layers <- function(hidden) {
   return(paste(strrep("n", I), "/", paste0(hidden, collapse = "/"), "/", strrep("n", O), sep = ""))
 }
@@ -128,9 +128,9 @@ extract_hidden_layers <- function(architecture) {
   return(tail(head(split[[1]], -1), -1))
 }
 
-#######################################################################################################################################
-########################################################### MAIN ALGORITHM ############################################################
-#######################################################################################################################################
+###################################################################################################################################################
+################################################################# MAIN  ALGORITHM #################################################################
+###################################################################################################################################################
 data <- read.csv("../datasets/classification/iris.csv", header = T, sep = ",")
 n <- nrow(data)
 aux <- dummy.data.frame(data, names = c("class"), sep = "")
@@ -152,41 +152,15 @@ y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-# Population creation
+# Generation
 population <- generation(50)
+# Evaluation
 for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
 }
-#save.image("01022019 - Population creation.RData")
-#load("01022019 - Population creation.RData")
-# First generation
-#save.image("02022019 - Changes over operators.RData")
-#load("02022019 - Changes over operators.RData")
-# Selection process
-matting_pool <- selection(10)
-# Crossover process
-children <- data.frame(id = integer(),
-                       architecture = character(),
-                       evaluated = logical(),
-                       loss = numeric(),
-                       metric = numeric(),
-                       saved_model = character(),
-                       stringsAsFactors = FALSE)
-for (i in c(1:(nrow(matting_pool)/2))) {
-  j <- (i*2)-1
-  children <- rbind(children, crossover(matting_pool[c(j:(j+1)),]))
-}
-# Children training process
-for (individual in 1:nrow(children)) {
-  children[individual,] = evaluation(children[individual,], 1, 0)
-}
-# Elitist selection
-population <- replacement(children)
-population <- population[order(unlist(population$id)),]
-#save.image("03022019 - Required functions implemented.RData")
-load("03022019 - Required functions implemented.RData")
 i <- 0
 while (T) {
+  # Stop condition
   results <- sqldf("select * from population where loss <= 0.02 AND metric = 1 order by id")
   if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
     solution <- results[1,]
@@ -197,7 +171,9 @@ while (T) {
     break
   } else {
     i <- i + 1
+    # Selection
     matting_pool <- selection(10)
+    # Crossover
     children <- data.frame(id = integer(),
                            architecture = character(),
                            evaluated = logical(),
@@ -209,9 +185,11 @@ while (T) {
       j <- (i*2)-1
       children <- rbind(children, crossover(matting_pool[c(j:(j+1)),]))
     }
+    # Evaluation
     for (individual in 1:nrow(children)) {
       children[individual,] = evaluation(children[individual,], 1, 0)
     }
+    # Replacement
     population <- replacement(children)
     population <- population[order(unlist(population$id)),]
   }
