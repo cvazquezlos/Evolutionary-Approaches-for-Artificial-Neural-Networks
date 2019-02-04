@@ -152,6 +152,7 @@ y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
+save.image("03022019 - BASE CODE.RData")
 # Generation
 population <- generation(50)
 # Evaluation
@@ -159,9 +160,11 @@ for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
 }
 i <- 0
+save.image("03022019 - GENERATION.RData")
 while (T) {
   # Stop condition
-  results <- sqldf("select * from population where loss <= 0.02 AND metric = 1 order by id")
+  data(population)
+  results <- sqldf("select * from population where loss <= 0.02 AND population.metric = 1 order by id")
   if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
     solution <- results[1,]
     break
