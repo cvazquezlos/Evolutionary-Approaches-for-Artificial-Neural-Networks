@@ -8,7 +8,6 @@ library("sqldf")
 library("stringr")
 #install_keras(tensorflow = "gpu")
 
-# Grammar definition
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -16,21 +15,24 @@ GRAMMAR <- list(
   h = gsrule("<h><h>", "<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
-I <- 4
-id <- 0
-O <- 3
+I <- NA
+id <- 1
+p <- 10
+O <- NA
 
+base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
+                                saved_model = rep(NA, p), stringsAsFactors = FALSE)
 ############################################################# EVOLUTIONARY  OPERATORS #############################################################
 generation <- function(n) {
-  population <- GrammarRandomExpression(CreateGrammar(GRAMMAR), n)
+  architectures <- GrammarRandomExpression(CreateGrammar(GRAMMAR), p)
   i <- 1
-  for (individual in population) {
-    population[[i]] <- list(id = id, architecture = gsub("\"", "", toString(individual)), evaluated = FALSE, loss = NA, metric = NA, 
-                            saved_model = NA)
+  population <- base_architecture
+  for (individual in architectures) {
+    population[i,] <- c(id, toString(gsub("\"", "", toString(individual))), FALSE, NA, NA, NA)
     i <- i + 1
     id <<- id + 1
   }
-  return(as.data.frame(do.call(rbind, population)))
+  return(population)
 }
 
 evaluation <- function(individual, split_crit, mode) {
@@ -154,7 +156,7 @@ O <- length(colnames(y_train))
 
 save.image("03022019 - BASE CODE.RData")
 # Generation
-population <- generation(50)
+population <- generation(p)
 # Evaluation
 for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
@@ -173,7 +175,7 @@ while (T) {
     solution <- results[1,]
     break
   } else {
-    i <- i + 1
+    i <- i+ 1
     # Selection
     matting_pool <- selection(10)
     # Crossover
