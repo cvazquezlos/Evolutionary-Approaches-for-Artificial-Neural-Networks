@@ -22,6 +22,7 @@ O <- NA
 
 base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
                                 saved_model = rep(NA, p), stringsAsFactors = FALSE)
+
 ############################################################# EVOLUTIONARY  OPERATORS #############################################################
 generation <- function(n) {
   architectures <- GrammarRandomExpression(CreateGrammar(GRAMMAR), p)
@@ -85,7 +86,7 @@ evaluation <- function(individual, split_crit, mode) {
 selection <- function(no_childs) {
   no_parents <- no_childs
   matting_pool <- data.frame()
-  for (n in c(1:(no_childs/2))) {
+  for (j in c(1:(no_childs/2))) {
     parents_sample <- population[sample(nrow(population), no_childs/2),]
     ordered_parents_sample <- parents_sample[order(unlist(parents_sample$loss)),]
     matting_pool <- rbind(matting_pool, head(ordered_parents_sample, 2))
@@ -117,7 +118,7 @@ crossover <- function(parents) {
 replacement <- function(children) {
   max_population <- rbind(population, children)
   ordered_max_population <- max_population[order(unlist(max_population$loss)),]
-  return(ordered_max_population[c(1:50),])
+  return(ordered_max_population[c(1:p),])
 }
 
 ############################################################### AUXILIARY FUNCTIONS ###############################################################
@@ -161,12 +162,11 @@ population <- generation(p)
 for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
 }
-i <- 0
 save.image("03022019 - GENERATION.RData")
+iteration <- 0
 while (T) {
   # Stop condition
-  data(population)
-  results <- sqldf("select * from population where loss <= 0.02 AND population.metric = 1 order by id")
+  results <- sqldf("select * from population where loss <= 0.02 AND metric = 1 order by id")
   if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
     solution <- results[1,]
     break
@@ -175,9 +175,9 @@ while (T) {
     solution <- results[1,]
     break
   } else {
-    i <- i+ 1
+    iteration <- iteration + 1
     # Selection
-    matting_pool <- selection(10)
+    matting_pool <- selection(4)
     # Crossover
     children <- data.frame(id = integer(),
                            architecture = character(),
