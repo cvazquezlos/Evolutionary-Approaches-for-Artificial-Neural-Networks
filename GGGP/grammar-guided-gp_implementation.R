@@ -75,7 +75,7 @@ evaluation <- function(individual, split_crit, mode) {
   plot(history)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   ggsave(paste0("data/history/", model_name, ".pdf"))
-  save_model_hdf5(model, paste0("data/model/", model_name, ".h5"))
+  save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
   score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
   individual$loss <- score['loss'][[1]]
@@ -155,15 +155,28 @@ X_test <- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
 y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
-dir.create(paste0("data/", execution), showWarnings = F)
 
+start_time = Sys.time()
+execution_results <- data.frame(execution = integer(),
+                                architecture = character(),
+                                acc_train = numeric(),
+                                acc_validation = numeric(),
+                                acc_test = numeric(),
+                                time = numeric(),
+                                saved_model = character(),
+                                stringsAsFactors = F)
+iteration_results <- data.frame(iteration = integer(),
+                                avg_loss = numeric(),
+                                best_loss = numeric(),
+                                stringsAsFactors = T)
+dir.create(paste0("data/", execution), showWarnings = F)
 # Generation
 population <- generation(p)
 # Evaluation
 for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
 }
-iteration <- 0
+iteration <- 1
 while (T) {
   # Stop condition
   results <- sqldf("select * from population where loss <= 0.01 AND metric = 1 order by id")
@@ -175,7 +188,6 @@ while (T) {
     solution <- results[1,]
     break
   } else {
-    iteration <- iteration + 1
     # Selection
     matting_pool <- selection(4)
     # Crossover
@@ -197,9 +209,31 @@ while (T) {
     # Replacement
     population <- replacement(children)
     population <- population[order(unlist(population$id)),]
+    iteration_results <- rbind(iteration_results, data.frame(iteration = iteration, avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
+                                                             best_loss = population[which.max(population$loss), 4]))
+    iteration <- iteration + 1
   }
 }
-
+model <- load_model_hdf5(solution$saved_model)
+acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
+acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
+acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+end_time = Sys.time()
+plot_iteration_results <- ggplot() +
+  geom_line(data = iteration_results, mapping = aes(x = iteration, y = avg_loss), color = "blue") +
+  geom_line(data = iteration_results, mapping = aes(x = iteration, y = best_loss), color = "red") +
+  xlab("Generation") +
+  xlim(1,50) +
+  ylab("Loss") +
+  ylim(0,1) +
+  scale_x_continuous(breaks = c(1:50))plot(history)
+ggsave(paste0("data/", execution, "/execution/", execution, ".pdf"))
+execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
+                                                         acc_train = acc_train,
+                                                         acc_validation = acc_validation,
+                                                         acc_test = acc_test,
+                                                         time = as.double(toString(end_time - start_time)),
+                                                         saved_model = solution$saved_model))
 # Para cada iteración del programa genético de cada ejecución, almacenar la media de los individuos y al mejor de ellos.
 # Por cada ejecución sacar: histórico de entrenamiento y validación del mejor y de la media de la población. También, el accuracy
 # del mejor individuo en testeo y almacenar la arquitectura, las 80 arquitecturas.
