@@ -8,6 +8,7 @@ library("sqldf")
 library("stringr")
 #install_keras(tensorflow = "gpu")
 
+execution <- 1
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -17,7 +18,7 @@ GRAMMAR <- list(
 )
 I <- NA
 id <- 1
-p <- 10
+p <- 20
 O <- NA
 
 base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
@@ -75,7 +76,7 @@ evaluation <- function(individual, split_crit, mode) {
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   ggsave(paste0("data/history/", model_name, ".pdf"))
   save_model_hdf5(model, paste0("data/model/", model_name, ".h5"))
-  score <- model %>% evaluate(X_validation, y_validation)
+  score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
   individual$loss <- score['loss'][[1]]
   individual$metric <- score['acc'][[1]]
@@ -154,19 +155,18 @@ X_test <- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
 y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
+dir.create(paste0("data/", execution), showWarnings = F)
 
-save.image("03022019 - BASE CODE.RData")
 # Generation
 population <- generation(p)
 # Evaluation
 for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
 }
-save.image("03022019 - GENERATION.RData")
 iteration <- 0
 while (T) {
   # Stop condition
-  results <- sqldf("select * from population where loss <= 0.02 AND metric = 1 order by id")
+  results <- sqldf("select * from population where loss <= 0.01 AND metric = 1 order by id")
   if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
     solution <- results[1,]
     break
@@ -199,3 +199,10 @@ while (T) {
     population <- population[order(unlist(population$id)),]
   }
 }
+
+# Para cada iteración del programa genético de cada ejecución, almacenar la media de los individuos y al mejor de ellos.
+# Por cada ejecución sacar: histórico de entrenamiento y validación del mejor y de la media de la población. También, el accuracy
+# del mejor individuo en testeo y almacenar la arquitectura, las 80 arquitecturas.
+# En cada iteración, se guarda train para mostrarlo y el fitness sea el train, porque una red es muy buena si el train es muy bueno, aunque la condición de parada del entrenamiento es el val.
+# Crear tabla agrupando por arquitectura.
+# Pasar un correo cuando acabe las 80 ejecuciones.
