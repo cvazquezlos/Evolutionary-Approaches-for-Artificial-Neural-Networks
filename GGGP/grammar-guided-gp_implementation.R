@@ -8,7 +8,7 @@ library("sqldf")
 library("stringr")
 #install_keras(tensorflow = "gpu")
 
-# Grammar definition
+execution <- 1
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -16,21 +16,25 @@ GRAMMAR <- list(
   h = gsrule("<h><h>", "<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
-I <- 4
-id <- 0
-O <- 3
+I <- NA
+id <- 1
+p <- 20
+O <- NA
+
+base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
+                                saved_model = rep(NA, p), stringsAsFactors = FALSE)
 
 ############################################################# EVOLUTIONARY  OPERATORS #############################################################
 generation <- function(n) {
-  population <- GrammarRandomExpression(CreateGrammar(GRAMMAR), n)
+  architectures <- GrammarRandomExpression(CreateGrammar(GRAMMAR), p)
   i <- 1
-  for (individual in population) {
-    population[[i]] <- list(id = id, architecture = gsub("\"", "", toString(individual)), evaluated = FALSE, loss = NA, metric = NA, 
-                            saved_model = NA)
+  population <- base_architecture
+  for (individual in architectures) {
+    population[i,] <- c(id, toString(gsub("\"", "", toString(individual))), FALSE, NA, NA, NA)
     i <- i + 1
     id <<- id + 1
   }
-  return(as.data.frame(do.call(rbind, population)))
+  return(population)
 }
 
 evaluation <- function(individual, split_crit, mode) {
@@ -72,7 +76,7 @@ evaluation <- function(individual, split_crit, mode) {
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   ggsave(paste0("data/history/", model_name, ".pdf"))
   save_model_hdf5(model, paste0("data/model/", model_name, ".h5"))
-  score <- model %>% evaluate(X_validation, y_validation)
+  score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
   individual$loss <- score['loss'][[1]]
   individual$metric <- score['acc'][[1]]
@@ -83,7 +87,7 @@ evaluation <- function(individual, split_crit, mode) {
 selection <- function(no_childs) {
   no_parents <- no_childs
   matting_pool <- data.frame()
-  for (n in c(1:(no_childs/2))) {
+  for (j in c(1:(no_childs/2))) {
     parents_sample <- population[sample(nrow(population), no_childs/2),]
     ordered_parents_sample <- parents_sample[order(unlist(parents_sample$loss)),]
     matting_pool <- rbind(matting_pool, head(ordered_parents_sample, 2))
@@ -115,7 +119,7 @@ crossover <- function(parents) {
 replacement <- function(children) {
   max_population <- rbind(population, children)
   ordered_max_population <- max_population[order(unlist(max_population$loss)),]
-  return(ordered_max_population[c(1:50),])
+  return(ordered_max_population[c(1:p),])
 }
 
 ############################################################### AUXILIARY FUNCTIONS ###############################################################
@@ -151,20 +155,18 @@ X_test <- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
 y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
+dir.create(paste0("data/", execution), showWarnings = F)
 
-save.image("03022019 - BASE CODE.RData")
 # Generation
-population <- generation(50)
+population <- generation(p)
 # Evaluation
 for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
 }
-i <- 0
-save.image("03022019 - GENERATION.RData")
+iteration <- 0
 while (T) {
   # Stop condition
-  data(population)
-  results <- sqldf("select * from population where loss <= 0.02 AND population.metric = 1 order by id")
+  results <- sqldf("select * from population where loss <= 0.01 AND metric = 1 order by id")
   if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
     solution <- results[1,]
     break
@@ -173,9 +175,9 @@ while (T) {
     solution <- results[1,]
     break
   } else {
-    i <- i + 1
+    iteration <- iteration + 1
     # Selection
-    matting_pool <- selection(10)
+    matting_pool <- selection(4)
     # Crossover
     children <- data.frame(id = integer(),
                            architecture = character(),
@@ -197,3 +199,10 @@ while (T) {
     population <- population[order(unlist(population$id)),]
   }
 }
+
+# Para cada iteración del programa genético de cada ejecución, almacenar la media de los individuos y al mejor de ellos.
+# Por cada ejecución sacar: histórico de entrenamiento y validación del mejor y de la media de la población. También, el accuracy
+# del mejor individuo en testeo y almacenar la arquitectura, las 80 arquitecturas.
+# En cada iteración, se guarda train para mostrarlo y el fitness sea el train, porque una red es muy buena si el train es muy bueno, aunque la condición de parada del entrenamiento es el val.
+# Crear tabla agrupando por arquitectura.
+# Pasar un correo cuando acabe las 80 ejecuciones.
