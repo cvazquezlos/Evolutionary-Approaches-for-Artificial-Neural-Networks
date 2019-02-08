@@ -3,10 +3,16 @@ library("ggplot2")
 library("gramEvol")
 library("jsonlite")
 library("keras")
-library("neuralnet")
 library("sqldf")
 library("stringr")
-#install_keras(tensorflow = "gpu")
+# install.packages("dummies")
+# install.packages("ggplot2")
+# install.packages("gramEvol")
+# install.packages("jsonlite")
+# install.packages("keras")
+# install_keras()
+# install.packages("sqldf")
+# install.packages("stringr")
 
 execution <- 1
 GRAMMAR <- list(
@@ -68,13 +74,13 @@ evaluation <- function(individual, split_crit, mode) {
   } else {
     # TODO: Regression NN output layer.
   }
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 1000, 
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
                            verbose = 0, callbacks = list(
     callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 100, verbose = 1, mode = "auto")
   ))
   plot(history)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
-  ggsave(paste0("data/history/", model_name, ".pdf"))
+  ggsave(paste0("data/", execution, "/history/", model_name, ".png"))
   save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
   score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
@@ -155,8 +161,6 @@ X_test <- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
 y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
-
-start_time = Sys.time()
 execution_results <- data.frame(execution = integer(),
                                 architecture = character(),
                                 acc_train = numeric(),
@@ -165,11 +169,15 @@ execution_results <- data.frame(execution = integer(),
                                 time = numeric(),
                                 saved_model = character(),
                                 stringsAsFactors = F)
+
+start_time = Sys.time()
 iteration_results <- data.frame(iteration = integer(),
                                 avg_loss = numeric(),
                                 best_loss = numeric(),
                                 stringsAsFactors = T)
 dir.create(paste0("data/", execution), showWarnings = F)
+dir.create(paste0("data/", execution, "/history"), showWarnings = F)
+dir.create(paste0("data/", execution, "/model"), showWarnings = F)
 # Generation
 population <- generation(p)
 # Evaluation
@@ -179,17 +187,17 @@ for (individual in 1:nrow(population)) {
 iteration <- 1
 while (T) {
   # Stop condition
-  results <- sqldf("select * from population where loss <= 0.01 AND metric = 1 order by id")
+  results <- sqldf("select * from population where loss <= 0.035 AND metric >= 0.98 order by id")
   if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
     solution <- results[1,]
     break
-  } else if (iteration == 50) {
+  } else if (iteration == 30) {
     results <- population[order(unlist(population$loss, -population$metric)),]
     solution <- results[1,]
     break
   } else {
     # Selection
-    matting_pool <- selection(4)
+    matting_pool <- selection(10)
     # Crossover
     children <- data.frame(id = integer(),
                            architecture = character(),
@@ -214,7 +222,7 @@ while (T) {
     iteration <- iteration + 1
   }
 }
-model <- load_model_hdf5(solution$saved_model)
+model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
 acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
 acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
 acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
@@ -226,8 +234,9 @@ plot_iteration_results <- ggplot() +
   xlim(1,50) +
   ylab("Loss") +
   ylim(0,1) +
-  scale_x_continuous(breaks = c(1:50))plot(history)
-ggsave(paste0("data/", execution, "/execution/", execution, ".pdf"))
+  scale_x_continuous(breaks = c(1:50))
+plot(history)
+ggsave(paste0("data/", execution, "/", execution, ".pdf"))
 execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
                                                          acc_train = acc_train,
                                                          acc_validation = acc_validation,
