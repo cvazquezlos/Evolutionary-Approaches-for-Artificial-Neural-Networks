@@ -24,7 +24,7 @@ GRAMMAR <- list(
 )
 I <- NA
 id <- 1
-p <- 20
+p <- 25
 O <- NA
 
 base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
@@ -197,7 +197,7 @@ while (T) {
     break
   } else {
     # Selection
-    matting_pool <- selection(10)
+    matting_pool <- selection(8)
     # Crossover
     children <- data.frame(id = integer(),
                            architecture = character(),
@@ -234,7 +234,7 @@ plot_iteration_results <- ggplot() +
   xlim(1,50) +
   ylab("Loss") +
   ylim(0,1) +
-  scale_x_continuous(breaks = c(1:50))
+  scale_x_continuous(breaks = c(1:30))
 plot(history)
 ggsave(paste0("data/", execution, "/", execution, ".pdf"))
 execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
