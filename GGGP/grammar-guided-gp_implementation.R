@@ -169,7 +169,6 @@ execution_results <- data.frame(execution = integer(),
                                 time = numeric(),
                                 saved_model = character(),
                                 stringsAsFactors = F)
-
 start_time = Sys.time()
 iteration_results <- data.frame(iteration = integer(),
                                 avg_loss = numeric(),
@@ -217,25 +216,22 @@ while (T) {
     # Replacement
     population <- replacement(children)
     population <- population[order(unlist(population$id)),]
-    iteration_results <- rbind(iteration_results, data.frame(iteration = iteration, avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
-                                                             best_loss = population[which.max(population$loss), 4]))
-    iteration <- iteration + 1
   }
+  iteration_results <- rbind(iteration_results, data.frame(iteration = iteration, avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
+                                                           best_loss = population[which.max(population$loss), 4]))
+  iteration <- iteration + 1
 }
 model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
 acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
 acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
 acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
 end_time = Sys.time()
-plot_iteration_results <- ggplot() +
-  geom_line(data = iteration_results, mapping = aes(x = iteration, y = avg_loss), color = "blue") +
-  geom_line(data = iteration_results, mapping = aes(x = iteration, y = best_loss), color = "red") +
-  xlab("Generation") +
-  xlim(1,50) +
-  ylab("Loss") +
-  ylim(0,1) +
-  scale_x_continuous(breaks = c(1:30))
-plot(history)
+iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
+iteration_results$best_loss <- as.numeric(levels(iteration_results$best_loss))
+plot_iteration_results <- ggplot(iteration_results, aes(iteration)) +
+  geom_line(aes(y = avg_loss, color = "blue")) +
+  geom_line(aes(y = best_loss, color = "red"))
+plot(plot_iteration_results)
 ggsave(paste0("data/", execution, "/", execution, ".pdf"))
 execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
                                                          acc_train = acc_train,
@@ -243,6 +239,9 @@ execution_results <- rbind(execution_results, data.frame(execution = execution, 
                                                          acc_test = acc_test,
                                                          time = as.double(toString(end_time - start_time)),
                                                          saved_model = solution$saved_model))
+write.csv(population, paste0("data/", execution, "/final_population.csv"))
+write.csv(execution_results, paste0("data/", execution, "/execution_results.csv"))
+execution <- execution + 1
 # Para cada iteración del programa genético de cada ejecución, almacenar la media de los individuos y al mejor de ellos.
 # Por cada ejecución sacar: histórico de entrenamiento y validación del mejor y de la media de la población. También, el accuracy
 # del mejor individuo en testeo y almacenar la arquitectura, las 80 arquitecturas.
