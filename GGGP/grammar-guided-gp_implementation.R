@@ -14,7 +14,7 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 1
+execution <- 5
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -23,7 +23,6 @@ GRAMMAR <- list(
   n = gsrule("n<n>", "n")
 )
 I <- NA
-id <- 1
 p <- 25
 O <- NA
 
@@ -80,13 +79,14 @@ evaluation <- function(individual, split_crit, mode) {
   ))
   plot(history)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
-  ggsave(paste0("data/", execution, "/history/", model_name, ".png"))
+  ggsave(paste0("data/", execution, "/history/", model_name, ".png"), height = 7, width = 7)
   save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
   score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
   individual$loss <- score['loss'][[1]]
   individual$metric <- score['acc'][[1]]
   individual$saved_model <- model_name
+  k_clear_session()
   return(individual)
 }
 
@@ -170,6 +170,7 @@ execution_results <- data.frame(execution = integer(),
                                 saved_model = character(),
                                 stringsAsFactors = F)
 start_time = Sys.time()
+id <- 1
 iteration_results <- data.frame(iteration = integer(),
                                 avg_loss = numeric(),
                                 best_loss = numeric(),
@@ -191,7 +192,7 @@ while (T) {
     solution <- results[1,]
     break
   } else if (iteration == 30) {
-    results <- population[order(unlist(population$loss, -population$metric)),]
+    results <- population[order(unlist(population$loss, population$metric), decreasing = F),]
     solution <- results[1,]
     break
   } else {
@@ -226,13 +227,14 @@ acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
 acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
 acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
 end_time = Sys.time()
+# Ejecuar a partir de aquí
 iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
 iteration_results$best_loss <- as.numeric(levels(iteration_results$best_loss))
 plot_iteration_results <- ggplot(iteration_results, aes(iteration)) +
   geom_line(aes(y = avg_loss, color = "blue")) +
   geom_line(aes(y = best_loss, color = "red"))
 plot(plot_iteration_results)
-ggsave(paste0("data/", execution, "/", execution, ".pdf"))
+ggsave(paste0("data/", execution, "/", execution, ".pdf"), height = 7.38, width = 8.83)
 execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
                                                          acc_train = acc_train,
                                                          acc_validation = acc_validation,
@@ -241,10 +243,12 @@ execution_results <- rbind(execution_results, data.frame(execution = execution, 
                                                          saved_model = solution$saved_model))
 write.csv(population, paste0("data/", execution, "/final_population.csv"))
 write.csv(execution_results, paste0("data/", execution, "/execution_results.csv"))
-execution <- execution + 1
-# Para cada iteración del programa genético de cada ejecución, almacenar la media de los individuos y al mejor de ellos.
-# Por cada ejecución sacar: histórico de entrenamiento y validación del mejor y de la media de la población. También, el accuracy
-# del mejor individuo en testeo y almacenar la arquitectura, las 80 arquitecturas.
-# En cada iteración, se guarda train para mostrarlo y el fitness sea el train, porque una red es muy buena si el train es muy bueno, aunque la condición de parada del entrenamiento es el val.
-# Crear tabla agrupando por arquitectura.
-# Pasar un correo cuando acabe las 80 ejecuciones.
+
+
+
+w <- 1
+lapply(iteration_results$best_loss, function(x) {
+  print(x[1])
+  w <<- w + 1
+})
+save.image("dat.RData")
