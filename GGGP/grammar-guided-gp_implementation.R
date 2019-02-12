@@ -14,7 +14,7 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 7
+execution <- 12
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
