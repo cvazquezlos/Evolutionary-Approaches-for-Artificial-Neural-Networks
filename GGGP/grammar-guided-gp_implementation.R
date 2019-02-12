@@ -14,7 +14,7 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 5
+execution <- 7
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -229,7 +229,7 @@ acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
 end_time = Sys.time()
 # Ejecuar a partir de aquí
 iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
-iteration_results$best_loss <- as.numeric(levels(iteration_results$best_loss))
+iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
 plot_iteration_results <- ggplot(iteration_results, aes(iteration)) +
   geom_line(aes(y = avg_loss, color = "blue")) +
   geom_line(aes(y = best_loss, color = "red"))
@@ -243,12 +243,3 @@ execution_results <- rbind(execution_results, data.frame(execution = execution, 
                                                          saved_model = solution$saved_model))
 write.csv(population, paste0("data/", execution, "/final_population.csv"))
 write.csv(execution_results, paste0("data/", execution, "/execution_results.csv"))
-
-
-
-w <- 1
-lapply(iteration_results$best_loss, function(x) {
-  print(x[1])
-  w <<- w + 1
-})
-save.image("dat.RData")
