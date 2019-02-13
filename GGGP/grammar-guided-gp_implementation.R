@@ -251,13 +251,11 @@ history_results_train_acc <- history_df[c(2501:5000),]
 history_results_validation_loss <- history_df[c(5001:7500),]
 history_results_validation_acc <- history_df[c(7501:10000),]
 
-
 history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], 
                               validation = history_df[c(5001:7500), "value"])
 train_plot_II <- ggplot(data = history_df_loss, aes(x = epochs)) +
-  geom_smooth(aes(y = train)) +
-  geom_smooth(aes(y = validation)) +
-  scale_color_manual(labels = c("Train", "Validation"), values = c("blue", "red")) +
+  geom_smooth(aes(y = validation), size = 1, color = "red") +
+  geom_smooth(aes(y = train), size = 1, color = "blue") +
   xlab("Epochs") +
   xlim(1, 2500) +
   ylab("Categorical crossentropy") +
