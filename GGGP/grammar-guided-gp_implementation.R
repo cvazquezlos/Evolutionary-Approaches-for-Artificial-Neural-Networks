@@ -6,6 +6,7 @@ library("keras")
 library("sqldf")
 library("stringr")
 rm(list=ls())
+options(warn = -1)
 # install.packages("dummies")
 # install.packages("ggplot2")
 # install.packages("gramEvol")
@@ -15,7 +16,7 @@ rm(list=ls())
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 16
+execution <- 1
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -24,7 +25,7 @@ GRAMMAR <- list(
   n = gsrule("n<n>", "n")
 )
 I <- NA
-p <- 1
+p <- 25
 O <- NA
 
 base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
@@ -42,7 +43,7 @@ generation <- function() {
   }
   return(population)
 }
-history <- NULL
+
 evaluation <- function(individual, split_crit, mode) {
   # Neurons extraction
   hidden_layers <- numeric(0)
@@ -74,13 +75,29 @@ evaluation <- function(individual, split_crit, mode) {
   } else {
     # TODO: Regression NN output layer.
   }
-  history <<- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
                            verbose = 0, callbacks = list(
     callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 100, verbose = 1, mode = "auto")
   ))
-  plot(history)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
-  ggsave(paste0("data/", execution, "/history/", model_name, ".png"), height = 7, width = 7)
+  
+  history_df <- as.data.frame(history)
+  history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], validation = history_df[c(5001:7500), "value"])
+  plot_loss <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
+    geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Categorical crossentropy") +
+    ylim(0.0000000, 1.0000000) + ggtitle(paste0("Individual", individual$id, ", execution", execution)) + theme_bw() + 
+    theme(plot.title = element_text(hjust = 0.5)) + scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
+  plot(plot_loss)
+  ggsave(paste0("data/", execution, "/history/", model_name, "_loss.pdf"), plot = last_plot())
+  
+  history_df_acc <- data.frame(epochs = c(1:2500), train = history_df[c(2501:5000), "value"], validation = history_df[c(7501:10000), "value"])
+  plot_acc <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
+    geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Accuracy") + ylim(0.0000000, 1.0000000) + 
+    ggtitle(paste0("Individual", individual$id, ", execution", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
+    scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
+  plot(plot_acc)
+  ggsave(paste0("data/", execution, "/history/", model_name, "_acc.pdf"), plot = last_plot())
+  
   save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
   score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
@@ -244,21 +261,3 @@ execution_results <- rbind(execution_results, data.frame(execution = execution, 
                                                          saved_model = solution$saved_model))
 write.csv(population, paste0("data/", execution, "/final_population.csv"))
 write.csv(execution_results, paste0("data/", execution, "/execution_results.csv"))
-
-
-history_results_train_loss <- history_df[c(1:2500),]
-history_results_train_acc <- history_df[c(2501:5000),]
-history_results_validation_loss <- history_df[c(5001:7500),]
-history_results_validation_acc <- history_df[c(7501:10000),]
-
-history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], 
-                              validation = history_df[c(5001:7500), "value"])
-train_plot_II <- ggplot(data = history_df_loss, aes(x = epochs)) +
-  geom_smooth(aes(y = validation), size = 1, color = "red") +
-  geom_smooth(aes(y = train), size = 1, color = "blue") +
-  xlab("Epochs") +
-  xlim(1, 2500) +
-  ylab("Categorical crossentropy") +
-  ylim(0.0000000, 1.0000000) +
-  theme_bw()
-print(train_plot_II)
