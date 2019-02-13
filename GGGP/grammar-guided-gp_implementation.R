@@ -1,3 +1,4 @@
+library("cowplot")
 library("dummies")
 library("ggplot2")
 library("gramEvol")
@@ -85,18 +86,16 @@ evaluation <- function(individual, split_crit, mode) {
   history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], validation = history_df[c(5001:7500), "value"])
   plot_loss <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
     geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Categorical crossentropy") +
-    ylim(0.0000000, 1.0000000) + ggtitle(paste0("Individual", individual$id, ", execution", execution)) + theme_bw() + 
+    ylim(0.0000000, 1.0000000) + ggtitle(paste0("Individual ", individual$id, ", execution ", execution)) + theme_bw() + 
     theme(plot.title = element_text(hjust = 0.5)) + scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
-  plot(plot_loss)
-  ggsave(paste0("data/", execution, "/history/", model_name, "_loss.pdf"), plot = last_plot())
+  save_plot(paste0("data/", execution, "/history/", model_name, "_loss.pdf"), plot_loss)
   
   history_df_acc <- data.frame(epochs = c(1:2500), train = history_df[c(2501:5000), "value"], validation = history_df[c(7501:10000), "value"])
-  plot_acc <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
+  plot_acc <- ggplot(data = history_df_acc, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
     geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Accuracy") + ylim(0.0000000, 1.0000000) + 
-    ggtitle(paste0("Individual", individual$id, ", execution", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
+    ggtitle(paste0("Individual ", individual$id, ", execution ", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
     scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
-  plot(plot_acc)
-  ggsave(paste0("data/", execution, "/history/", model_name, "_acc.pdf"), plot = last_plot())
+  save_plot(paste0("data/", execution, "/history/", model_name, "_acc.pdf"), plot_acc)
   
   save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
   score <- model %>% evaluate(X_train, y_train)
