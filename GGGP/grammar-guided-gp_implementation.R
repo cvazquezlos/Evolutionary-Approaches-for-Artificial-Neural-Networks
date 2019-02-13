@@ -247,11 +247,11 @@ end_time = Sys.time()
 # Ejecuar a partir de aquí
 iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
 iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
-plot_iteration_results <- ggplot(iteration_results, aes(iteration)) +
-  geom_line(aes(y = avg_loss, color = "blue")) +
-  geom_line(aes(y = best_loss, color = "red"))
-plot(plot_iteration_results)
-ggsave(paste0("data/", execution, "/", execution, ".pdf"), height = 7.38, width = 8.83)
+plot_iteration_results <- ggplot(data = iteration_results, aes(x = epochs)) + geom_smooth(aes(y = avg_loss, colour = "Population"), size = 1) +
+  geom_smooth(aes(y = best_loss, colour = "Best"), size = 1) + xlab("Generations") + xlim(1, 30) + ylab("Categorical crossentropy") + ylim(0.0000000, 1.0000000) + 
+  ggtitle(paste0("Population of execution ", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
+  scale_colour_manual("T", values = c("Population" = "blue", "Best" = "red"))
+save_plot(paste0("data/", execution, "/", execution, ".pdf"), plot_iteration_results)
 execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
                                                          acc_train = acc_train,
                                                          acc_validation = acc_validation,
