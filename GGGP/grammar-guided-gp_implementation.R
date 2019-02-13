@@ -5,6 +5,7 @@ library("jsonlite")
 library("keras")
 library("sqldf")
 library("stringr")
+rm(list=ls())
 # install.packages("dummies")
 # install.packages("ggplot2")
 # install.packages("gramEvol")
@@ -14,7 +15,7 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 15
+execution <- 16
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -23,14 +24,14 @@ GRAMMAR <- list(
   n = gsrule("n<n>", "n")
 )
 I <- NA
-p <- 25
+p <- 1
 O <- NA
 
 base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
                                 saved_model = rep(NA, p), stringsAsFactors = FALSE)
 
 ############################################################# EVOLUTIONARY  OPERATORS #############################################################
-generation <- function(n) {
+generation <- function() {
   architectures <- GrammarRandomExpression(CreateGrammar(GRAMMAR), p)
   i <- 1
   population <- base_architecture
@@ -41,7 +42,7 @@ generation <- function(n) {
   }
   return(population)
 }
-
+history <- NULL
 evaluation <- function(individual, split_crit, mode) {
   # Neurons extraction
   hidden_layers <- numeric(0)
@@ -73,7 +74,7 @@ evaluation <- function(individual, split_crit, mode) {
   } else {
     # TODO: Regression NN output layer.
   }
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
+  history <<- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
                            verbose = 0, callbacks = list(
     callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 100, verbose = 1, mode = "auto")
   ))
@@ -179,7 +180,7 @@ dir.create(paste0("data/", execution), showWarnings = F)
 dir.create(paste0("data/", execution, "/history"), showWarnings = F)
 dir.create(paste0("data/", execution, "/model"), showWarnings = F)
 # Generation
-population <- generation(p)
+population <- generation()
 # Evaluation
 for (individual in 1:nrow(population)) {
   population[individual,] = evaluation(population[individual,], 0, 0)
@@ -243,3 +244,31 @@ execution_results <- rbind(execution_results, data.frame(execution = execution, 
                                                          saved_model = solution$saved_model))
 write.csv(population, paste0("data/", execution, "/final_population.csv"))
 write.csv(execution_results, paste0("data/", execution, "/execution_results.csv"))
+
+
+history_results_train_loss <- history_df[c(1:2500),]
+history_results_train_acc <- history_df[c(2501:5000),]
+history_results_validation_loss <- history_df[c(5001:7500),]
+history_results_validation_acc <- history_df[c(7501:10000),]
+train_plot <- ggplot() +
+  geom_line(data = history_results_train_loss, mapping = aes(x = c(1:2500), y = value), color = "blue", size = 1) +
+  geom_line(data = history_results_validation_loss, mapping = aes(x = c(1:2500), y = value), color = "red", size = 1) +
+  xlab("Epochs") +
+  xlim(1, 2500) +
+  ylab("Categorical crossentropy") +
+  ylim(0.0000000, 1.000000) +
+  theme_bw()
+print(train_plot)
+
+
+history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], 
+                              validation = history_df[c(5001:7500), "value"])
+train_plot_II <- ggplot(data = history_df_loss, aes(x = epochs)) +
+  geom_smooth(aes(y = train, color = "blue")) +
+  geom_smooth(aes(y = validation, color = "red")) +
+  xlab("Epochs") +
+  xlim(1, 2500) +
+  ylab("Categorical crossentropy") +
+  ylim(0.0000000, 1.0000000) +
+  theme_bw()
+print(train_plot_II)
