@@ -17,7 +17,7 @@ options(warn = -1)
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 1
+execution <- 2
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -236,7 +236,7 @@ while (T) {
     population <- population[order(unlist(population$id)),]
   }
   iteration_results <- rbind(iteration_results, data.frame(iteration = iteration, avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
-                                                           best_loss = population[which.max(population$loss), 4]))
+                                                           best_loss = population[which.min(population$loss), 4]))
   iteration <- iteration + 1
 }
 model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
@@ -247,8 +247,8 @@ end_time = Sys.time()
 # Ejecuar a partir de aquí
 iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
 iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
-plot_iteration_results <- ggplot(data = iteration_results, aes(x = iteration)) + geom_smooth(aes(y = avg_loss, colour = "Population"), size = 1) +
-  geom_smooth(aes(y = best_loss, colour = "Best"), size = 1) + xlab("Generations") + xlim(1, 30) + ylab("Categorical crossentropy") + ylim(0.0000000, 1.0000000) + 
+plot_iteration_results <- ggplot(data = iteration_results, aes(x = iteration)) + geom_line(aes(y = avg_loss, colour = "Population"), size = 1) +
+  geom_line(aes(y = best_loss, colour = "Best"), size = 1) + xlab("Generations") + xlim(1, 30) + ylab("Categorical crossentropy") + ylim(0.0000000, 1.0000000) + 
   ggtitle(paste0("Population of execution ", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
   scale_colour_manual("T", values = c("Population" = "blue", "Best" = "red"))
 save_plot(paste0("data/", execution, "/", execution, ".pdf"), plot_iteration_results)
