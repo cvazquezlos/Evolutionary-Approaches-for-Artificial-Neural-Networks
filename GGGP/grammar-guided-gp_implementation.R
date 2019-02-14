@@ -84,15 +84,15 @@ evaluation <- function(individual, split_crit, mode) {
   
   history_df <- as.data.frame(history)
   history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], validation = history_df[c(5001:7500), "value"])
-  plot_loss <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
-    geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Categorical crossentropy") +
+  plot_loss <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = validation, colour = "Validation"), size = 1) +
+    geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Categorical crossentropy") +
     ylim(0.0000000, 1.0000000) + ggtitle(paste0("Individual ", individual$id, ", execution ", execution)) + theme_bw() + 
     theme(plot.title = element_text(hjust = 0.5)) + scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
   save_plot(paste0("data/", execution, "/history/", model_name, "_loss.pdf"), plot_loss)
   
   history_df_acc <- data.frame(epochs = c(1:2500), train = history_df[c(2501:5000), "value"], validation = history_df[c(7501:10000), "value"])
-  plot_acc <- ggplot(data = history_df_acc, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
-    geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Accuracy") + ylim(0.0000000, 1.0000000) + 
+  plot_acc <- ggplot(data = history_df_acc, aes(x = epochs)) + geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = validation, colour = "Validation"), size = 1) +
+    geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Accuracy") + ylim(0.0000000, 1.0000000) + 
     ggtitle(paste0("Individual ", individual$id, ", execution ", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
     scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
   save_plot(paste0("data/", execution, "/history/", model_name, "_acc.pdf"), plot_acc)
