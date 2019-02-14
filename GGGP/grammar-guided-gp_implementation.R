@@ -78,7 +78,7 @@ evaluation <- function(individual, split_crit, mode) {
   }
   history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
                            verbose = 0, callbacks = list(
-    callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 100, verbose = 1, mode = "auto")
+    callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 250, verbose = 1, mode = "auto")
   ))
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   
@@ -247,7 +247,7 @@ end_time = Sys.time()
 # Ejecuar a partir de aquí
 iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
 iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
-plot_iteration_results <- ggplot(data = iteration_results, aes(x = epochs)) + geom_smooth(aes(y = avg_loss, colour = "Population"), size = 1) +
+plot_iteration_results <- ggplot(data = iteration_results, aes(x = iteration)) + geom_smooth(aes(y = avg_loss, colour = "Population"), size = 1) +
   geom_smooth(aes(y = best_loss, colour = "Best"), size = 1) + xlab("Generations") + xlim(1, 30) + ylab("Categorical crossentropy") + ylim(0.0000000, 1.0000000) + 
   ggtitle(paste0("Population of execution ", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
   scale_colour_manual("T", values = c("Population" = "blue", "Best" = "red"))
