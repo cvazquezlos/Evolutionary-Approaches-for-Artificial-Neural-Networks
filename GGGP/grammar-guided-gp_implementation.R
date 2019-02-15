@@ -17,7 +17,7 @@ options(warn = -1)
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 2
+execution <- 3
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -84,17 +84,17 @@ evaluation <- function(individual, split_crit, mode) {
   
   history_df <- as.data.frame(history)
   history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], validation = history_df[c(5001:7500), "value"])
-  plot_loss <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = validation, colour = "Validation"), size = 1) +
-    geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Categorical crossentropy") +
+  plot_loss <- ggplot(data = history_df_loss, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
+    geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Categorical crossentropy") +
     ylim(0.0000000, 1.0000000) + ggtitle(paste0("Individual ", individual$id, ", execution ", execution)) + theme_bw() + 
-    theme(plot.title = element_text(hjust = 0.5)) + scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
+    theme(plot.title = element_text(hjust = 0.5)) + scale_colour_manual("Step", values = c("Train" = "blue", "Validation" = "red"))
   save_plot(paste0("data/", execution, "/history/", model_name, "_loss.pdf"), plot_loss)
   
   history_df_acc <- data.frame(epochs = c(1:2500), train = history_df[c(2501:5000), "value"], validation = history_df[c(7501:10000), "value"])
-  plot_acc <- ggplot(data = history_df_acc, aes(x = epochs)) + geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = validation, colour = "Validation"), size = 1) +
-    geom_smooth(method = "gam", formula = "y ~ s(x, bs = 'cs')", aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Accuracy") + ylim(0.0000000, 1.0000000) + 
+  plot_acc <- ggplot(data = history_df_acc, aes(x = epochs)) + geom_smooth(aes(y = validation, colour = "Validation"), size = 1) +
+    geom_smooth(aes(y = train, colour = "Train"), size = 1) + xlab("Epochs") + xlim(1, 2500) + ylab("Accuracy") + ylim(0.0000000, 1.0000000) + 
     ggtitle(paste0("Individual ", individual$id, ", execution ", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
-    scale_colour_manual("T", values = c("Train" = "blue", "Validation" = "red"))
+    scale_colour_manual("Step", values = c("Train" = "blue", "Validation" = "red"))
   save_plot(paste0("data/", execution, "/history/", model_name, "_acc.pdf"), plot_acc)
   
   save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
@@ -250,7 +250,7 @@ iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_lo
 plot_iteration_results <- ggplot(data = iteration_results, aes(x = iteration)) + geom_line(aes(y = avg_loss, colour = "Population"), size = 1) +
   geom_line(aes(y = best_loss, colour = "Best"), size = 1) + xlab("Generations") + xlim(1, 30) + ylab("Categorical crossentropy") + ylim(0.0000000, 1.0000000) + 
   ggtitle(paste0("Population of execution ", execution)) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + 
-  scale_colour_manual("T", values = c("Population" = "blue", "Best" = "red"))
+  scale_colour_manual("Step", values = c("Population" = "blue", "Best" = "red"))
 save_plot(paste0("data/", execution, "/", execution, ".pdf"), plot_iteration_results)
 execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
                                                          acc_train = acc_train,
