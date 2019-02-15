@@ -81,14 +81,8 @@ evaluation <- function(individual, split_crit, mode) {
     callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 250, verbose = 1, mode = "auto")
   ))
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
-  
   history_df <- as.data.frame(history)
-  history_df_loss <- data.frame(epochs = c(1:2500), train = history_df[c(1:2500), "value"], validation = history_df[c(5001:7500), "value"])
-  saveRDS(history_df_loss, file = paste0("data/", execution, "/history/", model_name, "_loss.rds"))
-  
-  history_df_acc <- data.frame(epochs = c(1:2500), train = history_df[c(2501:5000), "value"], validation = history_df[c(7501:10000), "value"])
-  saveRDS(history_df_acc, file = paste0("data/", execution, "/history/", model_name, "_acc.rds"))
-  
+  saveRDS(history_df, file = paste0("data/", execution, "/history/", model_name, ".rds"))
   save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
   score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
