@@ -17,7 +17,7 @@ options(warn = -1)
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 20
+execution <- 35
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -165,7 +165,7 @@ y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-for (autom in c(1:15)) {
+for (autom in c(1:5)) {
   execution_results <- data.frame(execution = integer(),
                                   architecture = character(),
                                   acc_train = numeric(),
