@@ -17,7 +17,7 @@ options(warn = -1)
 # install.packages("sqldf")
 # install.packages("stringr")
 
-execution <- 19
+execution <- 20
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -164,81 +164,85 @@ X_test <- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
 y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
-execution_results <- data.frame(execution = integer(),
-                                architecture = character(),
-                                acc_train = numeric(),
-                                acc_validation = numeric(),
-                                acc_test = numeric(),
-                                time = numeric(),
-                                saved_model = character(),
-                                stringsAsFactors = F)
-start_time = Sys.time()
-id <- 1
-iteration_results <- data.frame(iteration = integer(),
-                                avg_loss = numeric(),
-                                best_loss = numeric(),
-                                stringsAsFactors = T)
-dir.create(paste0("data/", execution), showWarnings = F)
-dir.create(paste0("data/", execution, "/history"), showWarnings = F)
-dir.create(paste0("data/", execution, "/model"), showWarnings = F)
-# Generation
-population <- generation()
-# Evaluation
-for (individual in 1:nrow(population)) {
-  population[individual,] = evaluation(population[individual,], 0, 0)
-}
-iteration <- 1
-while (T) {
-  # Stop condition
-  results <- sqldf("select * from population where loss <= 0.035 AND metric >= 0.98 order by id")
-  if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
-    solution <- results[1,]
-    break
-  } else if (iteration == 30) {
-    results <- population[order(unlist(population$loss, population$metric), decreasing = F),]
-    solution <- results[1,]
-    break
-  } else {
-    # Selection
-    matting_pool <- selection(8)
-    # Crossover
-    children <- data.frame(id = integer(),
-                           architecture = character(),
-                           evaluated = logical(),
-                           loss = numeric(),
-                           metric = numeric(),
-                           saved_model = character(),
-                           stringsAsFactors = FALSE)
-    for (i in c(1:(nrow(matting_pool)/2))) {
-      j <- (i*2)-1
-      children <- rbind(children, crossover(matting_pool[c(j:(j+1)),]))
-    }
-    # Evaluation
-    for (individual in 1:nrow(children)) {
-      children[individual,] = evaluation(children[individual,], 1, 0)
-    }
-    # Replacement
-    population <- replacement(children)
-    population <- population[order(unlist(population$id)),]
+
+for (autom in c(1:15)) {
+  execution_results <- data.frame(execution = integer(),
+                                  architecture = character(),
+                                  acc_train = numeric(),
+                                  acc_validation = numeric(),
+                                  acc_test = numeric(),
+                                  time = numeric(),
+                                  saved_model = character(),
+                                  stringsAsFactors = F)
+  start_time = Sys.time()
+  id <- 1
+  iteration_results <- data.frame(iteration = integer(),
+                                  avg_loss = numeric(),
+                                  best_loss = numeric(),
+                                  stringsAsFactors = T)
+  dir.create(paste0("data/", execution), showWarnings = F)
+  dir.create(paste0("data/", execution, "/history"), showWarnings = F)
+  dir.create(paste0("data/", execution, "/model"), showWarnings = F)
+  # Generation
+  population <- generation()
+  # Evaluation
+  for (individual in 1:nrow(population)) {
+    population[individual,] = evaluation(population[individual,], 0, 0)
   }
-  iteration_results <- rbind(iteration_results, data.frame(iteration = iteration, avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
-                                                           best_loss = population[which.min(population$loss), 4]))
-  iteration <- iteration + 1
+  iteration <- 1
+  while (T) {
+    # Stop condition
+    results <- sqldf("select * from population where loss <= 0.035 AND metric >= 0.98 order by id")
+    if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
+      solution <- results[1,]
+      break
+    } else if (iteration == 30) {
+      results <- population[order(unlist(population$loss, population$metric), decreasing = F),]
+      solution <- results[1,]
+      break
+    } else {
+      # Selection
+      matting_pool <- selection(8)
+      # Crossover
+      children <- data.frame(id = integer(),
+                             architecture = character(),
+                             evaluated = logical(),
+                             loss = numeric(),
+                             metric = numeric(),
+                             saved_model = character(),
+                             stringsAsFactors = FALSE)
+      for (i in c(1:(nrow(matting_pool)/2))) {
+        j <- (i*2)-1
+        children <- rbind(children, crossover(matting_pool[c(j:(j+1)),]))
+      }
+      # Evaluation
+      for (individual in 1:nrow(children)) {
+        children[individual,] = evaluation(children[individual,], 1, 0)
+      }
+      # Replacement
+      population <- replacement(children)
+      population <- population[order(unlist(population$id)),]
+    }
+    iteration_results <- rbind(iteration_results, data.frame(iteration = iteration, avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
+                                                             best_loss = population[which.min(population$loss), 4]))
+    iteration <- iteration + 1
+  }
+  model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
+  acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
+  acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
+  acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+  end_time = Sys.time()
+  # Ejecuar a partir de aquí
+  iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
+  iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
+  saveRDS(iteration_results, file = paste0("data/", execution, "/", execution, "_results.rds"))
+  execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
+                                                           acc_train = acc_train,
+                                                           acc_validation = acc_validation,
+                                                           acc_test = acc_test,
+                                                           time = as.double(toString(end_time - start_time)),
+                                                           saved_model = solution$saved_model))
+  saveRDS(population, file = paste0("data/", execution, "/final_population.rds"))
+  saveRDS(execution_results, file = paste0("data/", execution, "/execution_results.rds"))
+  execution <<- execution + 1
 }
-model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
-acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
-acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
-acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
-end_time = Sys.time()
-# Ejecuar a partir de aquí
-iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
-iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
-saveRDS(iteration_results, file = paste0("data/", execution, "/", execution, "_results.rds"))
-execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
-                                                         acc_train = acc_train,
-                                                         acc_validation = acc_validation,
-                                                         acc_test = acc_test,
-                                                         time = as.double(toString(end_time - start_time)),
-                                                         saved_model = solution$saved_model))
-saveRDS(population, file = paste0("data/", execution, "/final_population.rds"))
-saveRDS(execution_results, file = paste0("data/", execution, "/execution_results.rds"))
