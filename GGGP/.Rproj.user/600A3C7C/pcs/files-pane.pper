@@ -1,0 +1,13 @@
+{
+    "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP/data",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 4
+        },
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
