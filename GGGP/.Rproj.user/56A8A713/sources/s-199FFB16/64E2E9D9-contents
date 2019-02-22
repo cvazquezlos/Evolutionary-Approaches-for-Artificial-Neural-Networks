@@ -6,8 +6,6 @@ library("jsonlite")
 library("keras")
 library("sqldf")
 library("stringr")
-rm(list=ls())
-options(warn = -1)
 # install.packages("dummies")
 # install.packages("ggplot2")
 # install.packages("gramEvol")
@@ -16,6 +14,10 @@ options(warn = -1)
 # install_keras()
 # install.packages("sqldf")
 # install.packages("stringr")
+
+setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
+rm(list=ls())
+options(warn = -1)
 
 execution <- 47
 GRAMMAR <- list(
