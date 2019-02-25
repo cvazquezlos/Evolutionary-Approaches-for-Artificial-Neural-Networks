@@ -228,11 +228,11 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   geom_point(aes(y = best_loss79), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss80), shape = 20, colour = "gray") +
   geom_line(aes(y = avg_loss_mean, colour = "Media"), size = 1) +
-  geom_line(aes(y = best_loss_mean, colour = "Mejor"), size = 1) +
+  geom_line(aes(y = best_loss_mean, colour = "Mejores"), size = 1) +
   xlab("Generaciones") +
   scale_x_continuous(breaks = c(1:29)) +
   ylab("Fitness") + 
   ylim(0.0000000, 0.6000000) +
-  scale_colour_manual("Step", values = c("Media" = "red", "Mejor" = "blue")) +
-  ggtitle("Evolución de la población en el problema de Iris") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
+  scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
+  ggtitle("Evolución media de las poblaciones y sus mejores a lo largo de las 80 ejecuciones del problema Iris") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
 print(executions_plot)
