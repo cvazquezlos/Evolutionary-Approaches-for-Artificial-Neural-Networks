@@ -1,6 +1,10 @@
 {
-    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP/data",
+    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results/classification/iris",
     "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 4
+        },
         {
             "ascending" : true,
             "columnIndex" : 2
