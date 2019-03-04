@@ -15,9 +15,8 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
+setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
-options(warn = -1)
 
 execution <- 1
 GRAMMAR <- list(
@@ -78,7 +77,7 @@ evaluation <- function(individual, split_crit, mode) {
   } else {
     # TODO: Regression NN output layer.
   }
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 750, 
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 500, 
                            verbose = 0, callbacks = list(
     callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 250, verbose = 1, mode = "auto")
   ))
@@ -235,7 +234,7 @@ for (autom in c(1:1)) {
     acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
     acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
     end_time = Sys.time()
-    # Ejecuar a partir de aquÃ­
+    # Ejecuar a partir de aquí
     iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
     iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
     saveRDS(iteration_results, file = paste0("data/", execution, "/", execution, "_results.rds"))
