@@ -18,7 +18,7 @@ library("stringr")
 setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
 
-execution <- 8
+execution <- 28
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
