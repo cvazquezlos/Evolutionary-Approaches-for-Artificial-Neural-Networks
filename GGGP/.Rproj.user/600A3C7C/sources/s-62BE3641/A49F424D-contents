@@ -166,7 +166,7 @@ y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-for (autom in c(1:10)) {
+for (autom in c(1:43)) {
   tryCatch({
     execution_results <- data.frame(execution = integer(),
                                     architecture = character(),
