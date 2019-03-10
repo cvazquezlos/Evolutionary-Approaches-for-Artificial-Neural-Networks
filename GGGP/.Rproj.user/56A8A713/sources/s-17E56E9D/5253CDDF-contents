@@ -166,7 +166,7 @@ y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-repeat_executions <- c(6, 13, 28, 34, 38, 46, 54, 60, 66)
+repeat_executions <- c(13, 34)
 for (execution in repeat_executions) {
   tryCatch({
     execution_results <- data.frame(execution = integer(),
@@ -248,6 +248,6 @@ for (execution in repeat_executions) {
     saveRDS(population, file = paste0("data/", execution, "/final_population.rds"))
     saveRDS(execution_results, file = paste0("data/", execution, "/execution_results.rds"))
   }, error = function(e){
-    print("Got na error.")
+    print(e)
   })
 }
