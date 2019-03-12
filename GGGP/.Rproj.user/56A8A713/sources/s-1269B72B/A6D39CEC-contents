@@ -207,7 +207,7 @@ for (execution in executions) {
         solution <- results[1,]
         break
       } else if (iteration == 30) {
-        results <- population[order(unlist(population$loss, population$metric), decreasing = F),]
+        results <- population[order(unlist(population$loss, population$metric)),]
         solution <- results[1,]
         break
       } else {
