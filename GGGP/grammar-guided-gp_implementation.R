@@ -15,10 +15,9 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
+setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
 
-execution <- 38
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
   a = grule("nnnn"), # Update a with many n as value of I.
@@ -75,9 +74,14 @@ evaluation <- function(individual, split_crit, mode) {
       metrics = c("accuracy")
     )
   } else {
-    # TODO: Regression NN output layer.
+    model %>% layer_dense(units = O)
+    model %>% compile(
+      optimizer = optimizer_rmsprop(),
+      loss = "mse",
+      metrics = c("mean_absolute_error")
+    )
   }
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 500, 
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
                            verbose = 0, callbacks = list(
     callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 250, verbose = 1, mode = "auto")
   ))
@@ -88,7 +92,7 @@ evaluation <- function(individual, split_crit, mode) {
   score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
   individual$loss <- score['loss'][[1]]
-  individual$metric <- score['acc'][[1]]
+  individual$metric <- score['mean_absolute_error'][[1]]
   individual$saved_model <- model_name
   k_clear_session()
   return(individual)
@@ -145,7 +149,8 @@ extract_hidden_layers <- function(architecture) {
 ###################################################################################################################################################
 ################################################################# MAIN  ALGORITHM #################################################################
 ###################################################################################################################################################
-data <- read.csv("../datasets/classification/iris.csv", header = T, sep = ",")
+#data <- dataset_boston_housing(path = "boston_housing.npz", test_split = 0.1, seed = 113L) DATASET FOR ADVANCE USE OF REGRESSION.
+data <- read.csv("../datasets/regression/rating-cereals.csv", header = T, sep = ",")
 n <- nrow(data)
 aux <- dummy.data.frame(data, names = c("class"), sep = "")
 rm("data")
@@ -153,27 +158,29 @@ data <- aux
 rm("aux")
 shuffled_df <- as.data.frame(data[sample(n),])
 colnames(shuffled_df) <- gsub("[^a-zA-Z]*", "", colnames(shuffled_df))
-c <- colnames(shuffled_df)
-train <- shuffled_df[1: round(0.7*n),]
-validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
-test <- shuffled_df[(round(0.9*n)+1):n,]
-X_train <- train[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-y_train <- train[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
-X_validation <- validation[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-y_validation <- validation[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
-X_test <- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
+max <- apply(shuffled_df, 2, max)
+min <- apply(shuffled_df, 2, min)
+scaled_df <- scale(shuffled_df, center = min, scale = max - min)
+train <- scaled_df[1: round(0.7*n),]
+validation <- scaled_df[(round(0.7*n)+1):round(0.9*n),]
+test <- scaled_df[(round(0.9*n)+1):n,]
+X_train <- train[,head(colnames(scaled_df), -1)] %>% as.matrix()
+y_train <- train[,tail(colnames(scaled_df), 1)] %>% as.matrix()
+X_validation <- validation[,head(colnames(scaled_df), -1)] %>% as.matrix()
+y_validation <- validation[,tail(colnames(scaled_df), 1)] %>% as.matrix()
+X_test <- test[,head(colnames(scaled_df), -1)] %>% as.matrix()
+y_test <- test[,tail(colnames(scaled_df), 1)] %>% as.matrix()
 I <- length(colnames(X_train))
-O <- length(colnames(y_train))
+O <- 1
 
-repeat_executions <- c(13)
-for (execution in repeat_executions) {
+executions <- c(1)
+for (execution in executions) {
   tryCatch({
     execution_results <- data.frame(execution = integer(),
                                     architecture = character(),
-                                    acc_train = numeric(),
-                                    acc_validation = numeric(),
-                                    acc_test = numeric(),
+                                    mae_train = numeric(),
+                                    mae_validation = numeric(),
+                                    mae_test = numeric(),
                                     time = numeric(),
                                     saved_model = character(),
                                     stringsAsFactors = F)
@@ -190,12 +197,12 @@ for (execution in repeat_executions) {
     population <- generation()
     # Evaluation
     for (individual in 1:nrow(population)) {
-      population[individual,] = evaluation(population[individual,], 0, 0)
+      population[individual,] = evaluation(population[individual,], 0, 1)
     }
     iteration <- 1
     while (T) {
       # Stop condition
-      results <- sqldf("select * from population where loss <= 0.035 AND metric >= 0.98 order by id")
+      results <- sqldf("select * from population where loss <= 0.005 AND metric >= 0.05 order by id")
       if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
         solution <- results[1,]
         break
@@ -220,7 +227,7 @@ for (execution in repeat_executions) {
         }
         # Evaluation
         for (individual in 1:nrow(children)) {
-          children[individual,] = evaluation(children[individual,], 1, 0)
+          children[individual,] = evaluation(children[individual,], 1, 1)
         }
         # Replacement
         population <- replacement(children)
@@ -231,18 +238,18 @@ for (execution in repeat_executions) {
       iteration <- iteration + 1
     }
     model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
-    acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
-    acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
-    acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+    mae_train <- (model %>% evaluate(X_train, y_train))['mean_absolute_error'][[1]]
+    mae_validation <- (model %>% evaluate(X_validation, y_validation))['mean_absolute_error'][[1]]
+    mae_test <- (model %>% evaluate(X_test, y_test))['mean_absolute_error'][[1]]
     end_time = Sys.time()
     # Ejecuar a partir de aqu?
     iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
     iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
     saveRDS(iteration_results, file = paste0("data/", execution, "/", execution, "_results.rds"))
     execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
-                                                             acc_train = acc_train,
-                                                             acc_validation = acc_validation,
-                                                             acc_test = acc_test,
+                                                             mae_train = mae_train,
+                                                             mae_validation = mae_validation,
+                                                             mae_test = mae_test,
                                                              time = as.double(toString(end_time - start_time)),
                                                              saved_model = solution$saved_model))
     saveRDS(population, file = paste0("data/", execution, "/final_population.rds"))
