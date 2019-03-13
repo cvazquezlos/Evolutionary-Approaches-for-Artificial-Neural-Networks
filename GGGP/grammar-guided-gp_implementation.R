@@ -156,6 +156,7 @@ aux <- dummy.data.frame(data, names = c("class"), sep = "")
 rm("data")
 data <- aux
 rm("aux")
+set.seed(133)
 shuffled_df <- as.data.frame(data[sample(n),])
 colnames(shuffled_df) <- gsub("[^a-zA-Z]*", "", colnames(shuffled_df))
 max <- apply(shuffled_df, 2, max)
@@ -258,3 +259,11 @@ for (execution in executions) {
     print(e)
   })
 }
+
+# Añadir cambios:
+# TRAIN PARCIAL
+# VALIDATION PARCIAL
+# TEST PARCIAL
+# TRAIN TOTAL
+# VALIDATION TOTAL
+# TEST TOTAL
