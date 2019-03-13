@@ -66,25 +66,14 @@ evaluation <- function(individual, split_crit, mode) {
   for (layer in tail(hidden_layers, 1)) {
     model %>% layer_dense(units = layer, activation = "relu")
   }
-  if (mode == 0) {
-    model %>% layer_dense(units = O, activation = "softmax")
-    model %>% compile(
-      optimizer = "adam",
-      loss = "categorical_crossentropy",
-      metrics = c("accuracy")
-    )
-  } else {
-    model %>% layer_dense(units = O)
-    model %>% compile(
-      optimizer = optimizer_rmsprop(),
-      loss = "mse",
-      metrics = c("mean_absolute_error")
-    )
-  }
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 2500, 
-                           verbose = 0, callbacks = list(
-    callback_early_stopping(monitor = "val_loss", min_delta = 0, patience = 250, verbose = 1, mode = "auto")
-  ))
+  model %>% layer_dense(units = O, activation = "softmax")
+  model %>% compile(
+    optimizer = "adam",
+    loss = "categorical_crossentropy",
+    metrics = c("accuracy")
+  )
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 300, 
+                           verbose = 0)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   history_df <- as.data.frame(history)
   saveRDS(history_df, file = paste0("data/", execution, "/history/", model_name, ".rds"))
@@ -92,7 +81,7 @@ evaluation <- function(individual, split_crit, mode) {
   score <- model %>% evaluate(X_train, y_train)
   individual$evaluated <- TRUE
   individual$loss <- score['loss'][[1]]
-  individual$metric <- score['mean_absolute_error'][[1]]
+  individual$metric <- score['acc'][[1]]
   individual$saved_model <- model_name
   k_clear_session()
   return(individual)
@@ -149,8 +138,7 @@ extract_hidden_layers <- function(architecture) {
 ###################################################################################################################################################
 ################################################################# MAIN  ALGORITHM #################################################################
 ###################################################################################################################################################
-#data <- dataset_boston_housing(path = "boston_housing.npz", test_split = 0.1, seed = 113L) DATASET FOR ADVANCE USE OF REGRESSION.
-data <- read.csv("../datasets/regression/rating-cereals.csv", header = T, sep = ",")
+data <- read.csv("../datasets/classification/iris.csv", header = T, sep = ",")
 n <- nrow(data)
 aux <- dummy.data.frame(data, names = c("class"), sep = "")
 rm("data")
