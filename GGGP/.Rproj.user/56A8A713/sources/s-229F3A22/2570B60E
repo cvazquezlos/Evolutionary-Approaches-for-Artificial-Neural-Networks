@@ -12,9 +12,9 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "E18F3F31",
+        "cacheKey" : "85D48466",
         "caption" : "shuffled_df",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=shuffled_df&cache_key=E18F3F31",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=shuffled_df&cache_key=85D48466",
         "displayedObservations" : "150",
         "environment" : "",
         "object" : "shuffled_df",
