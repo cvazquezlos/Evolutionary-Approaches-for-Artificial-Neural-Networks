@@ -257,10 +257,13 @@ for (execution in executions) {
   path = paste0("../results/classification/iris/partial/", execution)
   results <- readRDS(paste0(path, "/execution_results.rds"))
   model <- load_model_hdf5(paste0(path, "/model/", results$saved_model, ".h5"))
-  model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 450, verbose = 0)
+  model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 450, verbose = 0,
+                callbacks = list(
+                  callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
+                ))
   names(results) <- c("executions", "architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "saved_model")
   results$total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
   results$total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
   results$total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
-  saveRDS(path, "/execution_results.rds")
+  saveRDS(results, paste0(path, "/execution_results.rds"))
 }
