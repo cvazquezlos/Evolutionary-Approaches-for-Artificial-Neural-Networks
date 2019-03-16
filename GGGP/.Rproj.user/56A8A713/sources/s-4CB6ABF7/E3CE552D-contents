@@ -5,9 +5,6 @@ HISTORIES_DIRECTORY <- "../results/classification/iris/partial/"
 
 histories <- list.files(HISTORIES_DIRECTORY)
 histories <- as.numeric(histories[!is.na(as.numeric(histories))])
-remaining <- unlist(lapply(c(1:80), function(x) if (!(x %in% histories)) TRUE else FALSE))
-aux = c(1:80)
-bad_executions <- aux[remaining]
 
 final_populations <- data.frame(id = character(), 
                                 architecture = character(), 
