@@ -72,7 +72,7 @@ evaluation <- function(individual, split_crit, mode) {
     loss = "categorical_crossentropy",
     metrics = c("accuracy")
   )
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 50, verbose = 0)
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 25, verbose = 0)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   history_df <- as.data.frame(history)
   saveRDS(history_df, file = paste0("data/", execution, "/history/", model_name, ".rds"))
@@ -159,9 +159,9 @@ y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-executions <- bad_executions
+executions <- c(1:80)
 repeat_executions <- c()
-for (execution in c(50)) {
+for (execution in executions) {
   tryCatch({
     execution_results <- data.frame(execution = integer(),
                                     architecture = character(),
@@ -261,7 +261,7 @@ for (execution in executions) {
                 callbacks = list(
                   callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
                 ))
-  names(results) <- c("executions", "architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "saved_model")
+  colnames(results) <- c("executions", "architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "saved_model")
   results$total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
   results$total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
   results$total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
