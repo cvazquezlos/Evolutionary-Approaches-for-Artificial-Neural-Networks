@@ -72,7 +72,7 @@ evaluation <- function(individual, split_crit, mode) {
     loss = "categorical_crossentropy",
     metrics = c("accuracy")
   )
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 25, verbose = 0)
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 15, verbose = 0)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   history_df <- as.data.frame(history)
   saveRDS(history_df, file = paste0("data/", execution, "/history/", model_name, ".rds"))
