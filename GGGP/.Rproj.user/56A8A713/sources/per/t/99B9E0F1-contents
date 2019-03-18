@@ -72,7 +72,7 @@ evaluation <- function(individual, split_crit, mode) {
     loss = "categorical_crossentropy",
     metrics = c("accuracy")
   )
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 13, verbose = 0)
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 10000, verbose = 0)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   history_df <- as.data.frame(history)
   saveRDS(history_df, file = paste0("data/", execution, "/history/", model_name, ".rds"))
@@ -137,12 +137,8 @@ extract_hidden_layers <- function(architecture) {
 ###################################################################################################################################################
 ################################################################# MAIN  ALGORITHM #################################################################
 ###################################################################################################################################################
-data <- read.csv("../datasets/classification/iris.csv", header = T, sep = ",")
+data <- read.csv("../datasets/classification/ocean_proximity.csv", header = T, sep = ";")
 n <- nrow(data)
-aux <- dummy.data.frame(data, names = c("class"), sep = "")
-rm("data")
-data <- aux
-rm("aux")
 set.seed(123)
 shuffled_df <- as.data.frame(data[sample(n),])
 colnames(shuffled_df) <- gsub("[^a-zA-Z]*", "", colnames(shuffled_df))
@@ -150,16 +146,16 @@ c <- colnames(shuffled_df)
 train <- shuffled_df[1: round(0.7*n),]
 validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
 test <- shuffled_df[(round(0.9*n)+1):n,]
-X_train <- train[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-y_train <- train[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
-X_validation <- validation[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-y_validation <- validation[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
-X_test <- test[,head(colnames(shuffled_df), -3)] %>% as.matrix()
-y_test <- test[,tail(colnames(shuffled_df), 3)] %>% as.matrix()
+X_train <- train[,head(colnames(shuffled_df), -4)] %>% as.matrix()
+y_train <- train[,tail(colnames(shuffled_df), 4)] %>% as.matrix()
+X_validation <- validation[,head(colnames(shuffled_df), -4)] %>% as.matrix()
+y_validation <- validation[,tail(colnames(shuffled_df), 4)] %>% as.matrix()
+X_test <- test[,head(colnames(shuffled_df), -4)] %>% as.matrix()
+y_test <- test[,tail(colnames(shuffled_df), 4)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-executions <- c(24, 55, 69)
+executions <- c(1:80)
 repeat_executions <- c()
 for (execution in executions) {
   tryCatch({
@@ -252,18 +248,18 @@ aux = c(1:80)
 remaining <- unlist(lapply(aux, function(x) if (!(x %in% executions)) TRUE else FALSE))
 bad_executions <- aux[remaining]
 
-# Only for partial executions
-for (execution in executions) {
-  path = paste0("../results/classification/iris/partial/", execution)
-  results <- readRDS(paste0(path, "/execution_results.rds"))
-  model <- load_model_hdf5(paste0(path, "/model/", results$saved_model, ".h5"))
-  model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 450, verbose = 0,
-                callbacks = list(
-                  callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
-                ))
-  colnames(results) <- c("executions", "architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "saved_model")
-  results$total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
-  results$total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
-  results$total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
-  saveRDS(results, paste0(path, "/execution_results.rds"))
-}
+# # Only for partial executions
+# for (execution in executions) {
+#   path = paste0("../results/classification/iris/partial/", execution)
+#   results <- readRDS(paste0(path, "/execution_results.rds"))
+#   model <- load_model_hdf5(paste0(path, "/model/", results$saved_model, ".h5"))
+#   model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 450, verbose = 0,
+#                 callbacks = list(
+#                   callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
+#                 ))
+#   colnames(results) <- c("executions", "architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "saved_model")
+#   results$total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
+#   results$total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
+#   results$total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+#   saveRDS(results, paste0(path, "/execution_results.rds"))
+# }
