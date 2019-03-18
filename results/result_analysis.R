@@ -9,11 +9,14 @@ TARGET_FOLDER <- "./classification/iris/partial/"
 # Analysis of the resulting dataframes for each execution
 BASE_DATA_FRAME <- data.frame(execution = integer(),
                               architecture = character(),
-                              acc_train = double(),
-                              acc_validation = double(),
-                              acc_test = double(),
+                              partial_acc_train = double(),
+                              partial_acc_validation = double(),
+                              partial_acc_test = double(),
                               time = double(),
                               saved_model = character(),
+                              total_acc_train = double(),
+                              total_acc_validation = double(),
+                              total_acc_test = double(),
                               stringsAsFactors = FALSE)
 executions <- list.files(TARGET_FOLDER)
 
@@ -27,11 +30,11 @@ executions_results <- executions_results[order(executions_results$execution, dec
 row.names(executions_results) <- c(1:nrow(executions_results))
 executions_results$architecture <- as.character(executions_results$architecture)
 
-analysis_results <- aggregate(executions_results[,c(2:6)], 
+analysis_results <- aggregate(executions_results[,c(2:10)], 
                               by = list(executions_results$architecture), 
                               FUN = mean)
-analysis_results <- analysis_results[order(analysis_results$time),c(1,3:6)]
-colnames(analysis_results) <- c("architecture", "acc_train", "acc_validation", "acc_test", "time")
+analysis_results <- analysis_results[order(analysis_results$time),c(1,3:6,8:10)]
+colnames(analysis_results) <- c("architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "total_acc_train", "total_acc_validation", "total_acc_test")
 analysis_results$percentage <- unlist(lapply(analysis_results$architecture, function(x) {
   round((nrow(executions_results[executions_results$architecture == x,])/nrow(executions_results) * 100), 2)
 }))
@@ -232,7 +235,7 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   xlab("Generaciones") +
   scale_x_continuous(breaks = c(1:29)) +
   ylab("Fitness") + 
-  ylim(0.0000000, 0.6000000) +
+  scale_y_continuous(breaks = c(0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2)) +
   scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
-  ggtitle("EvoluciÃ³n media de las poblaciones y sus mejores a lo largo de las 80 ejecuciones del problema Iris") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
+  ggtitle("Evolución media de las poblaciones y sus mejores a lo largo de las 80 ejecuciones del problema Iris") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
 print(executions_plot)
