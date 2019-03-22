@@ -4,6 +4,8 @@ library("ggplot2")
 library("gramEvol")
 library("jsonlite")
 library("keras")
+install_keras(tensorflow = "gpu", method = "conda")
+use_condaenv("r-tensorflow",required = T)
 library("sqldf")
 library("stringr")
 # install.packages("dummies")
@@ -11,7 +13,6 @@ library("stringr")
 # install.packages("gramEvol")
 # install.packages("jsonlite")
 # install.packages("keras")
-# install_keras()
 # install.packages("sqldf")
 # install.packages("stringr")
 
@@ -20,8 +21,8 @@ rm(list=ls())
 
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
-  a = grule("nnnn"), # Update a with many n as value of I.
-  z = grule("nnn"),  # Update z with many n as value of O.
+  a = grule("nnnnnnnnn"), # Update a with many n as value of I.
+  z = grule("nnnn"),  # Update z with many n as value of O.
   h = gsrule("<h><h>", "<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
@@ -72,9 +73,9 @@ evaluation <- function(individual, split_crit, mode) {
     loss = "categorical_crossentropy",
     metrics = c("accuracy")
   )
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 1000, batch_size = 250, verbose = 0,
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 1000, batch_size = 200, verbose = 0,
                            callbacks = list(
-                             callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
+                             callback_early_stopping(monitor = "val_loss", patience = 100, verbose = 0, mode ="auto")
                            ))
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   history_df <- as.data.frame(history)
@@ -241,6 +242,7 @@ for (execution in executions) {
     saveRDS(population, file = paste0("data/", execution, "/final_population.rds"))
     saveRDS(execution_results, file = paste0("data/", execution, "/execution_results.rds"))
   }, error = function(e){
+    print(e)
     repeat_executions <<- c(repeat_executions, execution)
   })
 }
