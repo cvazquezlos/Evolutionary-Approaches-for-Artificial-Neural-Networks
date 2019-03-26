@@ -1,11 +1,12 @@
+library("caret")
 library("cowplot")
 library("dummies")
 library("ggplot2")
 library("gramEvol")
 library("jsonlite")
 library("keras")
-install_keras(tensorflow = "gpu", method = "conda")
-use_condaenv("r-tensorflow",required = T)
+# install_keras(tensorflow = "gpu", method = "conda")
+# install_keras()
 library("sqldf")
 library("stringr")
 # install.packages("dummies")
@@ -21,13 +22,13 @@ rm(list=ls())
 
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
-  a = grule("nnnnnnnnn"), # Update a with many n as value of I.
+  a = grule("nnnnnnnnnnnnnnnn"), # Update a with many n as value of I.
   z = grule("nnnn"),  # Update z with many n as value of O.
   h = gsrule("<h><h>", "<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
 I <- NA
-p <- 25
+p <- 20
 O <- NA
 
 base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
@@ -73,9 +74,9 @@ evaluation <- function(individual, split_crit, mode) {
     loss = "categorical_crossentropy",
     metrics = c("accuracy")
   )
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 1000, batch_size = 200, verbose = 0,
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 500, batch_size = 150, verbose = 0,
                            callbacks = list(
-                             callback_early_stopping(monitor = "val_loss", patience = 100, verbose = 0, mode ="auto")
+                             callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
                            ))
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   history_df <- as.data.frame(history)
@@ -86,7 +87,6 @@ evaluation <- function(individual, split_crit, mode) {
   individual$loss <- score['loss'][[1]]
   individual$metric <- score['acc'][[1]]
   individual$saved_model <- model_name
-  k_clear_session()
   return(individual)
 }
 
@@ -141,7 +141,13 @@ extract_hidden_layers <- function(architecture) {
 ###################################################################################################################################################
 ################################################################# MAIN  ALGORITHM #################################################################
 ###################################################################################################################################################
-data <- read.csv("../datasets/classification/ocean_proximity.csv", header = T, sep = ";")
+data <- read.table("../datasets/classification/car.data", sep = ",")
+colnames(data) <- c("buying", "maint", "doors", "persons", "lug_boot", "safety", "acceptability")
+dummy_data <- dummyVars(" ~ .", data = data[,c(1,2,5:7)])
+trsf <- data.frame(predict(dummy_data, newdata = data[,c(1,2,5:7)]))
+trsf$doors <- data$doors
+trsf$persons <- data$persons
+data <- trsf[,c(1:14,19,20,15:18)]
 n <- nrow(data)
 set.seed(123)
 shuffled_df <- as.data.frame(data[sample(n),])
@@ -159,7 +165,7 @@ y_test <- test[,tail(colnames(shuffled_df), 4)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-executions <- c(1:80)
+executions <- c(4:80)
 repeat_executions <- c()
 for (execution in executions) {
   tryCatch({
@@ -188,18 +194,18 @@ for (execution in executions) {
     }
     iteration <- 1
     while (T) {
+      k_clear_session()
       # Stop condition
-      results <- sqldf("select * from population where loss <= 0.035 AND metric >= 0.98 order by id")
+      results <- sqldf("select * from population where metric >= 0.985 order by id")
       if ((nrow(results) != 0) | (length(unique(population$architecture)) == 1)) {
         solution <- results[1,]
         break
       } else if (iteration == 30) {
-        results <- population[order(unlist(population$loss, population$metric), decreasing = F),]
         solution <- results[1,]
         break
       } else {
         # Selection
-        matting_pool <- selection(8)
+        matting_pool <- selection(6)
         # Crossover
         children <- data.frame(id = integer(),
                                architecture = character(),
@@ -245,6 +251,7 @@ for (execution in executions) {
     print(e)
     repeat_executions <<- c(repeat_executions, execution)
   })
+  k_clear_session()
 }
 EXECUTIONS_DIRECTORY <- "../results/classification/iris/partial/"
 executions <- list.files(EXECUTIONS_DIRECTORY)
