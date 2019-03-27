@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1552762017910.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "99B9E0F1",
+    "lastKnownWriteTime" : 1553642713,
+    "last_content_update" : 1553642713686,
+    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP/grammar-guided-gp_implementation.R",
+    "project_path" : "grammar-guided-gp_implementation.R",
+    "properties" : {
+        "cursorPosition" : "73,38",
+        "scrollLine" : "64"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
