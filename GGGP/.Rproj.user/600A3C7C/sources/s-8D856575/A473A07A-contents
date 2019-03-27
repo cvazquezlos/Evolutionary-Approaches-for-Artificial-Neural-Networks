@@ -39,15 +39,21 @@ rm("y")
 bad_executions <- unlist(bad_executions)
 for (bad_execution in bad_executions) {
   individual_histories <- list.files(paste0(TARGET_FOLDER, "/", bad_execution, "/history"))
-  individual_ranking <- data.frame(individual = character(), value = numeric(), stringsAsFactors = FALSE)
+  individual_ranking <- data.frame(individual = character(), 
+                                   acc_train = numeric(), 
+                                   acc_validation = numeric(),
+                                   numeric(), stringsAsFactors = FALSE)
   for (history in individual_histories) {
     aux <- readRDS(paste0(TARGET_FOLDER, "/", bad_execution, "/history/", history))
-    ranking <- aux[aux$metric == "acc" & aux$data == "training",]
-    ranking <- ranking[order(ranking$value, decreasing = TRUE),]
-    individual_ranking <- rbind(individual_ranking, data.frame(individual = history, value = ranking[1,]$value))
+    ranking_tr <- aux[aux$metric == "acc" & aux$data == "training",]
+    ranking_tr<- ranking_tr[order(ranking_tr$value, decreasing = TRUE),]
+    ranking_val <- aux[aux$metric == "acc" & aux$data == "validation",]
+    ranking_val<- ranking_val[order(ranking_val$value, decreasing = TRUE),]
+    individual_ranking <- rbind(individual_ranking, data.frame(individual = history, acc_train = ranking_tr[1,]$value,
+                                                               acc_validation = ranking_val[1,]$value))
   }
-  individual_ranking <- individual_ranking[order(individual_ranking$value, decreasing = TRUE),]
-  saveRDS(individual_ranking[1,], paste0(TARGET_FOLDER, "/", bad_execution, "/", bad_execution, "_results.rds"))
+  individual_ranking <- individual_ranking[order(individual_ranking$acc_train, decreasing = TRUE),]
+  saveRDS(individual_ranking[1,], paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results.rds"))
 }
 
 executions_results <- executions_results[order(executions_results$execution, decreasing = FALSE),]
