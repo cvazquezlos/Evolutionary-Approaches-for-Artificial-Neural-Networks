@@ -289,3 +289,8 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
   ggtitle("Evoluci?n media de las poblaciones y sus mejores a lo largo de las 80 ejecuciones del problema Iris") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
 print(executions_plot)
+
+# BAD EXECUTIONS
+# "10" "11" "13" "15" "16" "17" "18" "19" "2"  "20" "21" "22" "25" "26" "28" "3"  "31" "32" "33" "34"
+# "35" "36" "37" "39" "40" "41" "43" "44" "48" "49" "50" "51" "54" "55" "56" "57" "58" "60" "64" "66"
+# "7"  "71" "73" "75" "76" "77" "78" "79" "9"
