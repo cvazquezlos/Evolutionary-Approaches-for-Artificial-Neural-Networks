@@ -1,6 +1,8 @@
 library("xlsx")
 library("ggplot2")
 library("sets")
+library("keras")
+library("stringr")
 #install.packages("xlsx")
 
 # setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
@@ -26,7 +28,7 @@ bad_executions <- list()
 executions_results <- BASE_DATA_FRAME
 y <- lapply(executions, function (x) {
   tryCatch({
-    df = readRDS(paste0(TARGET_FOLDER, "/", x, "/execution_results.rds"))
+    df = readRDS(paste0(TARGET_FOLDER, "/", x, "/final_population.rds"))
     executions_results <<- rbind(executions_results, df)
   }, error = function(cond) {
     bad_executions <<- c(bad_executions, x)
@@ -55,6 +57,24 @@ for (bad_execution in bad_executions) {
   individual_ranking <- individual_ranking[order(individual_ranking$acc_train, decreasing = TRUE),]
   saveRDS(individual_ranking[1,], paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results.rds"))
 }
+
+for (bad_execution in bad_executions) {
+  individual <- readRDS(paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results.rds"))
+  colnames(individual) <- c("architecture", "acc_train", "acc_validation")
+  individual$saved_model <- individual$architecture
+  ind_name <- str_replace_all(individual$architecture, ".rds", "")
+  model <- load_model_hdf5(paste0(TARGET_FOLDER, "/", bad_execution, "/model/", ind_name, ".h5"))
+  individual$acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+  individual$architecture <- gsub("-.*", "", individual$architecture)
+  saveRDS(individual, paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results1.rds"))
+}
+
+# for (bad_execution in bad_executions) {
+#   individual <- readRDS(paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results1.rds"))
+#   individual$saved_model <- individual$architecture
+#   individual$architecture <- str_replace_all(individual$architecture, ".rds", "")
+#   saveRDS(individual, paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results2.rds"))
+# }
 
 executions_results <- executions_results[order(executions_results$execution, decreasing = FALSE),]
 row.names(executions_results) <- c(1:nrow(executions_results))
