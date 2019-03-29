@@ -8,83 +8,30 @@ library("stringr")
 # setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
 setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
 
-TARGET_FOLDER <- "./classification/car/total/"
+TARGET_FOLDER <- "./classification/car/total"
 
 # Analysis of the resulting dataframes for each execution
-BASE_DATA_FRAME <- data.frame(execution = integer(),
-                              architecture = character(),
-                              partial_acc_train = double(),
-                              partial_acc_validation = double(),
-                              partial_acc_test = double(),
-                              time = double(),
+BASE_DATA_FRAME <- data.frame(architecture = character(),
                               saved_model = character(),
-                              total_acc_train = double(),
-                              total_acc_validation = double(),
-                              total_acc_test = double(),
+                              acc_train = double(),
+                              acc_validation = double(),
+                              acc_test = double(),
                               stringsAsFactors = FALSE)
 executions <- list.files(TARGET_FOLDER)
 
-bad_executions <- list()
 executions_results <- BASE_DATA_FRAME
 y <- lapply(executions, function (x) {
-  tryCatch({
-    df = readRDS(paste0(TARGET_FOLDER, "/", x, "/final_population.rds"))
-    executions_results <<- rbind(executions_results, df)
-  }, error = function(cond) {
-    bad_executions <<- c(bad_executions, x)
-  }, warning = function(cond) {
-    bad_executions <<- c(bad_executions, x)
-  })
+  df = readRDS(paste0(TARGET_FOLDER, "/", x, "/execution_results.rds"))
+  executions_results <<- rbind(executions_results, df[,c("architecture", "saved_model", "acc_train", "acc_validation", "acc_test")])
 })
 rm("y")
-# Repairing task of the executions.
-bad_executions <- unlist(bad_executions)
-for (bad_execution in bad_executions) {
-  individual_histories <- list.files(paste0(TARGET_FOLDER, "/", bad_execution, "/history"))
-  individual_ranking <- data.frame(individual = character(), 
-                                   acc_train = numeric(), 
-                                   acc_validation = numeric(),
-                                   numeric(), stringsAsFactors = FALSE)
-  for (history in individual_histories) {
-    aux <- readRDS(paste0(TARGET_FOLDER, "/", bad_execution, "/history/", history))
-    ranking_tr <- aux[aux$metric == "acc" & aux$data == "training",]
-    ranking_tr<- ranking_tr[order(ranking_tr$value, decreasing = TRUE),]
-    ranking_val <- aux[aux$metric == "acc" & aux$data == "validation",]
-    ranking_val<- ranking_val[order(ranking_val$value, decreasing = TRUE),]
-    individual_ranking <- rbind(individual_ranking, data.frame(individual = history, acc_train = ranking_tr[1,]$value,
-                                                               acc_validation = ranking_val[1,]$value))
-  }
-  individual_ranking <- individual_ranking[order(individual_ranking$acc_train, decreasing = TRUE),]
-  saveRDS(individual_ranking[1,], paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results.rds"))
-}
-
-for (bad_execution in bad_executions) {
-  individual <- readRDS(paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results.rds"))
-  colnames(individual) <- c("architecture", "acc_train", "acc_validation")
-  individual$saved_model <- individual$architecture
-  ind_name <- str_replace_all(individual$architecture, ".rds", "")
-  model <- load_model_hdf5(paste0(TARGET_FOLDER, "/", bad_execution, "/model/", ind_name, ".h5"))
-  individual$acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
-  individual$architecture <- gsub("-.*", "", individual$architecture)
-  saveRDS(individual, paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results1.rds"))
-}
-
-# for (bad_execution in bad_executions) {
-#   individual <- readRDS(paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results1.rds"))
-#   individual$saved_model <- individual$architecture
-#   individual$architecture <- str_replace_all(individual$architecture, ".rds", "")
-#   saveRDS(individual, paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results2.rds"))
-# }
-
-executions_results <- executions_results[order(executions_results$execution, decreasing = FALSE),]
-row.names(executions_results) <- c(1:nrow(executions_results))
 executions_results$architecture <- as.character(executions_results$architecture)
-
-analysis_results <- aggregate(executions_results[,c(2:10)], 
+executions_results$saved_model <- NULL
+analysis_results <- aggregate(executions_results[,c(1:4)], 
                               by = list(executions_results$architecture), 
                               FUN = mean)
-analysis_results <- analysis_results[order(analysis_results$time),c(1,3:6,8:10)]
-colnames(analysis_results) <- c("architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "total_acc_train", "total_acc_validation", "total_acc_test")
+analysis_results$architecture <- NULL
+colnames(analysis_results) <- c("architecture", "acc_train", "acc_validation", "acc_test")
 analysis_results$percentage <- unlist(lapply(analysis_results$architecture, function(x) {
   round((nrow(executions_results[executions_results$architecture == x,])/nrow(executions_results) * 100), 2)
 }))
