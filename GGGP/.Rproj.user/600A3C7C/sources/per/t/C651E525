@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1554133271941.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "469410907",
+    "id" : "C651E525",
+    "lastKnownWriteTime" : 1554135955,
+    "last_content_update" : 1554135955685,
+    "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results/re_calculate_generations.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "36,2",
+        "scrollLine" : "10",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
