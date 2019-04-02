@@ -7,13 +7,13 @@
     "folds" : "",
     "hash" : "0",
     "id" : "C651E525",
-    "lastKnownWriteTime" : 1554215386,
-    "last_content_update" : 1554215386837,
+    "lastKnownWriteTime" : 1554218709,
+    "last_content_update" : 1554218709593,
     "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results/re_calculate_generations.R",
     "project_path" : null,
     "properties" : {
-        "cursorPosition" : "58,3",
-        "scrollLine" : "32",
+        "cursorPosition" : "35,0",
+        "scrollLine" : "11",
         "tempName" : "Untitled1"
     },
     "relative_order" : 5,

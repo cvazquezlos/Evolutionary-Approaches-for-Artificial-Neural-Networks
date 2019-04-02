@@ -33,11 +33,11 @@ rm("y")
 
 bad_executions <- unlist(bad_executions)
 from <- 1
-iteration_results <- data.frame(iteration = integer(),
-                                avg_loss = numeric(),
-                                best_loss = numeric(),
-                                stringsAsFactors = F)
 for (bad_execution in bad_executions) {
+  iteration_results <- data.frame(iteration = integer(),
+                                  avg_loss = numeric(),
+                                  best_loss = numeric(),
+                                  stringsAsFactors = F)
   individuals <- list.files(paste0("./classification/car/total/", bad_execution, "/history/"))
   individuals <- individuals[order(as.numeric(gsub("\\D+|\\.*", "", individuals)))]
   individual_accuracies <- unlist(lapply(individuals, function(x) {
@@ -45,16 +45,17 @@ for (bad_execution in bad_executions) {
     aux <- aux[aux$metric == "loss" & aux$data == "training",]
     aux[-1,]$value
   }))
-  print(individual_accuracies)
-  break
   to <- 20
   n <- (length(individuals) - 20) / 6
   for (iteration in c(1:n)) {
-    iteration_values = head(individual_accuracies, top)
+    iteration_values = head(individual_accuracies, to)
+    avg <- mean(iteration_values)
+    best <- min(iteration_values)
     iteration_results <- rbind(iteration_results, data.frame(iteration = iteration,
-                                                             avg_loss = mean(iteration_values),
-                                                             best_loss = min(iteration_values),
+                                                             avg_loss = avg,
+                                                             best_loss = best,
                                                              stringsAsFactors = F))
     to <- to + 6
   }
+  saveRDS(iteration_results, paste0("./classification/car/total/", bad_execution, "/", bad_execution, "_results.rds"))
 }
