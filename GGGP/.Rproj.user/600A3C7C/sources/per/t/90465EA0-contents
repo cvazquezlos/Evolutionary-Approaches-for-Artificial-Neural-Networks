@@ -4,8 +4,8 @@ library("sets")
 library("keras")
 library("stringr")
 
-# setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
-setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
+setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
+# setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
 
 TARGET_FOLDER <- "./classification/car/total"
 
@@ -32,7 +32,23 @@ y <- lapply(executions, function (x) {
 rm("y")
 
 bad_executions <- unlist(bad_executions)
-last_index = 20
+from <- 1
+iteration_results <- data.frame(iteration = integer(),
+                                avg_loss = numeric(),
+                                best_loss = numeric(),
+                                stringsAsFactors = T)
 for (bad_execution in bad_executions) {
-  
+  individuals <- list.files(paste0("./classification/car/total/", bad_execution, "/history/"))
+  individual_accuracies <- lapply[individuals, function(x) {
+    aux <- readRDS(x)
+    aux <- aux[aux$metric == "acc" & aux$data == "validation",]
+    aux <- aux[order(aux$value, decreasing = TRUE),]
+    aux[1,]$value
+  }]
+  to <- 20
+  n <- (length(individuals) - 20) / 6
+  for (iteration in c(1:n)) {
+    
+  }
+  to <- to + 6
 }
