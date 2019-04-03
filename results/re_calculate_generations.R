@@ -43,7 +43,7 @@ for (bad_execution in bad_executions) {
   individual_accuracies <- unlist(lapply(individuals, function(x) {
     aux <- readRDS(paste0("./classification/car/total/", bad_execution, "/history/", x))
     aux <- aux[aux$metric == "loss" & aux$data == "training",]
-    aux[-1,]$value
+    tail(aux, 1)$value
   }))
   to <- 20
   n <- (length(individuals) - 20) / 6
