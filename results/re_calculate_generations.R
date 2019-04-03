@@ -49,8 +49,9 @@ for (bad_execution in bad_executions) {
   n <- (length(individuals) - 20) / 6
   for (iteration in c(1:n)) {
     iteration_values = head(individual_accuracies, to)
-    avg <- mean(iteration_values)
-    best <- min(iteration_values)
+    iteration_values <- sort(iteration_values)
+    avg <- mean(head(iteration_values, 20))
+    best <- min(head(iteration_values, 20))
     iteration_results <- rbind(iteration_results, data.frame(iteration = iteration,
                                                              avg_loss = avg,
                                                              best_loss = best,
