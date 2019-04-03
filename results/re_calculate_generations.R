@@ -65,5 +65,26 @@ for (bad_execution in bad_executions) {
 
 # Repair execution_results.rds
 for (bad_execution in bad_executions) {
-  
+  individuals <- list.files(paste0(TARGET_FOLDER, "/", bad_execution, "/history/"))
+  individual_ranking <- data.frame(individual = character(), 
+                                   acc_train = numeric(), 
+                                   acc_validation = numeric(),
+                                   numeric(), stringsAsFactors = FALSE)
+  for (individual in individuals) {
+    aux <- readRDS(paste0(TARGET_FOLDER, "/", bad_execution, "/history/", individual))
+    ranking_tr <- aux[aux$metric == "acc" & aux$data == "training",]
+    ranking_tr<- ranking_tr[order(ranking_tr$value, decreasing = TRUE),]
+    ranking_val <- aux[aux$metric == "acc" & aux$data == "validation",]
+    ranking_val<- ranking_val[order(ranking_val$value, decreasing = TRUE),]
+    model_name <- str_replace_all(individual, ".rds", "")
+    model <- load_model_hdf5(paste0(TARGET_FOLDER, "/", bad_execution, "/model/", model_name, ".h5"))
+    acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+    individual_ranking <- rbind(individual_ranking, data.frame(architecture = gsub("-.*", "", individual), 
+                                                               acc_train = ranking_tr[1,]$value,
+                                                               acc_validation = ranking_val[1,]$value,
+                                                               acc_test = acc_test,
+                                                               saved_model = individual))
+  }  
+  individual_ranking <- individual_ranking[order(individual_ranking$acc_train, decreasing = TRUE),]
+  saveRDS(individual_ranking[1,], paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results.rds"))
 }
