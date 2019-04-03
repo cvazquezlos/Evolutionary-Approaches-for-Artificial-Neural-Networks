@@ -234,7 +234,7 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   ylab("Fitness") + 
   scale_y_continuous(breaks = c(0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2)) +
   scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
-  ggtitle("Evoluci?n media de las poblaciones y sus mejores a lo largo de las 80 ejecuciones del problema Iris") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
+  ggtitle("Evolución de la población y sus individuos totalmente entrenados en las 29 generaciones para el problema de Car") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
 print(executions_plot)
 
 # BAD EXECUTIONS
