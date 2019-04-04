@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "313433489",
     "id" : "A473A07A",
     "lastKnownWriteTime" : 1554385325,
-    "last_content_update" : 1554385325547,
+    "last_content_update" : 1554385325,
     "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results/result_analysis.R",
     "project_path" : null,
     "properties" : {
-        "cursorPosition" : "238,59",
-        "scrollLine" : "223"
+        "cursorPosition" : "238,66",
+        "scrollLine" : "219"
     },
     "relative_order" : 1,
     "source_on_save" : false,
