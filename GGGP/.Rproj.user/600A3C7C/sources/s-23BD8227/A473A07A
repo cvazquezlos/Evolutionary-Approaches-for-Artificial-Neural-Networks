@@ -7,13 +7,13 @@
     "folds" : "",
     "hash" : "0",
     "id" : "A473A07A",
-    "lastKnownWriteTime" : 1554290429,
-    "last_content_update" : 1554290429816,
+    "lastKnownWriteTime" : 1554385325,
+    "last_content_update" : 1554385325547,
     "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results/result_analysis.R",
     "project_path" : null,
     "properties" : {
-        "cursorPosition" : "241,0",
-        "scrollLine" : "0"
+        "cursorPosition" : "238,59",
+        "scrollLine" : "223"
     },
     "relative_order" : 1,
     "source_on_save" : false,

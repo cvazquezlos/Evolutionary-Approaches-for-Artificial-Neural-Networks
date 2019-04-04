@@ -8,7 +8,7 @@ library("stringr")
 # setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
 setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
 
-TARGET_FOLDER <- "./classification/car/total"
+TARGET_FOLDER <- "./classification/car/partial"
 
 # Analysis of the resulting dataframes for each execution
 BASE_DATA_FRAME <- data.frame(architecture = character(),
@@ -39,13 +39,13 @@ analysis_results$percentage <- unlist(lapply(analysis_results$architecture, func
 }))
 analysis_results <- analysis_results[order(analysis_results$percentage, decreasing = TRUE),]
 row.names(analysis_results) <- c(1:nrow(analysis_results))
-write.csv(analysis_results, file = "../results/classification/car/executions_results_total.csv")
-write.xlsx(analysis_results, file = "../results/classification/car/executions_results_total.xlsx")
+write.csv(analysis_results, file = "../results/classification/car/executions_results_partial.csv")
+write.xlsx(analysis_results, file = "../results/classification/car/executions_results_partial.xlsx")
 
 # Plotting the executions
 executions_plotting_data <- data.frame(generation = c(1:29), stringsAsFactors = F)
 z <- lapply(c(1:80), function(x) {
-  df = readRDS(paste0("../results/classification/car/total/", x, "/", x, "_results.rds"))[, c(2:3)]
+  df = readRDS(paste0("../results/classification/car/partial/", x, "/", x, "_results.rds"))[, c(2:3)]
   n_colnames = c(paste0("avg_loss", x), paste0("best_loss", x))
   colnames(df) = n_colnames
   n = nrow(df)
