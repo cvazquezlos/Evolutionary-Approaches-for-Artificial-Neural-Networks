@@ -17,7 +17,8 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
+setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
+# setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
 
 GRAMMAR <- list(
