@@ -17,6 +17,7 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
+# setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
 setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
 
@@ -138,13 +139,13 @@ extract_hidden_layers <- function(architecture) {
 ###################################################################################################################################################
 ################################################################# MAIN  ALGORITHM #################################################################
 ###################################################################################################################################################
-data <- read.table("../datasets/classification/car.data", sep = ",")
-colnames(data) <- c("buying", "maint", "doors", "persons", "lug_boot", "safety", "acceptability")
-dummy_data <- dummyVars(" ~ .", data = data[,c(1,2,5:7)])
-trsf <- data.frame(predict(dummy_data, newdata = data[,c(1,2,5:7)]))
-trsf$doors <- data$doors
-trsf$persons <- data$persons
-data <- trsf[,c(1:14,19,20,15:18)]
+data <- read.csv2("../datasets/classification/ocean_proximity.csv")
+# ONE HOT ENCODING
+# dummy_data <- dummyVars(" ~ .", data = data[,c(1,2,5:7)])
+# trsf <- data.frame(predict(dummy_data, newdata = data[,c(1,2,5:7)]))
+# trsf$doors <- data$doors
+# trsf$persons <- data$persons
+# data <- trsf[,c(1:14,19,20,15:18)]
 n <- nrow(data)
 set.seed(123)
 shuffled_df <- as.data.frame(data[sample(n),])
@@ -257,16 +258,18 @@ aux = c(1:80)
 remaining <- unlist(lapply(aux, function(x) if (!(x %in% executions)) TRUE else FALSE))
 bad_executions <- aux[remaining]
 
-# # Only for partial executions
+# Only for partial executions
 # for (execution in executions) {
-#   path = paste0("../results/classification/iris/partial/", execution)
+#   path = paste0("../results/classification/car/partial/", execution)
 #   results <- readRDS(paste0(path, "/execution_results.rds"))
+#   results <- results[,c(1:3,5,4)]
+#   results$saved_model <- str_replace_all(results$saved_model, ".rds", "")
 #   model <- load_model_hdf5(paste0(path, "/model/", results$saved_model, ".h5"))
-#   model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 450, verbose = 0,
+#   model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 480, verbose = 0,
 #                 callbacks = list(
 #                   callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
 #                 ))
-#   colnames(results) <- c("executions", "architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "time", "saved_model")
+#   colnames(results) <- c("architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "saved_model")
 #   results$total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
 #   results$total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
 #   results$total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]

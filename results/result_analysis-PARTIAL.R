@@ -1,51 +1,52 @@
 library("xlsx")
 library("ggplot2")
-library("sets")
-library("keras")
-library("stringr")
 #install.packages("xlsx")
 
-# setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
-setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
+setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
 
-TARGET_FOLDER <- "./classification/car/partial"
+TARGET_FOLDER <- "./classification/iris/partial/"
 
 # Analysis of the resulting dataframes for each execution
-BASE_DATA_FRAME <- data.frame(architecture = character(),
+BASE_DATA_FRAME <- data.frame(execution = integer(),
+                              architecture = character(),
+                              partial_acc_train = double(),
+                              partial_acc_validation = double(),
+                              partial_acc_test = double(),
+                              time = double(),
                               saved_model = character(),
-                              acc_train = double(),
-                              acc_validation = double(),
-                              acc_test = double(),
+                              total_acc_train = double(),
+                              total_acc_validation = double(),
+                              total_acc_test = double(),
                               stringsAsFactors = FALSE)
 executions <- list.files(TARGET_FOLDER)
 
 executions_results <- BASE_DATA_FRAME
 y <- lapply(executions, function (x) {
   df = readRDS(paste0(TARGET_FOLDER, "/", x, "/execution_results.rds"))
-  executions_results <<- rbind(executions_results, df[,c("architecture", "saved_model", "acc_train", "acc_validation", "acc_test")])
+  executions_results <<- rbind(executions_results, df)
 })
 rm("y")
+# executions_results <- executions_results[order(executions_results$execution, decreasing = FALSE),]
+row.names(executions_results) <- c(1:nrow(executions_results))
 executions_results$architecture <- as.character(executions_results$architecture)
-executions_results$architecture <- gsub("_", "/", executions_results$architecture)
-executions_results$saved_model <- NULL
-analysis_results <- aggregate(executions_results[,c(1:4)], 
+
+analysis_results <- aggregate(executions_results[,c(2:5,8:10)], 
                               by = list(executions_results$architecture), 
                               FUN = mean)
-analysis_results$architecture <- NULL
-colnames(analysis_results) <- c("architecture", "acc_train", "acc_validation", "acc_test")
-analysis_results$architecture <- gsub("_", "/", analysis_results$architecture)
+analysis_results <- analysis_results[,c(1,3:8)]
+colnames(analysis_results) <- c("architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "total_acc_train", "total_acc_validation", "total_acc_test")
 analysis_results$percentage <- unlist(lapply(analysis_results$architecture, function(x) {
   round((nrow(executions_results[executions_results$architecture == x,])/nrow(executions_results) * 100), 2)
 }))
 analysis_results <- analysis_results[order(analysis_results$percentage, decreasing = TRUE),]
 row.names(analysis_results) <- c(1:nrow(analysis_results))
-write.csv(analysis_results, file = "../results/classification/car/executions_results_partial.csv")
-write.xlsx(analysis_results, file = "../results/classification/car/executions_results_partial.xlsx")
+write.csv(analysis_results, file = "../results/classification/iris/executions_results_partial.csv")
+write.xlsx(analysis_results, file = "../results/classification/iris/executions_results_partial.xlsx")
 
 # Plotting the executions
 executions_plotting_data <- data.frame(generation = c(1:29), stringsAsFactors = F)
 z <- lapply(c(1:80), function(x) {
-  df = readRDS(paste0("../results/classification/car/partial/", x, "/", x, "_results.rds"))[, c(2:3)]
+  df = readRDS(paste0("../results/classification/iris/partial/", x, "/", x, "_results.rds"))[, c(2:3)]
   n_colnames = c(paste0("avg_loss", x), paste0("best_loss", x))
   colnames(df) = n_colnames
   n = nrow(df)
@@ -233,13 +234,8 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   geom_line(aes(y = best_loss_mean, colour = "Mejores"), size = 1) +
   xlab("Generaciones") +
   scale_x_continuous(breaks = c(1:29)) +
-  ylab("Fitness") +
-  scale_y_continuous(breaks = c(0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5)) +
+  ylab("Fitness") + 
+  scale_y_continuous(breaks = c(0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2)) +
   scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
-  ggtitle("Evolución de la población y sus individuos totalmente entrenados en las 29 generaciones para el problema de Car") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
+  ggtitle("Entrenamiento parcial de los individuos") + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
 print(executions_plot)
-
-# BAD EXECUTIONS
-# "10" "11" "13" "15" "16" "17" "18" "19" "2"  "20" "21" "22" "25" "26" "28" "3"  "31" "32" "33" "34"
-# "35" "36" "37" "39" "40" "41" "43" "44" "48" "49" "50" "51" "54" "55" "56" "57" "58" "60" "64" "66"
-# "7"  "71" "73" "75" "76" "77" "78" "79" "9"
