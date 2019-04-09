@@ -17,14 +17,14 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-# setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
-setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
+setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
+# setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
 
 GRAMMAR <- list(
   S = gsrule("<a><h>/<z>"),
-  a = grule("nnnnnnnnnnnnnnnn"), # Update a with many n as value of I.
-  z = grule("nnnn"),  # Update z with many n as value of O.
+  a = grule("nnnn"), # Update a with many n as value of I.
+  z = grule("nnn"),  # Update z with many n as value of O.
   h = gsrule("<h><h>", "<h><h>", "/<n>"),
   n = gsrule("n<n>", "n")
 )
@@ -75,7 +75,7 @@ evaluation <- function(individual, split_crit, mode) {
     loss = "categorical_crossentropy",
     metrics = c("accuracy")
   )
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 20, batch_size = 150, verbose = 0)
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 4, batch_size = 32, verbose = 0)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
   history_df <- as.data.frame(history)
   saveRDS(history_df, file = paste0("data/", execution, "/history/", model_name, ".rds"))
@@ -139,13 +139,15 @@ extract_hidden_layers <- function(architecture) {
 ###################################################################################################################################################
 ################################################################# MAIN  ALGORITHM #################################################################
 ###################################################################################################################################################
-data <- read.csv2("../datasets/classification/ocean_proximity.csv")
+data <- read.csv2("../datasets/classification/iris.csv", sep = ",")
 # ONE HOT ENCODING
-# dummy_data <- dummyVars(" ~ .", data = data[,c(1,2,5:7)])
-# trsf <- data.frame(predict(dummy_data, newdata = data[,c(1,2,5:7)]))
-# trsf$doors <- data$doors
-# trsf$persons <- data$persons
-# data <- trsf[,c(1:14,19,20,15:18)]
+dummy_data <- dummyVars(" ~ class", data = data)
+trsf <- data.frame(predict(dummy_data, newdata = data))
+trsf$sepal_length <- data$sepal_length
+trsf$sepal_width <- data$sepal_width
+trsf$petal_length <- data$petal_length
+trsf$petal_width <- data$petal_width
+data <- trsf[,c(4:7,1:3)]
 n <- nrow(data)
 set.seed(123)
 shuffled_df <- as.data.frame(data[sample(n),])
