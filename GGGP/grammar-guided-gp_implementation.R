@@ -29,19 +29,22 @@ GRAMMAR <- list(
   n = gsrule("n<n>", "n")
 )
 I <- NA
-p <- 20
+p <- 25
 O <- NA
 
-base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), evaluated = rep(NA, p), loss = rep(NA, p), metric = rep(NA, p), 
-                                saved_model = rep(NA, p), stringsAsFactors = FALSE)
+base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), 
+                                evaluated = rep(NA, p), loss = rep(NA, p), 
+                                metric = rep(NA, p), saved_model = rep(NA, p), 
+                                stringsAsFactors = FALSE)
 
-############################################################# EVOLUTIONARY  OPERATORS #############################################################
+##################### EVOLUTIONARY  OPERATORS #####################
 generation <- function() {
   architectures <- GrammarRandomExpression(CreateGrammar(GRAMMAR), p)
   i <- 1
   population <- base_architecture
   for (individual in architectures) {
-    population[i,] <- c(id, toString(gsub("\"", "", toString(individual))), FALSE, NA, NA, NA)
+    population[i,] <- c(id, toString(gsub("\"", "", toString(individual))), 
+                        FALSE, NA, NA, NA)
     i <- i + 1
     id <<- id + 1
   }
@@ -65,7 +68,8 @@ evaluation <- function(individual, split_crit, mode) {
   }
   # Individual evaluation
   model <- keras_model_sequential()
-  model %>% layer_dense(units = hidden_layers[1], input_shape = c(I), activation = "relu")
+  model %>% layer_dense(units = hidden_layers[1], input_shape = c(I), 
+                        activation = "relu")
   for (layer in tail(hidden_layers, 1)) {
     model %>% layer_dense(units = layer, activation = "relu")
   }
@@ -75,8 +79,11 @@ evaluation <- function(individual, split_crit, mode) {
     loss = "categorical_crossentropy",
     metrics = c("accuracy")
   )
-  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 4, batch_size = 32, verbose = 0)
-  model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", individual$id)
+  history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), 
+                           validation_split = 0.235294, epochs = 4, batch_size = 32, 
+                           verbose = 0)
+  model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", 
+                       individual$id)
   history_df <- as.data.frame(history)
   saveRDS(history_df, file = paste0("data/", execution, "/history/", model_name, ".rds"))
   save_model_hdf5(model, paste0("data/", execution, "/model/", model_name, ".h5"))
@@ -113,9 +120,13 @@ crossover <- function(parents) {
                    metric = double(),
                    saved_model = character(),
                    stringsAsFactors = FALSE)
-  df <- rbind(df, data.frame(id = id, architecture = toString(add_inout_layers(s_p1_parts)), evaluated = FALSE, loss = NA, metric = NA, saved_model = NA))
+  df <- rbind(df, data.frame(id = id, 
+                             architecture = toString(add_inout_layers(s_p1_parts)), 
+                             evaluated = FALSE, loss = NA, metric = NA, saved_model = NA))
   id <<- id + 1
-  df <- rbind(df, data.frame(id = id, architecture = toString(add_inout_layers(s_p2_parts)), evaluated = FALSE, loss = NA, metric = NA, saved_model = NA))
+  df <- rbind(df, data.frame(id = id, 
+                             architecture = toString(add_inout_layers(s_p2_parts)), 
+                             evaluated = FALSE, loss = NA, metric = NA, saved_model = NA))
   id <<- id + 1
   return(df)
 }
@@ -126,9 +137,10 @@ replacement <- function(children) {
   return(ordered_max_population[c(1:p),])
 }
 
-############################################################### AUXILIARY FUNCTIONS ###############################################################
+##################### AUXILIARY FUNCTIONS #####################
 add_inout_layers <- function(hidden) {
-  return(paste(strrep("n", I), "/", paste0(hidden, collapse = "/"), "/", strrep("n", O), sep = ""))
+  return(paste(strrep("n", I), "/", paste0(hidden, collapse = "/"), "/", 
+               strrep("n", O), sep = ""))
 }
 
 extract_hidden_layers <- function(architecture) {
@@ -136,18 +148,23 @@ extract_hidden_layers <- function(architecture) {
   return(tail(head(split[[1]], -1), -1))
 }
 
-###################################################################################################################################################
-################################################################# MAIN  ALGORITHM #################################################################
-###################################################################################################################################################
+###########################################################
+##################### MAIN  ALGORITHM #####################
+###########################################################
 data <- read.csv2("../datasets/classification/iris.csv", sep = ",")
 # ONE HOT ENCODING
 dummy_data <- dummyVars(" ~ class", data = data)
-trsf <- data.frame(predict(dummy_data, newdata = data))
-trsf$sepal_length <- data$sepal_length
-trsf$sepal_width <- data$sepal_width
-trsf$petal_length <- data$petal_length
-trsf$petal_width <- data$petal_width
+trsf <- data.frame(predict(dummy_data, newdata = data), stringsAsFactors = F)
+trsf$sepal_length <- as.numeric(as.character(data$sepal_length))
+trsf$sepal_width <- as.numeric(as.character(data$sepal_width))
+trsf$petal_length <- as.numeric(as.character(data$petal_length))
+trsf$petal_width <- as.numeric(as.character(data$petal_width))
 data <- trsf[,c(4:7,1:3)]
+data$sepal_length <- (data$sepal_length - min(data$sepal_length))/(max(data$sepal_length)-min(data$sepal_length))
+data$sepal_width <- (data$sepal_width - min(data$sepal_width))/(max(data$sepal_width)-min(data$sepal_width))
+data$petal_length <- (data$petal_length - min(data$petal_length))/(max(data$petal_length)-min(data$petal_length))
+data$petal_width <- (data$petal_width - min(data$petal_width))/(max(data$petal_width)-min(data$petal_width))
+
 n <- nrow(data)
 set.seed(123)
 shuffled_df <- as.data.frame(data[sample(n),])
@@ -205,7 +222,7 @@ for (execution in executions) {
         break
       } else {
         # Selection
-        matting_pool <- selection(6)
+        matting_pool <- selection(8)
         # Crossover
         children <- data.frame(id = integer(),
                                architecture = character(),
@@ -226,8 +243,10 @@ for (execution in executions) {
         population <- replacement(children)
         population <- population[order(unlist(population$id)),]
       }
-      iteration_results <- rbind(iteration_results, data.frame(iteration = iteration, avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
-                                                               best_loss = population[which.min(population$loss), 4]))
+      iteration_results <- rbind(iteration_results, 
+                                 data.frame(iteration = iteration, 
+                                            avg_loss = ((Reduce("+", as.numeric(population$loss))) / p),
+                                            best_loss = population[which.min(population$loss), 4]))
       iteration <- iteration + 1
     }
     model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
@@ -239,7 +258,8 @@ for (execution in executions) {
     iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
     iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
     saveRDS(iteration_results, file = paste0("data/", execution, "/", execution, "_results.rds"))
-    execution_results <- rbind(execution_results, data.frame(execution = execution, architecture = solution$architecture,
+    execution_results <- rbind(execution_results, data.frame(execution = execution, 
+                                                             architecture = solution$architecture,
                                                              acc_train = acc_train,
                                                              acc_validation = acc_validation,
                                                              acc_test = acc_test,
