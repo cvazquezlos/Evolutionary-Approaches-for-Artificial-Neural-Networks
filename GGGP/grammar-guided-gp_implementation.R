@@ -80,8 +80,7 @@ evaluation <- function(individual, split_crit, mode) {
     metrics = c("accuracy")
   )
   history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), 
-                           validation_split = 0.235294, epochs = 4, batch_size = 32, 
-                           verbose = 0)
+                           validation_split = 0.235294, epochs = 6, verbose = 0)
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", 
                        individual$id)
   history_df <- as.data.frame(history)
@@ -249,6 +248,8 @@ for (execution in executions) {
                                             best_loss = population[which.min(population$loss), 4]))
       iteration <- iteration + 1
     }
+    saveRDS(population, file = paste0("data/", execution, "/final_population.rds"))
+    saveRDS(iteration_results, file = paste0("data/", execution, "/", execution, "_results.rds"))
     model <- load_model_hdf5(paste0("data/", execution, "/model/", solution$saved_model, ".h5"))
     acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
     acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
@@ -257,7 +258,6 @@ for (execution in executions) {
     # Ejecuar a partir de aqu?
     iteration_results$avg_loss <- as.numeric(iteration_results$avg_loss)
     iteration_results$best_loss <- as.numeric(as.character(iteration_results$best_loss))
-    saveRDS(iteration_results, file = paste0("data/", execution, "/", execution, "_results.rds"))
     execution_results <- rbind(execution_results, data.frame(execution = execution, 
                                                              architecture = solution$architecture,
                                                              acc_train = acc_train,
@@ -265,7 +265,6 @@ for (execution in executions) {
                                                              acc_test = acc_test,
                                                              time = as.double(toString(end_time - start_time)),
                                                              saved_model = solution$saved_model))
-    saveRDS(population, file = paste0("data/", execution, "/final_population.rds"))
     saveRDS(execution_results, file = paste0("data/", execution, "/execution_results.rds"))
   }, error = function(e){
     print(e)
