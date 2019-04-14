@@ -7,12 +7,10 @@ setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-
 TARGET_FOLDER <- "./classification/iris/partial/"
 
 # Analysis of the resulting dataframes for each execution
-BASE_DATA_FRAME <- data.frame(execution = integer(),
-                              architecture = character(),
+BASE_DATA_FRAME <- data.frame(architecture = character(),
                               partial_acc_train = double(),
                               partial_acc_validation = double(),
                               partial_acc_test = double(),
-                              time = double(),
                               saved_model = character(),
                               total_acc_train = double(),
                               total_acc_validation = double(),
@@ -30,7 +28,7 @@ rm("y")
 row.names(executions_results) <- c(1:nrow(executions_results))
 executions_results$architecture <- as.character(executions_results$architecture)
 
-analysis_results <- aggregate(executions_results[,c(2:5,8:10)], 
+analysis_results <- aggregate(executions_results[,c(1:4,6:8)], 
                               by = list(executions_results$architecture), 
                               FUN = mean)
 analysis_results <- analysis_results[,c(1,3:8)]
@@ -52,6 +50,7 @@ z <- lapply(c(1:80), function(x) {
   n = nrow(df)
   if (n != 29) {
     remaining_rows = 29 - n
+    print(remaining_rows)
     aux = data.frame(col1 = rep(NA, remaining_rows), col2 = rep(NA, remaining_rows), stringsAsFactors = F)
     colnames(aux) = n_colnames
     df = rbind(df, aux)

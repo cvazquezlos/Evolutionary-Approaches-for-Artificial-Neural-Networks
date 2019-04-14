@@ -5,10 +5,10 @@ library("keras")
 library("stringr")
 library("gtools")
 
-# setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
-setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
+setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
+# setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
 
-TARGET_FOLDER <- "./classification/car/partial"
+TARGET_FOLDER <- "./classification/iris/partial"
 
 BASE_DATA_FRAME <- data.frame(architecture = character(),
                               saved_model = character(),
@@ -48,7 +48,7 @@ for (bad_execution in bad_executions) {
     tail(aux, 1)$value
   }))
   to <- 20
-  n <- (length(individuals) - 20) / 6
+  n <- (length(individuals) - 20) / 8
   for (iteration in c(1:n)) {
     iteration_values = head(individual_accuracies, to)
     iteration_values <- sort(iteration_values)
@@ -90,4 +90,5 @@ for (bad_execution in bad_executions) {
   best$acc_test <- acc_test
   colnames(best) <- c("architecture", "acc_train", "acc_validation", "saved_model", "acc_test")
   saveRDS(best, paste0(TARGET_FOLDER, "/", bad_execution, "/", "execution_results.rds"))
+  k_clear_session()
 }
