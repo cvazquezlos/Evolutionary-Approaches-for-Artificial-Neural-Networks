@@ -17,8 +17,8 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
-# setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
+# setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
+setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
 
 GRAMMAR <- list(
@@ -29,7 +29,7 @@ GRAMMAR <- list(
   n = gsrule("n<n>", "n")
 )
 I <- NA
-p <- 25
+p <- 20
 O <- NA
 
 base_architecture <- data.frame(id = rep(NA, p), architecture = rep(NA, p), 
@@ -80,7 +80,11 @@ evaluation <- function(individual, split_crit, mode) {
     metrics = c("accuracy")
   )
   history <- model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), 
-                           validation_split = 0.235294, epochs = 6, verbose = 0)
+                           validation_split = 0.235294, epochs = 300, batch_size = 250,
+                           verbose = 0, callbacks = list(
+                             callback_early_stopping(monitor = "val_loss", patience = 50, 
+                                                     verbose = 0, mode ="auto")
+                           ))
   model_name <- paste0(str_replace_all(individual$architecture, "/", "_"), "-", 
                        individual$id)
   history_df <- as.data.frame(history)
@@ -150,25 +154,24 @@ extract_hidden_layers <- function(architecture) {
 ###########################################################
 ##################### MAIN  ALGORITHM #####################
 ###########################################################
-data <- read.csv2("../datasets/classification/iris.csv", sep = ",")
+data <- read.csv2("../datasets/classification/ocean_proximity.csv", sep = ";")
 # ONE HOT ENCODING
-dummy_data <- dummyVars(" ~ class", data = data)
-trsf <- data.frame(predict(dummy_data, newdata = data), stringsAsFactors = F)
-trsf$sepal_length <- as.numeric(as.character(data$sepal_length))
-trsf$sepal_width <- as.numeric(as.character(data$sepal_width))
-trsf$petal_length <- as.numeric(as.character(data$petal_length))
-trsf$petal_width <- as.numeric(as.character(data$petal_width))
-data <- trsf[,c(4:7,1:3)]
-data$sepal_length <- (data$sepal_length - min(data$sepal_length))/(max(data$sepal_length)-min(data$sepal_length))
-data$sepal_width <- (data$sepal_width - min(data$sepal_width))/(max(data$sepal_width)-min(data$sepal_width))
-data$petal_length <- (data$petal_length - min(data$petal_length))/(max(data$petal_length)-min(data$petal_length))
-data$petal_width <- (data$petal_width - min(data$petal_width))/(max(data$petal_width)-min(data$petal_width))
+# dummy_data <- dummyVars(" ~ class", data = data)
+# trsf <- data.frame(predict(dummy_data, newdata = data), stringsAsFactors = F)
+# trsf$sepal_length <- as.numeric(as.character(data$sepal_length))
+# trsf$sepal_width <- as.numeric(as.character(data$sepal_width))
+# trsf$petal_length <- as.numeric(as.character(data$petal_length))
+# trsf$petal_width <- as.numeric(as.character(data$petal_width))
+# data <- trsf[,c(4:7,1:3)]
+# data$sepal_length <- (data$sepal_length - min(data$sepal_length))/(max(data$sepal_length)-min(data$sepal_length))
+# data$sepal_width <- (data$sepal_width - min(data$sepal_width))/(max(data$sepal_width)-min(data$sepal_width))
+# data$petal_length <- (data$petal_length - min(data$petal_length))/(max(data$petal_length)-min(data$petal_length))
+# data$petal_width <- (data$petal_width - min(data$petal_width))/(max(data$petal_width)-min(data$petal_width))
 
 n <- nrow(data)
 set.seed(123)
 shuffled_df <- as.data.frame(data[sample(n),])
 colnames(shuffled_df) <- gsub("[^a-zA-Z]*", "", colnames(shuffled_df))
-c <- colnames(shuffled_df)
 train <- shuffled_df[1: round(0.7*n),]
 validation <- shuffled_df[(round(0.7*n)+1):round(0.9*n),]
 test <- shuffled_df[(round(0.9*n)+1):n,]
@@ -221,7 +224,7 @@ for (execution in executions) {
         break
       } else {
         # Selection
-        matting_pool <- selection(8)
+        matting_pool <- selection(6)
         # Crossover
         children <- data.frame(id = integer(),
                                architecture = character(),
@@ -280,19 +283,20 @@ remaining <- unlist(lapply(aux, function(x) if (!(x %in% executions)) TRUE else 
 bad_executions <- aux[remaining]
 
 # Only for partial executions
-# for (execution in executions) {
-#   path = paste0("../results/classification/car/partial/", execution)
-#   results <- readRDS(paste0(path, "/execution_results.rds"))
-#   results <- results[,c(1:3,5,4)]
-#   results$saved_model <- str_replace_all(results$saved_model, ".rds", "")
-#   model <- load_model_hdf5(paste0(path, "/model/", results$saved_model, ".h5"))
-#   model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 480, verbose = 0,
-#                 callbacks = list(
-#                   callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
-#                 ))
-#   colnames(results) <- c("architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "saved_model")
-#   results$total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
-#   results$total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
-#   results$total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
-#   saveRDS(results, paste0(path, "/execution_results.rds"))
-# }
+for (execution in executions) {
+  path = paste0("../results/classification/iris/partial/", execution)
+  results <- readRDS(paste0(path, "/execution_results.rds"))
+  results <- results[,c(1:3,5,4)]
+  results$saved_model <- str_replace_all(results$saved_model, ".rds", "")
+  model <- load_model_hdf5(paste0(path, "/model/", results$saved_model, ".h5"))
+  model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 450, verbose = 0,
+                callbacks = list(
+                  callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
+                ))
+  colnames(results) <- c("architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "saved_model")
+  results$total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
+  results$total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
+  results$total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+  saveRDS(results, paste0(path, "/execution_results.rds"))
+  k_clear_session()
+}
