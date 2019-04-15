@@ -7,6 +7,9 @@
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage[T1]{fontenc} % Font type.
+\usepackage{titlesec}
+\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
+
 \usepackage[utf8]{inputenc}
 
 \usepackage{lipsum}
@@ -43,6 +46,17 @@
     \end{center}
     \vfill
   \end{titlepage}
+  %\newpage\null\thispagestyle{empty}\newpage
+  \newpage\cleardoublepage
 
+  \chapter{Agradecimientos}
+  Deseo expresar mi agradecimiento, en primer lugar, a Daniel, un investigador incansable y un profesor excepcional, pionero en Computación Evolutiva en España y protagonista indudable de la
+  evolución de la Programación Genética. Gracias por dedicarme tu tiempo y adaptarte a mis horarios, y gracias por despertar en mi el interés en la Computación Evolutiva con tus clases y con tu
+  implicación.\\[0.5cm]
+  A mis padres, Isabel Losada y Fco. Javier Vázquez, por su amor, comprensión y por su apoyo incondicional en todo aquello que me he propuesto.\\[0.5cm]
+  A Cristina, espectadora de mis éxios y mi acompañante. Siempre sabes que decir y cómo complementarme. Te quiero.
+  \vfill
+  \newpage\cleardoublepage
+  \chapter{Resumen}
   \lipsum[1-15]
 \end{document}
