@@ -1,19 +1,48 @@
 \documentclass[a4paper,12pt,twoside]{report}
 
 % MAIN CONFIGURATION
-\usepackage[top=2.5cm, bottom=3cm, left=4cm, right=2cm]{geometry}
+\usepackage[top = 2.5cm, bottom = 3cm, left = 4cm, right = 2cm]{geometry}
 
 \usepackage{algorithm,algorithmic}
+\usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage[T1]{fontenc} % Font type.
+\usepackage[utf8]{inputenc}
 
 \usepackage{lipsum}
 
 % CONTENT
 \begin{document}
-\pagenumbering{Roman}
+  \pagenumbering{Roman}
+  \begin{titlepage}
+    \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+    \begin{center}
+      \includegraphics[width = 2.25cm]{resources/FACINFO}
+      \hspace{8cm}
+      \includegraphics[width = 2cm]{resources/logoupm.png}
+      \\[1cm]
 
+      \textsc{\Large Escuela Técnica Superior de Ingenieros Informáticos}
+      \\[0.5cm]
+      \textsc{\large Universidad Politécnica de Madrid}
+      \\[3cm]
 
+      \HRule \\[0.4cm]
+      {\huge \bfseries Sistema evolutivo híbrido para la construcción de redes de neuronas}
+      \HRule \\[4cm]
+    
+      \textsc{\LARGE Trabajo Fin de Máster}\\[0.5cm]
+      \textsc{\Large Máster Universitario en Inteligencia Artificial}\\[3cm]
+    \end{center}
+    \begin{flushright}
+      \large AUTOR: Carlos Vázquez Losada \\TUTOR: Daniel Manrique Gamo
+      \\[2.1cm]
+    \end{flushright}
+    \begin{center}
+      {{20 de julio de 2019}}
+    \end{center}
+    \vfill
+  \end{titlepage}
 
-\lipsum[1-15]
+  \lipsum[1-15]
 \end{document}
