@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.24)  15 APR 2019 23:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.24)  15 APR 2019 23:51
 entering extended mode
 **./main.tex
 (main.tex
@@ -705,6 +705,10 @@ es/FACINFO-eps-converted-to.pdf> <./resources/logoupm.png>] [2
 
 ]
 Chapter 1.
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ifnextchar' on input line 52.
+
 [3
 
 ] [4
@@ -732,15 +736,15 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: DE9F44615FCED8C8F55EF5E5BB4C9952;91
-(rerunfilecheck)             After:  EF68D2DD6BE8A6B7C5BCAC3AF5EA390C;94.
+(rerunfilecheck)             Before: E95DBD785E2D0184291A8B172BE97736;100
+(rerunfilecheck)             After:  AB0284AE010F9CD02D05C3913593D5F5;100.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 62.
  ) 
 Here is how much of TeX's memory you used:
- 6678 strings out of 493305
- 96632 string characters out of 3128932
+ 6679 strings out of 493305
+ 96647 string characters out of 3128932
  286553 words of memory out of 3000000
- 10143 multiletter control sequences out of 15000+200000
+ 10144 multiletter control sequences out of 15000+200000
  10494 words of font info for 24 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  28i,4n,33p,219b,342s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -751,7 +755,7 @@ ljfour\jknappen\ec\dpi600\eccc2074.pk> <C:\Users\Usuario\AppData\Local\MiKTeX\2
 .9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2488.pk> <C:\Users\Usuario\AppData\Lo
 cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1440.pk> <C:\Users\Usuari
 o\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1728.pk>
-Output written on main.pdf (7 pages, 211818 bytes).
+Output written on main.pdf (7 pages, 211825 bytes).
 PDF statistics:
  241 PDF objects out of 1000 (max. 8388607)
  10 named destinations out of 1000 (max. 500000)
