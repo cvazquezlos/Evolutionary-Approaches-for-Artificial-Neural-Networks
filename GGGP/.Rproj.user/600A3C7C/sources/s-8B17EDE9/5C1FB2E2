@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1554214810950.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5C1FB2E2",
+    "lastKnownWriteTime" : 1555323447,
+    "last_content_update" : 1555323447455,
+    "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP/grammar-guided-gp_implementation.R",
+    "project_path" : "grammar-guided-gp_implementation.R",
+    "properties" : {
+        "cursorPosition" : "277,0",
+        "scrollLine" : "260"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
