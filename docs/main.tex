@@ -6,13 +6,14 @@
 \usepackage{algorithm,algorithmic}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
+\usepackage{indentfirst}
+\usepackage{lipsum}
 \usepackage[T1]{fontenc} % Font type.
 \usepackage{titlesec}
 \titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
-
 \usepackage[utf8]{inputenc}
-
-\usepackage{lipsum}
+\setlength{\parskip}{0.5cm}
+\titlespacing{\paragraph}{0pt}{0pt}{0.1cm}[]
 
 % CONTENT
 \begin{document}
@@ -49,12 +50,15 @@
   %\newpage\null\thispagestyle{empty}\newpage
   \newpage\cleardoublepage
 
-  \chapter{\vspace{-1.5cm}Agradecimientos}\\[0.5cm]
-  Deseo expresar mi agradecimiento, en primer lugar, a Daniel, un investigador incansable y un profesor excepcional, pionero en Computación Evolutiva en España y protagonista indudable de la evolución de la Programación Genética. Gracias por dedicarme tu tiempo y adaptarte a mis horarios, y gracias por despertar en mi el interés en la Computación Evolutiva con tus clases y con tu implicación.\\[0.5cm]
-A mis padres, Isabel Losada y Fco. Javier Vázquez, por su amor, comprensión y por su apoyo incondicional en todo aquello que me he propuesto.\\[0.5cm]
-A Cristina, espectadora de mis éxios y mi acompañante. Siempre sabes que decir y cómo complementarme. Te quiero.
+  \chapter{\vspace{-3cm}Agradecimientos}
+  \vspace{-1cm}
+    Deseo expresar mi agradecimiento, en primer lugar, a Daniel, un investigador incansable y un profesor excepcional, pionero en Computación Evolutiva en España y protagonista indudable de la evolución de la Programación Genética. Gracias por dedicarme tu tiempo y adaptarte a mis horarios, y gracias por despertar en mi el interés en la Computación Evolutiva con tus clases y con tu implicación.\par
+    A mis padres, Isabel Losada y Fco. Javier Vázquez, por su amor, comprensión y por su apoyo incondicional en todo aquello que me he propuesto.\par
+    A Cristina, espectadora de mis éxios y mi acompañante. Siempre sabes que decir y cómo complementarme. Te quiero.
   \vfill
   \newpage\cleardoublepage
-  \chapter{\vspace{-1.5cm}Resumen}
+  \chapter{\vspace{-3cm}Resumen}
+  \vspace{-1cm}
+  
   \lipsum[1-15]
 \end{document}
