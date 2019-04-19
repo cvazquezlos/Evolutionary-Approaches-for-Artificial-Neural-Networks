@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,twoside]{report}
+\documentclass[spanish,a4paper,12pt,twoside]{report}
 
 % MAIN CONFIGURATION
 \usepackage[top = 2.5cm, bottom = 3cm, left = 4cm, right = 2cm]{geometry}
@@ -78,7 +78,8 @@
   
   \chapter{\vspace{-3cm}{\LARGE 1. Introducción}}
   \vspace{-1cm}
-  La optimización matemática es la obtención de la mejor solución de un problema dado. Cada una de estas soluciones candidatas a ser la mejor es valorada según una función que medirá cuán buena es. 
+  La optimización matemática estudia un tipo concreto de problemas donde se desea elegir el mejor entre un conjunto de elementos. El problema clásico (Boyd and Vandenberghe, 2004) consiste en maximizar o minimizar una función objetivo que representa o mide la calidad de las decisiones. Además, esta función está sujeta a un conjunto de restricciones que acotan el espacio de soluciones e intenta simplificar su obtención. \par
+  Existen un
   
   \chapter{\vspace{-3cm}{\LARGE 2. Computación Evolutiva}}
   
@@ -93,4 +94,10 @@
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
   
   \chapter{\vspace{-3cm}{\LARGE 8. Soluciones y líneas futuras}}
+  
+  \addcontentsline{toc}{chapter}{\vspace{-3cm}{\LARGE 1. Introducción}}
+  \vspace{-1cm}
+  \begin{thebibliography}{00}
+    \bibitem{Boyd2004} Boyd, S. and Vandenberghe, L. (2004). Convex Optimization. \emph{Cambridge University Press} (pp. 129).
+  \end{thebibliography}
 \end{document}
