@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.16)  22 APR 2019 15:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.16)  22 APR 2019 16:47
 entering extended mode
 **./main.tex
 (main.tex
@@ -671,7 +671,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Cap\'{\i }tulo 6.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 106.
+(hyperref)                removing `\@ifnextchar' on input line 109.
 
 [5
 
@@ -679,7 +679,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Cap\'{\i }tulo 7.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 108.
+(hyperref)                removing `\@ifnextchar' on input line 111.
 
 [6
 
@@ -687,7 +687,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Cap\'{\i }tulo 8.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 110.
+(hyperref)                removing `\@ifnextchar' on input line 113.
 
 [7
 
@@ -695,7 +695,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Cap\'{\i }tulo 9.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 112.
+(hyperref)                removing `\@ifnextchar' on input line 115.
 
 [8
 
@@ -703,7 +703,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Cap\'{\i }tulo 10.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 114.
+(hyperref)                removing `\@ifnextchar' on input line 117.
 
 [9
 
@@ -711,41 +711,37 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Cap\'{\i }tulo 11.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 116.
+(hyperref)                removing `\@ifnextchar' on input line 119.
 
 [10
 
 ] [11
 
 ]
-Underfull \hbox (badness 1152) in paragraph at lines 146--147
+Underfull \hbox (badness 1152) in paragraph at lines 149--150
 [] \T1/cmr/m/n/12 Has-san, R., Coha-nim, B., de Weck, O. and Ven-ter, G. (2005)
 . A com-
  []
 
 
-Underfull \hbox (badness 1052) in paragraph at lines 146--147
+Underfull \hbox (badness 1052) in paragraph at lines 149--150
 \T1/cmr/m/n/12 pa-ri-son of par-ti-cle swarm op-ti-mi-za-tion and the ge-ne-tic
  al-go-rithm. \T1/cmr/m/it/12 46th
  []
 
 [12]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 173.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 176.
  [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 173.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 176.
  (main.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 173.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 173.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 176.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 176.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: FDA35E090441FAFAF4233ABED7C29E44;691.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 173.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 176.
  ) 
 Here is how much of TeX's memory you used:
  16881 strings out of 492945
@@ -766,9 +762,9 @@ vazquez\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\eccc2074.pk
 0\ecbx2488.pk> <C:\Users\cvazquez\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jkna
 ppen/ec/dpi600\eccc1440.pk> <C:\Users\cvazquez\AppData\Local\MiKTeX\2.9\fonts/p
 k/ljfour/jknappen/ec/dpi600\eccc1728.pk>
-Output written on main.pdf (21 pages, 297022 bytes).
+Output written on main.pdf (21 pages, 301341 bytes).
 PDF statistics:
- 558 PDF objects out of 1000 (max. 8388607)
+ 567 PDF objects out of 1000 (max. 8388607)
  82 named destinations out of 1000 (max. 500000)
  99 words of extra memory for PDF output out of 10000 (max. 10000000)
 
