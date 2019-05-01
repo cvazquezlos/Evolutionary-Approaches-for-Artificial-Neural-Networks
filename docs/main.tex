@@ -4,8 +4,6 @@
 \usepackage[top = 2.5cm, bottom = 3cm, left = 4cm, right = 2cm]{geometry}
 
 \usepackage{algorithm,algorithmic}
-% \usepackage[euler]{textgreek}
-\usepackage{mathtools}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{indentfirst}
@@ -20,6 +18,7 @@
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{\arabic{figure}}
 \usepackage{lipsum}
+\usepackage{mathtools}
 \usepackage[spanish]{babel}
 \usepackage[T1]{fontenc} % Font type.
 \usepackage{titlesec}
@@ -116,8 +115,9 @@
   La Computación Evolutiva se fundamenta en la evolución biológica y cuenta con un conjunto de heurísticas para la resolución de problemas de búsqueda y optimización. Cada una de ellas sirve para un tipo concreto de problemas de este ámbito, no asegurando su eficacia si se utiliza en otro dominio. \par
   La evolución biológica se basa en la Teoría de la Evolución de Darwin (Darwin, 1959), donde los individuos son los protagonistas. Estos individuos viven en poblaciones, de tal forma que se produce una evolución conjunta de la población mediante la aplicación de operadores evolutivos tales como la selección, el reemplazo, el cruce y la mutación. \par
   Para la Computación Evolutiva, los individuos son las soluciones candidatas al problema de búsqueda u optimización dado. La población se compone del conjunto de individuos base y de la que parte la ejecución del algoritmo. Sobre esta población se aplican los operadores evolutivos (referidos en este ámbito como operadores genéticos) anteriormente mencionados, con el objetivo de que se produzca una mejora y un acercamiento gradual hacia la solución óptima en cada generación. Teóricamente, se espera que tras un número finito de generaciones, la población haya convergido hacia la solución óptima al problema dado. En la práctica, puede que sea conveniente limitar este número de generaciones por las capacidades computacionales limitadas que hoy en día existen, y la población llegue hasta un cierto grado de optimalidad. \par
-  Este proceso se lleva a cabo conformando el Ciclo Evolutivo (Koza, 1996) que se repite hasta que finalmente se cumple la condición de parada.
+  Este proceso se lleva a cabo conformando el Ciclo Evolutivo (Koza, 1992) que se repite hasta que finalmente se cumple la condición de parada.
   \begin{figure}[H]
+    \centering
     \includegraphics[width = 1\textwidth]{resources/Fig1.pdf}
     \caption{Ciclo Evolutivo que rige el desarrollo de los algoritmos en la Computación Evolutiva.}
     \label{fig:1}
@@ -144,7 +144,58 @@
   La mayor parte de las heurísticas que forman parte de la Computación Evolutiva siguen el patrón descrito, salvo aquellas que, debido al problema que abordan, tienen una estructura que difiere al resto.
   
   \section*{\Large 2.3. Programación Genética}
-  La Programación Genética (Cramer, 1985; Koza, 1988) es una heurística de la familia de la Computación Evolutiva y que permite resolver problemas de búsqueda y de optimización cuyas soluciones son programas informáticos.
+  La Programación Genética (Cramer, 1985; Koza, 1988) es una heurística de la familia de la Computación Evolutiva y que permite resolver problemas de búsqueda y optimización cuya solución es un programa informático. La Programación Genética es una extensión de los Algoritmos Genéticos (Holland, 1967) pero donde el espacio de soluciones $S$ está compuesto por programas informáticos.
+    \subsection*{\large 2.3.1. Codificación de los individuos}
+    Los individuos en la Programación Genética se representan mediante árboles, conformados por operadores (\emph{operators}) y operandos (\emph{operands}). Los operadores, que son los nodos intermedios y el nodo raíz, representan funciones, mientras que los operandos son los nodos hoja. Esta representación permite la construcción de expresiones matemáticas que son fáciles de evolucionar y de evaluar.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 0.7\textwidth]{resources/Fig2.pdf}
+      \caption{Individuos de un programa genético codificados en forma de árbol y su correspondiente decodificación.}
+      \label{fig:2}
+    \end{figure} \par
+    La creación de los individuos debe cumplir dos propiedades. La primera de ellas se refiere a la propiedad del cierre (\emph{closure property}), que evita la creación de individuos sintácticamente inválidos estableciendo que la salida de una función debe poder servir de entrada para otra. La segunda propiedad es la explosión de código (\emph{code bloat}) (Tackett, 1995), que recoge el crecimiento desmesurado del código sin mejora de la adaptación, y, por lo tanto, debería evitarse en la medida de lo posible, ya que propicia el aparecimiento de intrones (\emph{introns}), que son fragmentos de código totalmente inútiles ya que no favorecen la adaptación y que se traduce en una convergencia lenta y una demora en la evaluación de los individuos. Además, el alfabeto $A$ con el que se vayan a codificar los elementos del espacio de soluciones $S$ estará formado por operadores y operandos, buscando en la medida de lo posible la biyección.
+  
+    \subsection*{\large 2.3.2. Operadores}
+    La Programación Genética cuenta con cuatro operadores: selección, cruce, mutación y reemplazo. Aquellos que actúan sobre la población y no sobre el espacio de búsqueda son el de selección y el de reemplazo, por lo que funcionan de forma análoga a como hacen en otras heurísticas como en los Algoritmos Genéticos o en la Evolución Gramatical, por lo que solo se explicará el operador de cruce y el de mutación.
+    
+      \subsubsection*{\normalsize 2.3.2.1. Cruce}
+      El operador de cruce se aplica sobre los individuos que han sido seleccionados y que se encuentran en el mating pool. Al tratarse de árboles, es necesario que los operadores que se utilizan en el proceso evolutivo aseguren que se cumple la propiedad del cierre y la de la explosión de código. \par
+      
+        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de Koza}}
+        \vspace{-0.5cm}
+        El operador de cruce de Koza (Koza, 1992) selecciona un nodo de cada padre de forma aleatoria y se intercambian los subárboles. Aparentemente, en la Programación Genética tradicional este operador funciona sin errores ya que genera individuos sintácticamente correctos, cumpliéndose la propiedad del cierre. Sin embargo, como en el ejemplo mostrado en Fig. \ref{fig:4}, se corre el riesgo de que se produzcan intrones como consecuencia de la explosión de código, ya que no cuenta con un mecanismo de control de profundidad.
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width = 1\textwidth]{resources/Fig4.pdf}
+          \caption{Ejemplo de aplicación del operador de cruce de Koza.}
+          \label{fig:4}
+        \end{figure} \par
+        Sin embargo, en la Programación Genética Guiada por Gramáticas, este operador no es útil ya que genera individuos que no respetan las reglas de derivación de la gramática utilizada.
+        
+        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador basado en un punto}}
+        \vspace{-0.5cm}
+        El operador de cruce basado en un punto (Poli and Langdon, 1997a, 1997b, 1998) de la Programación Genética se inspira en el igualmente llamado de los Algoritmos Genéticos (Goldberg, 1989). Este operador selecciona el nodo de cruce después de un proceso de alineamiento (\emph{alignment}) entre los padres, donde se seleccionan los nodos potenciales para realizar el intercambio.
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width = 1\textwidth]{resources/Fig5.pdf}
+          \caption{Ejemplo de aplicación del operador de cruce basado en un punto.}
+          \label{fig:5}
+        \end{figure} \par
+        Este operador selecciona un nodo de forma aleatoria de entre los coincidentes entre los dos padres. El problema que tiene este operador es que si la estructura de los padres es totalmente distinta, los descendientes coincidirán con los padres y su genoma será el mismo.
+        
+      \subsubsection*{\normalsize 2.3.2.2. Mutación}
+      El operador de mutación se aplica con una muy baja probabilidad (de entre el 5 y el 10\%) a un individuo en cada generación. Debido a la baja probabilidad, puede que haya ejecuciones completas en las que no se haya dado ningún caso de mutación. De hecho, hay programas genéticos que no utilizan este operador. Al no existir una gramática que contenga reglas de derivación, este operador selecciona un nodo de forma aleatoria en el individuo seleccionado, y a continuación, genera un subárbol a partir de ese nodo seleccionado de forma análoga a como se inicializan las poblaciones en esta heurística, reparando al individuo resultante si fuera necesario.
+  
+    \subsection*{\large 2.3.3. Generación de la población inicial}
+    El programa genético debe partir de una población de individuos inicial $Z$, que es un subconjunto del espacio de búsqueda $E$. La metodología de creación de individuos en Programación Genética es aleatoria, ya que no existen gramáticas que regulen su formación (como sucede por el contrario en la Programación Genética Guiada por Gramáticas). \par
+    Al generar individuos de forma aleatoria, hay una gran probabilidad de que no se cumplan las propiedades que gobiernan la Programación Genética: la propiedad del cierre y la de la explosión de código. Por tanto, es necesario un proceso de reparación de individuos. Normalmente, se basan en la sustitución de nodos mal colocados por otros correctos de forma aleatoria, como en Fig. \ref{fig:3}. \par
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 1\textwidth]{resources/Fig3.pdf}
+      \caption{Ejemplo de aplicación de la función de reparación de individuos inválidos.}
+      \label{fig:3}
+    \end{figure} \par
+    Este proceso de reparación muchas veces es más tardío que la generación de un nuevo individuo, por lo que en la práctica los individuos inválidos se descartan y se sustituyen por otros, que si son nuevamente inválidos se descartan, repitiendo ese proceso hasta que se alcanza una población $Z$ de tamaño $\alpha$.
 
   \section*{\Large 2.3. Programación Genética Guiada por Gramáticas}
   
@@ -188,20 +239,23 @@
   \bibitem{Friedberg1958} Friedberg, R.M. (1958). A learning machine: part I. \emph{IBM Journal of Research and Development}. 2(1):2-13.
   \bibitem{Friedberg1959} Friedberg, R.M., Dunham, B. and North, J.H. (1959). A learning machine: part II. \emph{IBM Journal of Research and Development}. 3(3):282-287.
   \bibitem{Geem2001} Geem, Z.W., Kim, J.H. and Loganathan, G.V. (2001) A New Heuristic Optimization Algorithm: Harmony Search. \emph{Simulation}, 76(2):60-68.
+  \bibitem{Goldberg1989} Goldberg, D.E. (1989). \emph{Genetic Algorithms in Search, Optimization \& Machine Learning}.
   \bibitem{Grefenstette1985} Grefenstette, J.J. (1985). \emph{Proceedings of the First International Conference on Genetic Algorithms and the Applications} (Hillsdale, NJ: Lawrence Erlbaum).
   \bibitem{Grefenstette1987} Grefenstette, J.J. (1987). \emph{Proceedings of the Second International Conference on Genetic Algorithms and the Applications} (Hillsdale, NJ: Lawrence Erlbaum).
   \bibitem{Hassan2005} Hassan, R., Cohanim, B., de Weck, O. and Venter, G. (2005). A comparison of particle swarm optimization and the genetic algorithm. \emph{46th AIAA/ASME/ASCE/AHS/ASC Structures, Structural Dynamics and Materials Conference}.
   \bibitem{Holland1962} Holland, J.H. (1962). Nonlinear environments permitting efficient adaptation. \emph{Computer and Information Sciences II}: 147-164.
   \bibitem{Hu2014} Hu, T., Banzhaf, W. and Moore, J.H. (2014). The effects of recombination of phenotypic exploration and robustness in evolution. \emph{Artificial Life}. 20(4):457-470.
   \bibitem{Koza1988} Koza, J.R. (1988). Non-Linear Genetic Algorithms for Solving Problems. \emph{University States Patent 4935877}.
-  \bibitem{Koza1992} Koza, J.R. (1992). \emph{Genetic Programming 1992} (Cambridge, MA: MIT Press).
-  \bibitem{Koza19961} Koza, J.R.(1996). \emph{Genetic Programming: On the Programming of Computers by Means of Natural Selection}  (Cambridge, MA: MIT Press).
+  \bibitem{Koza1992} Koza, J.R.(1992). \emph{Genetic Programming: On the Programming of Computers by Means of Natural Selection}  (Cambridge, MA: MIT Press).
   \bibitem{Koza1996} Koza, J.R., Goldberg, D.E., Fogel, D.B. and Riolo, R.L. (1996). \emph{Genetic Programming 1996} (Cambridge, MA: MIT Press).
   \bibitem{Kosorukoff2001} Kosorukoff, A. (2001). Human based genetic algorithm. \emph{2001 IEEE International Conference on Systems, Man and Cybernetics. e-Systems and e-Man for Cybernetics in Cyberspace}: 3464-3469.
   \bibitem{Langton1986} Langton, C.G. (1986). Studying artificial life with cellular automata. \emph{Physica D: Nonlinear Phenomena}. 22(1):120-149.
   \bibitem{Moscato1989} Moscato, P. (1989). On Evolution, Search, Optimization, Genetic Algorithms and Martial Arts - Towards Memetic Algorithms. \emph{Caltech Concurrent Computation Program}: 158-179.
   \bibitem{Nocedal1999} Nocedal, J. and Wright, S.J. (1999). Numerical optimization. \emph{Springer-Verlag}.
   \bibitem{Pezzella2008} Pezzella, F., Morganti, G. and Ciaschetti, G. (2008). A genetic algorithm for the Flexible Job-shop Scheduling Problem. \emph{Computers \& Operations Research}. 35(10):3202-3212.
+  \bibitem{Poli1997a} Poli, R. and Langdon, W.B. (1997a). An experimental analysis of schema creation, propagation and disruption in genetic programming. \emph{Proc. of ICGA'97}.
+  \bibitem{Poli1997b} Poli, R. and Langdon, W.B. (1997b). A new schema theory for genetic programming with one-point crossover and point mutation. \emph{Proc. of the Second On-line World Conference on Soft Computing in Engineering Design and Manufacturing}.
+  \bibitem{Poli1998} Poli, R. and Langdon, W.B. (1998). A review of theoretical and experimental results on schemata in genetic programming. \emph{Proceedings of the First European Workshop on Genetic Programming}.
   \bibitem{Polya1945} Polya, G. (1945). How to Solve It. \emph{Princeton University Press 1945}.
   \bibitem{Rawlins1991} Rawlins, G.J.E. (1991). \emph{Foundations of Genetic Algorithms} (San Mateo, CA: Morgan Kaufmann).
   \bibitem{Rechenberg1965} Rechenberg, I. (1965). Cybernetic Solution Path of an Experimental Problem. \emph{Royal Aircraft Establishment Library Translation 1122}.
@@ -213,6 +267,7 @@
   \bibitem{Schwefel1965} Schwefel, H-P. (1965). Kybernetische Evolution als Strategie der experimentellen Forschung in der Strömungstechnik.
   \bibitem{Storn1996} Storn, R. (1996). On the usage of differential evolution for function optimization. \emph{Biennial Conference of the North American Fuzzy Information Processing Society}: 519-523.
   \bibitem{Storn1997} Storn, R. and Price, K. (1997). Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces. \emph{Journal of Global Optimization}. 11(4):341-359.
+  \bibitem{Tackett1995} Tackett, W.A. (1995). Greedy Recombination and Genetic Search on the Space of Computer Programs. \emph{Foundations of Genetic Algorithms III} (San Mateo, CA: Morgan Kaufmann).
   \bibitem{Vose1995} Vose, M.D. and Whitley, L.D. (1995). \emph{Foundations of Genetic Algorithms 3} (San Francisco, CA: Morgan Kaufmann).
   \bibitem{Waibel1989} Waibel, A., Hanazawa, T., Hinton, G., Shikano, K. and Lang, K.J. (1989). Phoneme recognition using time-delay neural networks. \emph{IEEE Transactions on Acoustics, Speech, and Signal Processing}. 37(3):328-339.
   \bibitem{Whigham1995} Whigham, P.A. (1995). Grammatically-based genetic programming. \emph{Proceedings of the workshop on genetic programming: from theory to real-world applications}: 33-41.
