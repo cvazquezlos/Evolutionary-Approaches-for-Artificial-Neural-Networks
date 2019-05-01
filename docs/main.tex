@@ -7,6 +7,16 @@
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{indentfirst}
+\usepackage[justification=centering]{caption}
+\captionsetup[figure]{
+  format = hang,
+  name = Fig.,
+  singlelinecheck = off,
+  labelfont = small,
+  font = small
+}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{\arabic{figure}}
 \usepackage{lipsum}
 \usepackage[spanish]{babel}
 \usepackage[T1]{fontenc} % Font type.
@@ -102,7 +112,15 @@
   A estas casi cuatro décadas de gran logro científico le siguieron dos más de un impecable desarrollo metodológico. En estos años destacaron los estudios sobre los Algoritmos Genéticos (Deb et al., 2002; Hassan et al., 2005; Pezzella et al., 2008), entre muchos otros, además de la aparición de nuevas heurísticas como la Búsqueda Armónica (\emph{harmony search}) (Geem et al., 2001) o los Algoritmos Genéticos Basados en Humanos (\emph{human based genetic algorithms}) (Kosorukoff, 2001). Otras técnicas evolutivas también tuvieron su amplio desarrollo metodológico y crecimiento teórico (Couchet and Manrique, 2006; De Araujo and Tavares, 2014; Beni, 2004).
   \section*{\Large 2.2. Funcionamiento general}
   La Computación Evolutiva se fundamenta en la evolución biológica y cuenta con un conjunto de heurísticas para la resolución de problemas de búsqueda y optimización. Cada una de ellas sirve para un tipo concreto de problemas de este ámbito, no asegurando su eficacia si se utiliza en otro dominio. \par
-  Al tratarse de evoluc
+  En la evolución biológica (Darwin, 1959), los individuos son los protagonistas. Estos individuos viven en poblaciones, de tal forma que se produce una evolución conjunta de la población mediante la aplicación de operadores evolutivos tales como la selección, el reemplazo, el cruce y la mutación. \par
+  Para la Computación Evolutiva, los individuos son las soluciones candidatas al problema de búsqueda u optimización dado. La población se compone del conjunto de individuos base y de la que parte la ejecución del algoritmo. Sobre esta población se aplican los operadores evolutivos (referidos en este ámbito como operadores genéticos) anteriormente mencionados, con el objetivo de que se produzca una mejora y un acercamiento gradual hacia la solución óptima en cada generación. Teóricamente, se espera que tras un número finito de generaciones, la población haya convergido hacia la solución óptima al problema dado. En la práctica, puede que sea conveniente limitar este número de generaciones por las capacidades computacionales limitadas que hoy en día experimentamos, y nuestra población llegue hasta un cierto grado de optimalidad. \par
+  Este proceso se lleva a cabo conformando el Ciclo Evolutivo (Koza, 1996) que se repite hasta que finalmente se cumple la condición de parada.
+  \begin{figure}[H]
+    \includegraphics[width = 1\textwidth]{resources/Fig1.pdf}
+    \caption{Ciclo Evolutivo que rige el desarrollo de los algoritmos en la Computación Evolutiva.}
+    \label{fig:1}
+  \end{figure}
+  En Fig. \ref{fig:1} se puede apreciar este Ciclo Evolutivo. Todo comienza con una población inicial, que se corresponderá con un conjunto de individuos de tamaño que serán seleccionados 
   
   \section*{\Large 2.3. Programación Genética}
 
@@ -130,7 +148,7 @@
   \makeatother
   
   \bibitem{Banzhaf1998} Banzhaf, W., Poli, R., Schoenauer, M. and Fogarty, T.C. (1998). \emph{Genetic Programming}.
-  \bibitem{Beni1989} Beni, G. and Wang, J. (1989). Swarm intelligence in cellular robotic systems. \emph{Proceedings of the NATO Advance Workshop on Robots and Biological Systems}. 102:703-712.
+  \bibitem{Beni1989} Beni, G. and Wang, J. (1989). Swarm intelligence in cellular robotic systems. \emph{Proceedings5 of the NATO Advance Workshop on Robots and Biological Systems}. 102:703-712.
   \bibitem{Beni2004} Beni, G. (2004). From Swarm Intelligence to Swarm Robotics. \emph{International Workshop on Swarm Robotics}. 3342:1-9.
   \bibitem{Boyd2004} Boyd, S. and Vandenberghe, L. (2004). Convex Optimization. \emph{Cambridge University Press 2004}: 129.
   \bibitem{Box1957} Box, G.E.P. (1957). Evolutionary operation: A method for increasing industrial productivity. \emph{Journal of the Royal Statistical Society. Series C}. 6(2):81-101.
@@ -139,6 +157,7 @@
   \bibitem{Couchet2006} Couchet, J. and Manrique, D. (2006). Crossover and mutation operations for grammar-guided genetic programming. \emph{Soft Computing}. 11(10):943-955.
   \bibitem{Cramer1985} Cramer, N.L. (1985). A representation for the Adaptive Generation of Simple Sequential Programs. \emph{Proceedings of the First International Conference on Genetic Algorithms and the Applications}: 183-187.
   \bibitem{Dantzig1990} Dantzig, G.B. (1990). Origins of the simplex method. \emph{A history of scientific computing}, pages 141-151.
+  \bibitem{Darwin1859} Darwin, C. (1859). \emph{On the Origin of Species by Means of Natural Selection, or Preservation of Favoured Races in the Struggle for Life}. 
   \bibitem{deAraujo2014} De Araujo, A.F. and Tavares, J.M.R.S. (2014). An Artificial Life Model for Image Enhancement. \emph{15th International Conference on Experimental Mechanics}. 41(13):5892-5906.
   \bibitem{Deb2002} Deb, K., Agarwal, S., Pratap, A. and Meyarivan, T. (2002). A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II. \emph{IEEE Transactions on Evolutionary Computation}. 6(2):128-197.
   \bibitem{Farmer1986} Farmer, J.D., Packard, N.H. and Perelson, A.S. (1986). The Immune System, Adaptation, and Machine Learning. \emph{Physica D: Nonlinear Phenomena}. 22(1): 187-204.
@@ -154,6 +173,7 @@
   \bibitem{Hu2014} Hu, T., Banzhaf, W. and Moore, J.H. (2014). The effects of recombination of phenotypic exploration and robustness in evolution. \emph{Artificial Life}. 20(4):457-470.
   \bibitem{Koza1988} Koza, J.R. (1988). Non-Linear Genetic Algorithms for Solving Problems. \emph{University States Patent 4935877}.
   \bibitem{Koza1992} Koza, J.R. (1992). \emph{Genetic Programming 1992} (Cambridge, MA: MIT Press).
+  \bibitem{Koza19961} Koza, J.R.(1996). \emph{Genetic Programming: On the Programming of Computers by Means of Natural Selection}  (Cambridge, MA: MIT Press).
   \bibitem{Koza1996} Koza, J.R., Goldberg, D.E., Fogel, D.B. and Riolo, R.L. (1996). \emph{Genetic Programming 1996} (Cambridge, MA: MIT Press).
   \bibitem{Kosorukoff2001} Kosorukoff, A. (2001). Human based genetic algorithm. \emph{2001 IEEE International Conference on Systems, Man and Cybernetics. e-Systems and e-Man for Cybernetics in Cyberspace}: 3464-3469.
   \bibitem{Langton1986} Langton, C.G. (1986). Studying artificial life with cellular automata. \emph{Physica D: Nonlinear Phenomena}. 22(1):120-149.
