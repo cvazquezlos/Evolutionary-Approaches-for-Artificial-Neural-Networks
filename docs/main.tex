@@ -248,7 +248,33 @@
         \caption{Errores (en rojo) producidos en el cruce de dos individuos generados con gramáticas al aplicar el operador de Koza.}
         \label{fig:7}
       \end{figure} \par
-      Estos errores se derivan de no 
+      
+        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de cruce preservador del contexto}}
+        \vspace{-0.5cm}
+        El operador de cruce preservador del contexto (\emph{context preserving crossover}) (D'haeseleer, 1994) restringe el cruce sólo entre subárboles que tienen localizaciones similares. Estas localizaciones vienen dadas por las coordenadas (\emph{coordinates}), reduciendo el exceso de exploración del operador de Koza. Estas coordenadas se definen como el camino entre la raíz y el nodo elegido. Este cruce sólo selecciona un nodo aleatorio: el del primer progenitor. A continuación, extrae las coordenadas de ese nodo aleatorio y las busca en el segundo progenitor. Si esas coordenadas existen en el segundo progenitor, entonces cruza los árboles. En caso contrario, selecciona otro nodo aleatorio del primer padre, realizando ese proceso repetidamente hasta que se puede efectuar el cruce. En Fig. \ref{fig:8} se puede observar el funcionamiento de este cruce. \par
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width = 1\textwidth]{resources/Fig8.pdf}
+          \caption{Ejemplo de aplicación del operador de cruce preservador del contexto.}
+          \label{fig:8}
+        \end{figure} \par
+        El problema que tiene es que es útil para individuos que son estructuralmente similares, es decir, que habrá individuos que nunca se podrán cruzar, por lo que presenta serios problemas de exploración. Además, tiene amplia capacidad de explotación, por lo que, si bien es útil en fases tempranas del programa genético, produciría una convergencia demasiado rápida y problemas de caídas en óptimos locales. Tampoco limita la profundidad de los árboles, por lo que propicia la aparición de intrones.
+        
+        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de Whigham}}
+        \vspace{-0.5cm}
+        El operador de Whigham (Whigham, 1995) busca establecer un equilibrio entre exploración y explotación. No utiliza las coordenadas, sino que selecciona un símbolo no terminal (exceptuando el axioma) del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor, selecciona uno aleatorio de entre aquellos que son iguales al nodo del primer progenitor. En Fig. \ref{fig:9} se puede apreciar cómo funciona este operador. \par
+        La única desventaja es que no controla la profundidad de los descendientes. Si se aplica sobre una gramática ambigua, puede generar individuos que representan la misma solución. Este operador también es utilizado en la Programación Genética tradicional, pero puede generar individuos no válidos, ya que en ella, todos los nodos interiores pueden ser elegidos. \par
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width = 1\textwidth]{resources/Fig9.pdf}
+          \caption{Ejemplo de aplicación del operador de cruce de Whigham.}
+          \label{fig:9}
+        \end{figure} \par
+        
+    \subsection*{\large 2.4.4. Generación de la población inicial}
+    Para la creación de individuos para la población inicial, hay dos técnicas: una aleatoria y otra controlada. La primera de ellas, utiliza la Gramática Libre de Contexto y genera derivaciones de forma aleatoria, siguiendo las reglas de producción. A pesar de que genera individuos sintácticamente válidos y es simple de aplicar, además de óptimo en problemas de dominio reducido, es incapaz de controlar la profundidad, facilitando la aparición de la explosión de código. \par
+    El segundo método es una variante del primero, ya que los individuos también se generan de forma aleatoria, pero controlando en todo momento la profundidad de la derivación, no permitiendo en ningún caso que se sobrepase la profundidad máxima.
+        
   
   \chapter{\vspace{-3cm}{\LARGE 3. Redes de Neuronas Artificiales}}
   
@@ -281,6 +307,7 @@
   \bibitem{Chomsky1959} Chomsky, N. (1959). On Certain Formal Properties of Grammars. \emph{Information and Control}. 2(2):137-167.
   \bibitem{Couchet2006} Couchet, J. and Manrique, D. (2006). Crossover and mutation operations for grammar-guided genetic programming. \emph{Soft Computing}. 11(10):943-955.
   \bibitem{Cramer1985} Cramer, N.L. (1985). A representation for the Adaptive Generation of Simple Sequential Programs. \emph{Proceedings of the First International Conference on Genetic Algorithms and the Applications}: 183-187.
+  \bibitem{Dhaeseleer1994} D'haeseleer, P. (1994). Context preserving crossover in genetic programming. \emph{Proceedings of the First IEEE Conference on Evolutionary Computation}. 1:256-261.
   \bibitem{Dantzig1990} Dantzig, G.B. (1990). Origins of the simplex method. \emph{A history of scientific computing}, pages 141-151.
   \bibitem{Darwin1859} Darwin, C. (1859). \emph{On the Origin of Species by Means of Natural Selection, or Preservation of Favoured Races in the Struggle for Life}. 
   \bibitem{deAraujo2014} De Araujo, A.F. and Tavares, J.M.R.S. (2014). An Artificial Life Model for Image Enhancement. \emph{15th International Conference on Experimental Mechanics}. 41(13):5892-5906.
