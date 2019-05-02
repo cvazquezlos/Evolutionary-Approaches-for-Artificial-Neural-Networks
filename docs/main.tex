@@ -4,6 +4,7 @@
 \usepackage[top = 2.5cm, bottom = 3cm, left = 4cm, right = 2cm]{geometry}
 
 \usepackage{algorithm,algorithmic}
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{indentfirst}
@@ -108,8 +109,8 @@
   \section*{\Large 2.1. Historia}
   La Computación Evolutiva surge con los trabajos de Box (Box, 1957),  Friedberg (Friedberg, 1958, 1959) y Bremermann (Bremermann, 1962). Sin embargo, no se consiguieron grandes avances debido a la pobre metodología todavía sin desarrollar y a las limitaciones computacionales de la época. \par
   Algunos años después surgen los primeros desarrollos metodológicos en una década de destacable logro científico. El trabajo de Fogel (Fogel et al., 1966) sienta las bases de la Programación Evolutiva (\emph{evolutionary programming}) y el de Holland (Holland, 1967) las de los Algoritmos Genéticos (\emph{genetic algorithms}). También, en esa misma época, las Estrategias Evolutivas (\emph{evolution strategies}) fueron introducidas por Rechenberg (Rechenberg, 1965) y Schwefel (Schwefel, 1965). \par
-  Una década después de los primeros descubrimientos, alrededor de los años 80, los avances computacionales permitieron aplicar las técnicas evolutivas descubiertas para resolver problemas de optimización del mundo real. En esa misma década, los estudios de Cramer (Cramer, 1985) y Koza (Koza, 1988) desembocaron en la aparición de una nueva técnica perteneciente a la Computación Evolutiva: la Programación Genética (\emph{genetic programming}). Pocos años después, la Programación Genética contaba con más de 10.000 artículos publicados (Hu et al., 2014). Pocos años después ya habría cerca de 10.000 publicaciones sobre esta peculiar heurística. También se sucedieron una gran cantidad de conferencias internacionales y talleres centrados en aspectos teóricos de los Algoritmos Genéticos (Grefenstette, 1985, 1987; Schaffer, 1989), entre muchos otros. Estos años destacaron también por la aparición de otras técnicas de Computación Evolutiva como la Vida Artificial (\emph{artificial life}) abreviada muy comúnmente como \emph{A-Life} (Langton, 1986), los Sistemas Inmunitarios Artificiales (\emph{artificial immune systems}) (Farmer et al., 1986), la Inteligencia de Enjambre (\emph{swarm intelligence}) (Beni and Wang, 1989) y los Algoritmos Meméticos (Moscato, 1989). \par
-  Hacia 1990, era innegable admitir que parte de la comunidad científica del mundo ponía sus ojos en la Computación Evolutiva. A las conferencias anteriormente expuestas le siguieron las cuatro conferencias de IEEE sobre Computación Evolutiva, que asentaron esta rama de estudio como una de las articulaciones de la Inteligencia Artificial y herramienta indispensable para la resolución de problemas de optimización y búsqueda en el ámbito académico y empresarial. La conferencia de Programación Genética (Koza et al., 1996) tuvo gran éxito y aceptación, a la cual le siguieron otras conferencias sobre el mismo ámbito, como la EuroGP (Banzhaf, 1998). Destacaron también conferencias sobre desarrollos metodológicos sobre los Algoritmos Genéticos (Rawlins, 1991; Whitley, 1993; Vose, 1995), que se consolidó como la técnica de Computación Evolutiva más destacable. Esta década se cierra con la llegada de nuevas técnicas de Computación Evolutiva: los Algoritmos Culturales (\emph{cultural algorithms}) (Reynolds, 1994), la Evolución Diferencial (\emph{differential evolution}) (Storn, 1996; Storn and Price, 1997) y la Evolución Gramatical (\emph{grammatical evolution}) (Ryan et al., 1998), además de la aparición de una variante de la Programación Genética, la Programación Genética Guiada por Gramática (Whigham \par
+  Una década después de los primeros descubrimientos, alrededor de los años 80, los avances computacionales permitieron aplicar las técnicas evolutivas descubiertas para resolver problemas de optimización del mundo real. En esa misma década, los estudios de Cramer (Cramer, 1985) y Koza (Koza, 1988) desembocaron en la aparición de una nueva técnica perteneciente a la Computación Evolutiva: la Programación Genética (\emph{genetic programming}). Pocos años después, la Programación Genética contaba con más de 10.000 artículos publicados (Hu et al., 2014), convirtiéndose en una heurística destacada en el ámbito académico y empresarial por versatilidad. También se sucedieron una gran cantidad de conferencias internacionales y talleres centrados en aspectos teóricos de los Algoritmos Genéticos (Grefenstette, 1985, 1987; Schaffer, 1989), entre muchos otros. Estos años destacaron también por la aparición de otras técnicas de Computación Evolutiva como la Vida Artificial (\emph{artificial life}) abreviada muy comúnmente como \emph{A-Life} (Langton, 1986), los Sistemas Inmunitarios Artificiales (\emph{artificial immune systems}) (Farmer et al., 1986), la Inteligencia de Enjambre (\emph{swarm intelligence}) (Beni and Wang, 1989) y los Algoritmos Meméticos (Moscato, 1989). \par
+  Hacia 1990, era innegable admitir que parte de la comunidad científica del mundo ponía sus ojos en la Computación Evolutiva. A las conferencias anteriormente expuestas le siguieron las cuatro conferencias de IEEE sobre Computación Evolutiva, que asentaron esta rama de estudio como una de las articulaciones de la Inteligencia Artificial y herramienta indispensable para la resolución de problemas de optimización y búsqueda en el ámbito académico y empresarial. La conferencia de Programación Genética (Koza et al., 1996) tuvo gran éxito y aceptación, a la cual le siguieron otras conferencias sobre el mismo ámbito, como la EuroGP (Banzhaf, 1998). Destacaron también conferencias sobre desarrollos metodológicos sobre los Algoritmos Genéticos (Rawlins, 1991; Whitley, 1993; Vose, 1995), que se consolidó como la técnica de Computación Evolutiva más destacable. Esta década se cierra con la llegada de nuevas técnicas de Computación Evolutiva: los Algoritmos Culturales (\emph{cultural algorithms}) (Reynolds, 1994), la Evolución Diferencial (\emph{differential evolution}) (Storn, 1996; Storn and Price, 1997) y la Evolución Gramatical (\emph{grammatical evolution}) (Ryan et al., 1998), además de la aparición de una variante de la Programación Genética, la Programación Genética Guiada por Gramáticas (Whigham, 1995) \par
   A estas casi cuatro décadas de gran logro científico le siguieron dos más de un impecable desarrollo metodológico. En estos años destacaron los estudios sobre los Algoritmos Genéticos (Deb et al., 2002; Hassan et al., 2005; Pezzella et al., 2008), entre muchos otros, además de la aparición de nuevas heurísticas como la Búsqueda Armónica (\emph{harmony search}) (Geem et al., 2001) o los Algoritmos Genéticos Basados en Humanos (\emph{human based genetic algorithms}) (Kosorukoff, 2001). Otras técnicas evolutivas también tuvieron su amplio desarrollo metodológico y crecimiento teórico (Couchet and Manrique, 2006; De Araujo and Tavares, 2014; Beni, 2004).
   \section*{\Large 2.2. Funcionamiento general}
   La Computación Evolutiva se fundamenta en la evolución biológica y cuenta con un conjunto de heurísticas para la resolución de problemas de búsqueda y optimización. Cada una de ellas sirve para un tipo concreto de problemas de este ámbito, no asegurando su eficacia si se utiliza en otro dominio. \par
@@ -145,7 +146,7 @@
   
   \section*{\Large 2.3. Programación Genética}
   La Programación Genética (Cramer, 1985; Koza, 1988) es una heurística de la familia de la Computación Evolutiva y que permite resolver problemas de búsqueda y optimización cuya solución es un programa informático. La Programación Genética es una extensión de los Algoritmos Genéticos (Holland, 1967) pero donde el espacio de soluciones $S$ está compuesto por programas informáticos.
-    \subsection*{\large 2.3.1. Codificación de los individuos}
+    \subsection*{\large 2.3.1. Codificación y representación de los individuos}
     Los individuos en la Programación Genética se representan mediante árboles, conformados por operadores (\emph{operators}) y operandos (\emph{operands}). Los operadores, que son los nodos intermedios y el nodo raíz, representan funciones, mientras que los operandos son los nodos hoja. Esta representación permite la construcción de expresiones matemáticas que son fáciles de evolucionar y de evaluar.
     \begin{figure}[H]
       \centering
@@ -153,7 +154,7 @@
       \caption{Individuos de un programa genético codificados en forma de árbol y su correspondiente decodificación.}
       \label{fig:2}
     \end{figure} \par
-    La creación de los individuos debe cumplir dos propiedades. La primera de ellas se refiere a la propiedad del cierre (\emph{closure property}), que evita la creación de individuos sintácticamente inválidos estableciendo que la salida de una función debe poder servir de entrada para otra. La segunda propiedad es la explosión de código (\emph{code bloat}) (Tackett, 1995), que recoge el crecimiento desmesurado del código sin mejora de la adaptación, y, por lo tanto, debería evitarse en la medida de lo posible, ya que propicia el aparecimiento de intrones (\emph{introns}), que son fragmentos de código totalmente inútiles ya que no favorecen la adaptación y que se traduce en una convergencia lenta y una demora en la evaluación de los individuos. Además, el alfabeto $A$ con el que se vayan a codificar los elementos del espacio de soluciones $S$ estará formado por operadores y operandos, buscando en la medida de lo posible la biyección.
+    La creación de los individuos debe cumplir dos propiedades. La primera de ellas se refiere a la propiedad del cierre (\emph{closure property}), que evita la creación de individuos sintácticamente inválidos estableciendo que la salida de una función debe poder servir de entrada para otra. La segunda propiedad es la explosión de código (\emph{code bloat}) (Tackett, 1995), que recoge el crecimiento desmesurado del código sin mejora de la adaptación, y, por lo tanto, debería evitarse en la medida de lo posible, ya que propicia el aparecimiento de intrones (\emph{introns}), que son fragmentos de código totalmente inútiles ya que no favorecen la adaptación y que se traduce en una convergencia lenta y una demora en la evaluación de los individuos. Además, el alfabeto $A$ con el que se vayan a codificar los elementos del espacio de soluciones $S$ estará formado por operadores y operandos, buscando en la medida de lo posible la biyección. Para la codificación, se lee de arriba a abajo y de izquierda a derecha.
   
     \subsection*{\large 2.3.2. Operadores}
     La Programación Genética cuenta con cuatro operadores: selección, cruce, mutación y reemplazo. Aquellos que actúan sobre la población y no sobre el espacio de búsqueda son el de selección y el de reemplazo, por lo que funcionan de forma análoga a como hacen en otras heurísticas como en los Algoritmos Genéticos o en la Evolución Gramatical, por lo que solo se explicará el operador de cruce y el de mutación.
@@ -163,12 +164,12 @@
       
         \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de Koza}}
         \vspace{-0.5cm}
-        El operador de cruce de Koza (Koza, 1992) selecciona un nodo de cada padre de forma aleatoria y se intercambian los subárboles. Aparentemente, en la Programación Genética tradicional este operador funciona sin errores ya que genera individuos sintácticamente correctos, cumpliéndose la propiedad del cierre. Sin embargo, como en el ejemplo mostrado en Fig. \ref{fig:4}, se corre el riesgo de que se produzcan intrones como consecuencia de la explosión de código, ya que no cuenta con un mecanismo de control de profundidad.
+        El operador de cruce de Koza (Koza, 1992) selecciona un nodo de cada padre de forma aleatoria y se intercambian los subárboles. Aparentemente, en la Programación Genética tradicional este operador funciona sin errores ya que genera individuos sintácticamente correctos, cumpliéndose la propiedad del cierre. Sin embargo, como en el ejemplo mostrado en Fig. \ref{fig:3}, se corre el riesgo de que se produzcan intrones como consecuencia de la explosión de código, ya que no cuenta con un mecanismo de control de profundidad.
         \begin{figure}[H]
           \centering
-          \includegraphics[width = 1\textwidth]{resources/Fig4.pdf}
+          \includegraphics[width = 1\textwidth]{resources/Fig3.pdf}
           \caption{Ejemplo de aplicación del operador de cruce de Koza.}
-          \label{fig:4}
+          \label{fig:3}
         \end{figure} \par
         Sin embargo, en la Programación Genética Guiada por Gramáticas, este operador no es útil ya que genera individuos que no respetan las reglas de derivación de la gramática utilizada.
         
@@ -177,9 +178,9 @@
         El operador de cruce basado en un punto (Poli and Langdon, 1997a, 1997b, 1998) de la Programación Genética se inspira en el igualmente llamado de los Algoritmos Genéticos (Goldberg, 1989). Este operador selecciona el nodo de cruce después de un proceso de alineamiento (\emph{alignment}) entre los padres, donde se seleccionan los nodos potenciales para realizar el intercambio.
         \begin{figure}[H]
           \centering
-          \includegraphics[width = 1\textwidth]{resources/Fig5.pdf}
+          \includegraphics[width = 1\textwidth]{resources/Fig4.pdf}
           \caption{Ejemplo de aplicación del operador de cruce basado en un punto.}
-          \label{fig:5}
+          \label{fig:4}
         \end{figure} \par
         Este operador selecciona un nodo de forma aleatoria de entre los coincidentes entre los dos padres. El problema que tiene este operador es que si la estructura de los padres es totalmente distinta, los descendientes coincidirán con los padres y su genoma será el mismo.
         
@@ -188,16 +189,66 @@
   
     \subsection*{\large 2.3.3. Generación de la población inicial}
     El programa genético debe partir de una población de individuos inicial $Z$, que es un subconjunto del espacio de búsqueda $E$. La metodología de creación de individuos en Programación Genética es aleatoria, ya que no existen gramáticas que regulen su formación (como sucede por el contrario en la Programación Genética Guiada por Gramáticas). \par
-    Al generar individuos de forma aleatoria, hay una gran probabilidad de que no se cumplan las propiedades que gobiernan la Programación Genética: la propiedad del cierre y la de la explosión de código. Por tanto, es necesario un proceso de reparación de individuos. Normalmente, se basan en la sustitución de nodos mal colocados por otros correctos de forma aleatoria, como en Fig. \ref{fig:3}. \par
+    Al generar individuos de forma aleatoria, hay una gran probabilidad de que no se cumplan las propiedades que gobiernan la Programación Genética: la propiedad del cierre y la de la explosión de código. Por tanto, es necesario un proceso de reparación de individuos. Normalmente, se basan en la sustitución de nodos mal colocados por otros correctos de forma aleatoria, como en Fig. \ref{fig:5}. \par
     \begin{figure}[H]
       \centering
-      \includegraphics[width = 1\textwidth]{resources/Fig3.pdf}
+      \includegraphics[width = 1\textwidth]{resources/Fig5.pdf}
       \caption{Ejemplo de aplicación de la función de reparación de individuos inválidos.}
-      \label{fig:3}
+      \label{fig:5}
     \end{figure} \par
     Este proceso de reparación muchas veces es más tardío que la generación de un nuevo individuo, por lo que en la práctica los individuos inválidos se descartan y se sustituyen por otros, que si son nuevamente inválidos se descartan, repitiendo ese proceso hasta que se alcanza una población $Z$ de tamaño $\alpha$.
 
-  \section*{\Large 2.3. Programación Genética Guiada por Gramáticas}
+  \section*{\Large 2.4. Programación Genética Guiada por Gramáticas}
+  La Programación Genética Guiada por Gramáticas (Whigham, 1995) surge por las dificultades encontradas en el desarrollo de los programas genéticos en relación con sus dos propiedades: la propiedad del cierre y la explosión de código. En concreto, la aleatoriedad en la creación de individuos resulta una carga cuando los problemas son grandes y la cantidad de símbolos es elevada, pues hay más probabilidades de generar un individuo inválido (Vanneschi et al., 2010). Además, la función de reparación o la sustitución de individuos inválidos por otros bien formados es una pérdida de tiempo y aumenta la complejidad computacional en buena medida. \par
+  La Programación Genética Guiada por Gramáticas acaba con los problemas de la creación de individuos inválidos gracias a la utilización de Gramáticas Libres de Contexto (\emph{context-free grammars}) (Chomsky, 1959), que permiten que la solución que codifican los individuos forme parte del espacio de búsqueda $E$, y por tanto, se cumpla el propiedad del cierre aunque estos individuos sean generados de forma aleatoria.
+  
+    \subsection*{\large 2.4.1. Gramáticas Libres de Contexto}
+    Una Gramática Libre de Contexto $G$ está definida por una 4-tupla (Hopcroft and Ullman, 1979) de la forma: 
+    \begin{align}
+    G = (\Sigma_{N}, \Sigma_{T}, S, P), \label{eq:1}\tag{1}
+    \end{align}
+    donde $\Sigma_{N}$ se corresponde con el conjunto de símbolos no terminales (variables), $\Sigma_{T}$ con el conjunto de símbolos terminales (constantes), $S$ es el axioma o símbolo principal, del que derivarán las reglas que conformen al individuo y $P$ es el conjunto de reglas de producción. \par
+    Una regla de producción (\emph{production rule}) de $P$ tienen la forma $\alpha \rightarrow \beta$, donde $\alpha$ es un símbolo no terminal con $\alpha \in \Sigma_{N}$ y $\beta$ es una cadena de variables y/o terminales con $\beta \in (\Sigma_{N} \cup \Sigma_{T})$. \par
+    Una derivación (\emph{derivation}) de la gramática $G$ se puede entender como una regla $R$ perteneciente a $S$ tal que $\alpha \rightarrow \beta$. Esta derivación tiene asociada una palabra (\emph{word}), que se corresponde con la decodificación del individuo en el espacio $S$. \par
+    La Programación Genética Guiada por Gramáticas favorece la convergencia de los individuos al eliminar el problema del cierre. También, asegura que los individuos generados son siempre válidos y limita formalmente a los individuos que siempre tendrán una sintaxis basada en las reglas de producción acotadas. Sin embargo, para reglas de producción concretas se pueden producir ciclos, luego la profundidad de un individuo no se puede controlar con estas gramáticas. \par
+    Otro problema de estas gramáticas es que puede haber redundancia (\emph{redundancy}), es decir, puede generar dos individuos distintos estructuralmente pero que deriven la misma palabra. Por ejemplo, la siguiente gramática es redundante: \\
+    \begin{align*}
+    G &= (\Sigma_{N}, \Sigma_{T}, S, P) \label{eq:2}\tag{2} \\
+    \Sigma_{N} &= \{S, E, F, N\} \\
+    \Sigma_{T} &= \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, +, -, =\} \\
+    P &= \{ \\
+    &S ::= E = N \\
+    &E ::= E + E | E - E | F + E | F - E | N \\
+    &F ::= N \\
+    &N ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 \\
+    \}
+    \end{align*} \par
+    Con esta gramática, se han representado dos individuos que reflejan esta condición en Fig. \ref{fig:6}. Se puede comprobar que los símbolos terminales $F$ y $E$ son equivalentes, ya que derivan reglas idénticas. \par
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 0.8\textwidth]{resources/Fig6.pdf}
+      \caption{Individuos conformados por una gramática redundante.}
+      \label{fig:6}
+    \end{figure} \par
+    Una gramática sin redundancia es una gramática depurada. Algunas veces, la redundancia es útil, ya que, por ejemplo, la solución óptima puede ser alcanzada de forma más fácil si está codificada varias veces. Como inconveniente, se produce una convergencia tardía.
+    
+    \subsection*{\large 2.4.2. Codificación y representación de los individuos}
+    Como sucedía con la Programación Genética, los individuos se representan en forma de árbol. Estos árboles son creados empleando una Gramática Libre de Contexto. La codificación de estos individuos, al contrario de lo que sucedía con la Programación Genética, se obtiene leyendo los nodos terminales de izquierda a derecha, sin incluir los nodos interiores. \par
+    La Programación Genética Guiada por Gramáticas cumple con la propiedad del cierre gracias a las gramáticas, asegurando la creación de individuos sintácticamente válidos. Sin embargo, la explosión de código se ve en entredicho o no, dependiendo de si la gramática tiende a formar ciclos. \par
+    Una gramática formará ciclos cuando las reglas de producción se llamen a sí mismas en su consecuente. Por ejemplo, la gramática mostrada en Eq. \ref{eq:2} es recursiva, ya que tres de las cuatro reglas del nodo no terminal $E$ se llaman a sí mismas. En tal caso, dependiendo del algoritmo de generación de individuos que se utilice, se producirán o no intrones, retrasando la convergencia. Sin embargo, la recursión que puede determinar la regla $E ::= E + E$ no tiene el mismo grado que la regla $E ::= F + E$, ya que en la primera existe una doble recursión.
+    
+    \subsection*{\large 2.4.3. Operadores}
+    Los operadores de la Programación Genética de cruce y mutación son también útiles en la Programación Genética Guiada por Gramáticas, al igual que los operadores comunes de selección y de reemplazo. Con la adición de las gramáticas, han surgido varias implementaciones nuevas sobre el operador de cruce. Sin embargo, el operador de mutación sigue coincidiendo con el algoritmo de generación de individuos seleccinado.
+    
+      \subsubsection*{\normalsize 2.4.3.1. Cruce}
+      Si bien los operadores de cruce de la Programación Genética pueden utilizarse en la Programación Genética Guiada por Gramáticas, los individuos generados con ellos serán inválidos y no cumplirán con la propiedad de cierre. El ejemplo más evidente se hace palpable con el operador de cruce de Koza, que genera puntos de cruce de forma aleatoria y que no tiene en cuenta las reglas de producción, tal y como se muestra en Fig. \ref{fig:7} con la gramática mostrada en Eq. \ref{eq:2}. \par
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width = 1\textwidth]{resources/Fig7.pdf}
+        \caption{Errores (en rojo) producidos en el cruce de dos individuos generados con gramáticas al aplicar el operador de Koza.}
+        \label{fig:7}
+      \end{figure} \par
+      Estos errores se derivan de no 
   
   \chapter{\vspace{-3cm}{\LARGE 3. Redes de Neuronas Artificiales}}
   
@@ -227,6 +278,7 @@
   \bibitem{Box1957} Box, G.E.P. (1957). Evolutionary operation: A method for increasing industrial productivity. \emph{Journal of the Royal Statistical Society. Series C}. 6(2):81-101.
   \bibitem{Box1969} Box, G.E.P. and Draper, N.P. (1969). \emph{Evolutionary Operation. A method for Increasing Industrial Productivity}.
   \bibitem{Bremermann1962} Bremermann, H.J. (1962). Optimization through evolution and recombination. \emph{Self-Organizing Systems 1962}: 93-106.
+  \bibitem{Chomsky1959} Chomsky, N. (1959). On Certain Formal Properties of Grammars. \emph{Information and Control}. 2(2):137-167.
   \bibitem{Couchet2006} Couchet, J. and Manrique, D. (2006). Crossover and mutation operations for grammar-guided genetic programming. \emph{Soft Computing}. 11(10):943-955.
   \bibitem{Cramer1985} Cramer, N.L. (1985). A representation for the Adaptive Generation of Simple Sequential Programs. \emph{Proceedings of the First International Conference on Genetic Algorithms and the Applications}: 183-187.
   \bibitem{Dantzig1990} Dantzig, G.B. (1990). Origins of the simplex method. \emph{A history of scientific computing}, pages 141-151.
@@ -244,6 +296,7 @@
   \bibitem{Grefenstette1987} Grefenstette, J.J. (1987). \emph{Proceedings of the Second International Conference on Genetic Algorithms and the Applications} (Hillsdale, NJ: Lawrence Erlbaum).
   \bibitem{Hassan2005} Hassan, R., Cohanim, B., de Weck, O. and Venter, G. (2005). A comparison of particle swarm optimization and the genetic algorithm. \emph{46th AIAA/ASME/ASCE/AHS/ASC Structures, Structural Dynamics and Materials Conference}.
   \bibitem{Holland1962} Holland, J.H. (1962). Nonlinear environments permitting efficient adaptation. \emph{Computer and Information Sciences II}: 147-164.
+  \bibitem{Hopcroft1979} Hopcroft, J.E. and Ullman, J.D. (1979). Context-Free Grammars. \emph{Introduction to Automata Theory Languages and Computation}: 77-106.
   \bibitem{Hu2014} Hu, T., Banzhaf, W. and Moore, J.H. (2014). The effects of recombination of phenotypic exploration and robustness in evolution. \emph{Artificial Life}. 20(4):457-470.
   \bibitem{Koza1988} Koza, J.R. (1988). Non-Linear Genetic Algorithms for Solving Problems. \emph{University States Patent 4935877}.
   \bibitem{Koza1992} Koza, J.R.(1992). \emph{Genetic Programming: On the Programming of Computers by Means of Natural Selection}  (Cambridge, MA: MIT Press).
@@ -268,6 +321,7 @@
   \bibitem{Storn1996} Storn, R. (1996). On the usage of differential evolution for function optimization. \emph{Biennial Conference of the North American Fuzzy Information Processing Society}: 519-523.
   \bibitem{Storn1997} Storn, R. and Price, K. (1997). Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces. \emph{Journal of Global Optimization}. 11(4):341-359.
   \bibitem{Tackett1995} Tackett, W.A. (1995). Greedy Recombination and Genetic Search on the Space of Computer Programs. \emph{Foundations of Genetic Algorithms III} (San Mateo, CA: Morgan Kaufmann).
+  \bibitem{Vanneschi2010} Vanneschi, L., Gustafson, S. and Banzhaf, W. (2010). Open issues in Genetic programming. \emph{Genetic Programming and Evolvable Machines}. 11:339-363.
   \bibitem{Vose1995} Vose, M.D. and Whitley, L.D. (1995). \emph{Foundations of Genetic Algorithms 3} (San Francisco, CA: Morgan Kaufmann).
   \bibitem{Waibel1989} Waibel, A., Hanazawa, T., Hinton, G., Shikano, K. and Lang, K.J. (1989). Phoneme recognition using time-delay neural networks. \emph{IEEE Transactions on Acoustics, Speech, and Signal Processing}. 37(3):328-339.
   \bibitem{Whigham1995} Whigham, P.A. (1995). Grammatically-based genetic programming. \emph{Proceedings of the workshop on genetic programming: from theory to real-world applications}: 33-41.
