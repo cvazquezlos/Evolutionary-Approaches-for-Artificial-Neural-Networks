@@ -1,13 +1,13 @@
 {
-    "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP/data/8",
+    "path" : "~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results/classification/ocean_proximity/partial",
     "sortOrder" : [
-        {
-            "ascending" : true,
-            "columnIndex" : 2
-        },
         {
             "ascending" : false,
             "columnIndex" : 4
+        },
+        {
+            "ascending" : true,
+            "columnIndex" : 2
         }
     ]
 }
