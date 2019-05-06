@@ -105,7 +105,7 @@
   
   \chapter{\vspace{-3cm}{\LARGE 2. Computación Evolutiva}}
   \vspace{-1cm}
-  La Computación Evolutiva comprende un conjunto de técnicas para la resolución de problemas de búsqueda y optimización inspiradas en la evolución biológica de los seres vivos. En este capítulo se ofrecen, en primer lugar, un resumen de la \emph{historia} de la Computación Evolutiva. Seguidamente, una \emph{definición} sobre esta rama de estudio y que finaliza hablando sobre la \emph{Programación Genética} y la \emph{Programación Genética Guiada por Gramáticas}.
+  La Computación Evolutiva comprende un conjunto de técnicas para la resolución de problemas de búsqueda y optimización inspiradas en la evolución biológica de los seres vivos. En este capítulo se ofrece, en primer lugar, un resumen de la \emph{historia} de la Computación Evolutiva. Seguidamente, un apartado de \emph{funcionamiento general} sobre esta rama de estudio y que finaliza hablando sobre la \emph{Programación Genética} y la \emph{Programación Genética Guiada por Gramáticas}.
   \section*{\Large 2.1. Historia}
   La Computación Evolutiva surge con los trabajos de Box (Box, 1957),  Friedberg (Friedberg, 1958, 1959) y Bremermann (Bremermann, 1962). Sin embargo, no se consiguieron grandes avances debido a la pobre metodología todavía sin desarrollar y a las limitaciones computacionales de la época. \par
   Algunos años después surgen los primeros desarrollos metodológicos en una década de destacable logro científico. El trabajo de Fogel (Fogel et al., 1966) sienta las bases de la Programación Evolutiva (\emph{evolutionary programming}) y el de Holland (Holland, 1967) las de los Algoritmos Genéticos (\emph{genetic algorithms}). También, en esa misma época, las Estrategias Evolutivas (\emph{evolution strategies}) fueron introducidas por Rechenberg (Rechenberg, 1965) y Schwefel (Schwefel, 1965). \par
@@ -273,10 +273,41 @@
         
     \subsection*{\large 2.4.4. Generación de la población inicial}
     Para la creación de individuos para la población inicial, hay dos técnicas: una aleatoria y otra controlada. La primera de ellas, utiliza la Gramática Libre de Contexto y genera derivaciones de forma aleatoria, siguiendo las reglas de producción. A pesar de que genera individuos sintácticamente válidos y es simple de aplicar, además de óptimo en problemas de dominio reducido, es incapaz de controlar la profundidad, facilitando la aparición de la explosión de código. \par
-    El segundo método es una variante del primero, ya que los individuos también se generan de forma aleatoria, pero controlando en todo momento la profundidad de la derivación, no permitiendo en ningún caso que se sobrepase la profundidad máxima.
-        
-  
+    El segundo método es una variante del primero, ya que los individuos también se generan de forma aleatoria, pero controlando en todo momento la profundidad de la derivación, no permitiendo en ningún caso que se sobrepase la profundidad máxima. \vfill
+    
   \chapter{\vspace{-3cm}{\LARGE 3. Redes de Neuronas Artificiales}}
+  \setcounter{figure}{9}
+  \vspace{-1cm}
+  Las Redes de Neuronas Artificiales son un paradigma de procesamiento de información inspirado en cómo el sistema nervioso procesa la información. El sistema nervioso está compuesto por un gran número de unidades de procesamiento de información denominadas neuronas (\emph{neurons}) que trabajan al unísono para resolver problemas específicos. En este capítulo se ofrece, en primer lugar, un resumen de la \emph{historia} de las Redes de Neuronas Artificiales. Seguidamente, un apartado de \emph{funcionamiento general} sobre esta rama de estudio y que finaliza hablando de los distintos \emph{tipos} de redes.
+  
+    \section*{\Large 3.1. Historia}
+    Los primeros trabajos sobre Redes de Neuronas Artificiales fueron los de McCulloch y Pitts (McCulloch and Pitts, 1943), que pronto se verían reforzados con las aportaciones de Hebb (Hebb, 1949) y Joseph Erlanger (1944), que aunque no tuvieran una aplicación directa sobre la Inteligencia Artificial, sus descubrimientos sobre el aprendizaje humano y las fibras de conexión entre neuronas, respectivamente, fueron clave en los siguientes años de desarrollo de las Redes de Neuronas Artificiales. Pocos años después aparece el primer desarrollo metodológico basado en Redes de Neuronas Artificiales: el Perceptrón (\emph{perceptron}) (Rosenblatt, 1958, 1962). \par
+    Los años 60 fueron años de gran éxito en este ámbito. Destacó el trabajo de Widrow y Hoff (Widrow and Hoff, 1960): un sistema con un método de aprendizaje alternativo al Perceptrón llamado ADALINE (ADAptive LInear Element). Dos años después, estos científicos desarrollarían una mejora adaptativa sobre su sistema (Widrow and Hoff, 1962). Esta década finaliza con la publicación de un manual de referencia del Perceptrón por Minsky y Papert (Minsky and Papert, 1969), en el que además mostraban sus numerosos fallos y limitaciones como que no podía resolver el problema del XOR. \par
+    A raíz de esta última publicación, el interés sobre el estudio de estos modelos de aprendizaje se perdió, hasta tal punto que pasarían más de 10 años hasta la aparición de nuevos trabajos. Este silencio sería roto por Klopf (Klopf, 1972), quien formuló un mecanismo de aprendizaje adaptativo. Dos años más tarde, se publica el famoso método de aprendizaje de propagación hacia atrás (\emph{back-propagation learning method}) (Werbos, 1974), que no sería verdaderamente apreciado hasta finales de los años 80. También, apareció la primera publicación sobre una red multicapa para interpretar caracteres manuscritos: las Redes de Neuronas Artificiales Convolucionales (Fukushima, 1975). Este trabajo consigue despertar el interés de algunos investigadores, pero sin mucho éxito. \par
+    Los años 80 y 90 cerrarían esta historia, corta pero fructuosa sobre las Redes de Neuronas Artificiales, proganizados, en primer lugar, por la publicación del mapa (o red) de Kohonen (\emph{Kohonen map}) (Kohonen, 1982). En segundo lugar, se publicó una metodología sobre de Redes de Neuronas Artificiales Recurrentes (Hopfield, 1982), que tuvo un efecto contrario a la publicación de Minsky y Papert, persuadiendo a cientos de investigadores, que recobraron el interés en la investigación en este ámbito. Además, la tesis de Werbos vería en esta época su implicación gracias al trabajo de Rumelhart (Rumelhart et al., 1986), que propuso el método de aprendizaje del gradiente descendente (\emph{gradient descent learning method}).
+    
+    \section*{\Large 3.2. Funcionamiento general}
+    Las Redes de Neuronas Artificiales son un modelo de procesamiento de información inspirado en cómo los sistemas nerviosos en la biología, como el cerebro, procesan información. En términos simples, una Red de Neuronas Artificiales es un modelo matemático del cerebro que es utilizado para procesar relaciones no lineales entre las entradas (\emph{inputs}) y las salidas (\emph{outputs}) en paralelo tal y como el cerebro humano hace todo el tiempo. \par
+    En Fig. \ref{fig:10} se puede apreciar la arquitectura de un Perceptrón con una neurona artificial (o una red con una única neurona). Una neurona artificial recibirá un conjunto determinado de entradas (en este caso, $n$), con sus respectivos pesos sinápticos (\emph{synaptic weights}). A continuación, calculará el potencial sináptico (\emph{synaptic potential}) como la suma de los productos entre las entradas por sus respectivos pesos. A este potencial se le aplica una función de activación (\emph{activation function}), relativa a cada neurona, que permite devolver una salida $y$, en función del estado de activación. \par
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 0.8\textwidth]{resources/Fig10.pdf}
+      \caption{Arquitectura básica de un Perceptrón.}
+      \label{fig:10}
+    \end{figure} \par
+    Sin embargo, la arquitectura de una red no es tan simple como la mostrada en Fig. \ref{fig:10}. Una Red de Neuronas Artificiales que no es un Perceptrón suele componerse por, al menos, una capa oculta (\emph{hidden layer}). Cuando una red tiene más de una capa oculta (es decir, más de 3 capas incluyendo la de entrada y la de salida), la red se denomina Red de Neuronas Artificiales Profunda (\emph{deep artificial neural network}) (Aizenberg et al., 2000). En Fig. 11 se muestra una arquitectura profunda con 2 capas ocultas. \par
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 0.8\textwidth]{resources/Fig11.pdf}
+      \caption{Distintas capas de una Red de Neuronas Artificiales.}
+      \label{fig:11}
+    \end{figure} \par
+    En la capa de entrada (\emph{input layer}), las neuronas reciben datos o señales procedentes del entorno. Las neuronas de la capa de salida (\emph{output layer}) proporcionan la respuesta de la red a los estímulos de la entrada, aplicando una transformación que se lleva a cabo a lo ancho de la red. Entre la capa de entrada y la de salida están las capas ocultas (\emph{hidden layers}), que no reciben ni suministran informacion al entorno, sino que la modifican ya que llevan a cabo el procesamiento interno de la red. \par
+    El proceso que sigue una Red de Neuronas Artificiales al actualizar los pesos se denomina aprendizaje y está determinado por el paradigma; si es o no un aprendizaje supervisado y por el algoritmo que utiliza para llevarlo a cabo. Con el aprendizaje supervisado, se supone que el usuario conoce la clasificación de aquello que desea clasificar, por lo que la red intentará minimizar el error entre la etiqueta que predice y su valor real para que la salida obtenida termine siendo la real. En cambio, en el aprendizaje no supervisado, la red recibe un conjunto de patrones de los que no conoce la respuesta deseada, e intentará extraer sus rasgos y agruparlos por similaridad. \par
+    Cada neurona tiene asociada una función de activación. Existen muchas funciones, cada una con sus ventajas y desventajas, y adecuadas para ser utilizadas según ciertos criterios. Además, algunas de estas funciones tienen limitaciones, como la lineal, que no permite utilizar la propagación hacia atrás para entrenar el modelo, ya que su derivada es una constante y no tiene relación con la entrada. En Fig. 12 se muestran las funciones de activación más destacadas.
+    
+    \section*{\Large 3.3. Tipos}
+    
   
   \chapter{\vspace{-3cm}{\LARGE 4. Construcción de Redes de Neuronas}}
   
@@ -297,6 +328,7 @@
   \def\bibitem#1{\old@bibitem{#1}\leavevmode\kern-\bibindent}
   \makeatother
   
+  \bibitem{Aizenberg2000} Aizenberg, I., Aizenberg, N.N. and Vandewalle, J.P.L. (2000). \emph{Multi-Valued and Universal Binary Neurons: Theory, Learning and Applications}.
   \bibitem{Banzhaf1998} Banzhaf, W., Poli, R., Schoenauer, M. and Fogarty, T.C. (1998). \emph{Genetic Programming}.
   \bibitem{Beni1989} Beni, G. and Wang, J. (1989). Swarm intelligence in cellular robotic systems. \emph{Proceedings5 of the NATO Advance Workshop on Robots and Biological Systems}. 102:703-712.
   \bibitem{Beni2004} Beni, G. (2004). From Swarm Intelligence to Swarm Robotics. \emph{International Workshop on Swarm Robotics}. 3342:1-9.
@@ -317,19 +349,26 @@
   \bibitem{Fraser1957} Fraser, A.S. (1957). Simulation of Genetic Systems by Automatic Digital Computers. \emph{Australian journal of biological sciences}. 10:484-499.
   \bibitem{Friedberg1958} Friedberg, R.M. (1958). A learning machine: part I. \emph{IBM Journal of Research and Development}. 2(1):2-13.
   \bibitem{Friedberg1959} Friedberg, R.M., Dunham, B. and North, J.H. (1959). A learning machine: part II. \emph{IBM Journal of Research and Development}. 3(3):282-287.
+  \bibitem{Fukushima1975} Fukushima, K. (1975). Cognitron: A self-organizing multilayered neural network. \emph{Biological Cybernetics}. 20(3):121-136.
   \bibitem{Geem2001} Geem, Z.W., Kim, J.H. and Loganathan, G.V. (2001) A New Heuristic Optimization Algorithm: Harmony Search. \emph{Simulation}, 76(2):60-68.
   \bibitem{Goldberg1989} Goldberg, D.E. (1989). \emph{Genetic Algorithms in Search, Optimization \& Machine Learning}.
   \bibitem{Grefenstette1985} Grefenstette, J.J. (1985). \emph{Proceedings of the First International Conference on Genetic Algorithms and the Applications} (Hillsdale, NJ: Lawrence Erlbaum).
   \bibitem{Grefenstette1987} Grefenstette, J.J. (1987). \emph{Proceedings of the Second International Conference on Genetic Algorithms and the Applications} (Hillsdale, NJ: Lawrence Erlbaum).
   \bibitem{Hassan2005} Hassan, R., Cohanim, B., de Weck, O. and Venter, G. (2005). A comparison of particle swarm optimization and the genetic algorithm. \emph{46th AIAA/ASME/ASCE/AHS/ASC Structures, Structural Dynamics and Materials Conference}.
+  \bibitem{Hebb1949} Hebb, D.O. (1949). \emph{The Organization of Behavior}. (New York: Wiley).
   \bibitem{Holland1962} Holland, J.H. (1962). Nonlinear environments permitting efficient adaptation. \emph{Computer and Information Sciences II}: 147-164.
   \bibitem{Hopcroft1979} Hopcroft, J.E. and Ullman, J.D. (1979). Context-Free Grammars. \emph{Introduction to Automata Theory Languages and Computation}: 77-106.
+  \bibitem{Hopfield1982} Hopfield, J.J. (1982). Neural networks and physical systems with emergent collective computational abilities. \emph{Proceedings of the National Academy of Sciences of the United States of America}. 79(8):2554-2558.
   \bibitem{Hu2014} Hu, T., Banzhaf, W. and Moore, J.H. (2014). The effects of recombination of phenotypic exploration and robustness in evolution. \emph{Artificial Life}. 20(4):457-470.
+  \bibitem{Klopf1972} Klopf, A.H. (1972). Brain Function and Adaptive Systems - A Heterostatic Theory. \emph{Air Force Cambridge Research Laboratories}.
+  \bibitem{Kohonen1982} Kohonen, T. (1982). Self-Organized Formation of Topologically Correct Feature Maps. \emph{Biological Cybernetics}. 43:59-69.
   \bibitem{Koza1988} Koza, J.R. (1988). Non-Linear Genetic Algorithms for Solving Problems. \emph{University States Patent 4935877}.
   \bibitem{Koza1992} Koza, J.R.(1992). \emph{Genetic Programming: On the Programming of Computers by Means of Natural Selection}  (Cambridge, MA: MIT Press).
   \bibitem{Koza1996} Koza, J.R., Goldberg, D.E., Fogel, D.B. and Riolo, R.L. (1996). \emph{Genetic Programming 1996} (Cambridge, MA: MIT Press).
   \bibitem{Kosorukoff2001} Kosorukoff, A. (2001). Human based genetic algorithm. \emph{2001 IEEE International Conference on Systems, Man and Cybernetics. e-Systems and e-Man for Cybernetics in Cyberspace}: 3464-3469.
   \bibitem{Langton1986} Langton, C.G. (1986). Studying artificial life with cellular automata. \emph{Physica D: Nonlinear Phenomena}. 22(1):120-149.
+  \bibitem{McCulloch1943} McCulloch, W.S. and Pitts, W.H. (1943) A Logical Calculus of the Ideas Immanent in Nervous Activity. \emph{Bulletin of Mathematical Biophysics}. 5:115-133.
+  \bibitem{Minsky1969} Minsky, M.L. and Papert, S. (1969). \emph{Perceptrons: An Introduction to Computational Geometry} (Cambridge: MIT Press).
   \bibitem{Moscato1989} Moscato, P. (1989). On Evolution, Search, Optimization, Genetic Algorithms and Martial Arts - Towards Memetic Algorithms. \emph{Caltech Concurrent Computation Program}: 158-179.
   \bibitem{Nocedal1999} Nocedal, J. and Wright, S.J. (1999). Numerical optimization. \emph{Springer-Verlag}.
   \bibitem{Pezzella2008} Pezzella, F., Morganti, G. and Ciaschetti, G. (2008). A genetic algorithm for the Flexible Job-shop Scheduling Problem. \emph{Computers \& Operations Research}. 35(10):3202-3212.
@@ -341,6 +380,9 @@
   \bibitem{Rechenberg1965} Rechenberg, I. (1965). Cybernetic Solution Path of an Experimental Problem. \emph{Royal Aircraft Establishment Library Translation 1122}.
   \bibitem{Reynolds1994} Reynolds, R.G. (1994). An Introduction to Cultural Algorithms. \emph{Proceedings of the 3rd Annual Conference on Evolutionary Programming}: 131-139.
   \bibitem{Roberts1965} Roberts, L. (1965). Machine perception of 3D solids. \emph{Optical and Electro-Optical Information Processing}. 9:159-197.
+  \bibitem{Rosenblatt1958} Rosenblatt, F. (1958). The Perceptron: A Probabilistic Model for Information Storage and Organization in The Brain. \emph{Psychological Review}. 65(6):386-408.
+  \bibitem{Rosenblatt1962} Rosenblatt, F. (1962). \emph{Principles of Neurodynamics} (Washington: Spartan Books). 
+  \bibitem{Rumelhart1986} Rumelhart, D.E., Hinton, G.E. and Williams, R.J. (1986). Learning internal representations by error propagation. \emph{Parallel Distributed Processing: Explorations in the Microstructure of Cognition}. 1:318-362.
   \bibitem{Ryan1998} Ryan, C., Collins, J.J. and O'Neil, M. (1998). Grammatical Evolution: Evolving Programs for an Arbitrary Language. \emph{Proceedings of the First European Workshop on Genetic Programming}: 83-96.
   \bibitem{Samuel1959} Samuel, A.L. (1959). Some Studies in Machine Learning Using the Game of Checkers. \emph{IBM Journal of Research and Development}. 3(3):210-229.
   \bibitem{Schaffer1989} Schaffer, J.D. (1989). \emph{Proceedings of the Third International Conference on Genetic Algoritms and the Applications} (San Mateo, CA: Morgan Kaufmann).
@@ -351,8 +393,11 @@
   \bibitem{Vanneschi2010} Vanneschi, L., Gustafson, S. and Banzhaf, W. (2010). Open issues in Genetic programming. \emph{Genetic Programming and Evolvable Machines}. 11:339-363.
   \bibitem{Vose1995} Vose, M.D. and Whitley, L.D. (1995). \emph{Foundations of Genetic Algorithms 3} (San Francisco, CA: Morgan Kaufmann).
   \bibitem{Waibel1989} Waibel, A., Hanazawa, T., Hinton, G., Shikano, K. and Lang, K.J. (1989). Phoneme recognition using time-delay neural networks. \emph{IEEE Transactions on Acoustics, Speech, and Signal Processing}. 37(3):328-339.
+  \bibitem{Werbos1974} Werbos, P. (1974). \emph{Beyond regression: New tools for predicting and analysis in the behavioral sciences} (Doctoral dissertation).
   \bibitem{Whigham1995} Whigham, P.A. (1995). Grammatically-based genetic programming. \emph{Proceedings of the workshop on genetic programming: from theory to real-world applications}: 33-41.
   \bibitem{Whitley1993} Whitley, L.D. (1993). \emph{Foundations of Genetic Algorithms 2} (San Mateo, CA: Morgan Kaufmann).
+  \bibitem{Widrow1960} Widrow, B. and Hoff, M. (1960). Adaptive Switching Circuits. \emph{International Journal of Communications, Network and System Sciences}. 5:96-104.
+  \bibitem{Widrow1962} Widrow, B. and Hoff, M. (1962). Associative Storage and Retrieval of Digital Information in Networks of Adaptive “Neurons”. \emph{Biological Prototypes and Synthetic Systems}. 1:160-160.
   \end{thebibliography}
   
 \end{document}
