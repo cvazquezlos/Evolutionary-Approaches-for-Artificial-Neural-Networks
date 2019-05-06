@@ -1,5 +1,6 @@
 library(ggplot2)
 library(ggthemes)
+library(gridExtra)
 library(extrafont)
 font_import()
 y
@@ -82,7 +83,7 @@ tanh_plot <- ggplot(data = tanh_df, aes(x = x, y = y)) +
   geom_hline(yintercept = 0, colour = "#B6B6B6", linetype = "dashed") +
   geom_line(color = "orange", size = 1) +
   scale_x_continuous(breaks = seq(-6, 6, 2)) +
-  scale_y_continuous(breaks = seq(-1, 1, 0.2)) +
+  scale_y_continuous(breaks = seq(-1, 1, 0.4)) +
   theme_classic() +
   ggtitle("TanH") +
   labs(x = "", y = "") +
@@ -188,11 +189,16 @@ square_nonlinearity_plot <- ggplot(data = square_nonlinearity_df, aes(x = x, y =
     plot.title = element_text(family = "Cambria", hjust = 0.5, size = 18)
   )
 
-identity_plot
-binary_step_plot
-sigmoid_plot
-tanh_plot
-relu_plot
-leaky_relu_plot
-softplus_plot
-square_nonlinearity_plot
+# identity_plot
+# binary_step_plot
+# sigmoid_plot
+# tanh_plot
+# relu_plot
+# leaky_relu_plot
+# softplus_plot
+# square_nonlinearity_plot
+install.packages("devtools")
+library(devtools)
+install_github("easyGgplot2", "kassambara")
+# http://www.sthda.com/english/wiki/ggplot2-multiplot-put-multiple-graphs-on-the-same-page-using-ggplot2
+multiplot
