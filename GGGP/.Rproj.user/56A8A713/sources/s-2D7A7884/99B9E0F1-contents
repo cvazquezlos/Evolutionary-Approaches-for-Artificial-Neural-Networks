@@ -17,8 +17,8 @@ library("stringr")
 # install.packages("sqldf")
 # install.packages("stringr")
 
-# setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
-setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
+setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/GGGP")
+# setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP")
 rm(list=ls())
 
 GRAMMAR <- list(
@@ -184,7 +184,7 @@ y_test <- test[,tail(colnames(shuffled_df), 4)] %>% as.matrix()
 I <- length(colnames(X_train))
 O <- length(colnames(y_train))
 
-executions <- c(1:80)
+executions <- c(8:80)
 repeat_executions <- c()
 for (execution in executions) {
   tryCatch({

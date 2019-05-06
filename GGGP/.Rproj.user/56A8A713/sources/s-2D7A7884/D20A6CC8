@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1557169786402.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D20A6CC8",
+    "lastKnownWriteTime" : 1557175257,
+    "last_content_update" : 1557175335624,
+    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP/activation_functions.R",
+    "project_path" : "activation_functions.R",
+    "properties" : {
+        "cursorPosition" : "204,0",
+        "scrollLine" : "168"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
