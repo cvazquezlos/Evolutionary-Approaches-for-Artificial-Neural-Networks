@@ -24,8 +24,9 @@ identity_plot <- ggplot(data = identity_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 18)
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 40)
   )
+identity_plot
 
 # BINARY STEP
 binary_step <- function(x) {
@@ -226,15 +227,12 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 }
 
 
-
-
-
-# identity_plot
-# binary_step_plot
-# sigmoid_plot
-# tanh_plot
-# relu_plot
-# leaky_relu_plot
-# softplus_plot
-# square_nonlinearity_plot
-multiplot(identity_plot, binary_step_plot, cols = 2)
+ggsave("identity.pdf", )
+binary_step_plot
+sigmoid_plot
+tanh_plot
+relu_plot
+leaky_relu_plot
+softplus_plot
+square_nonlinearity_plot
+p <- multiplot(identity_plot, binary_step_plot, sigmoid_plot, tanh_plot, relu_plot, leaky_relu_plot, softplus_plot, square_nonlinearity_plot, cols = 2)
