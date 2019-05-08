@@ -72,9 +72,9 @@
   
   \chapter{\vspace{-3cm}{\LARGE Resumen}}
   \vspace{-1cm}
-  Este Trabajo de Fin de Máster consiste en estudiar la idoneidad de la Computación Evolutiva para la generación de Redes de Neuronas Artificiales. En concreto, en un estudio de la Programación Genética y si el entrenamiento parcial de las redes candidatas es o no suficiente para resolver estos problemas frente al entrenamiento total de las mismas. \par
-  La Programación Genética es una técnica evolutiva que se utiliza en problemas de optimización cuyas soluciones son programas informáticos. La Programación Genética Guiada por Gramáticas extiende las posibilidades de la Programación Genética tradicional con la introducción de las gramáticas, que permiten crear individuos sintácticamente válidos. \par
-  Estas gramáticas permiten la confección de arquitecturas de Redes de Neuronas Artificiales que son válidas, dado cualquier número de neuronas en la capa de entrada y en la capa de salida. El resultado de una ejecución nos devolverá la arquitectura de red que mejor se amolde al problema dado, teniendo en cuenta las propias peculiaridades de la gramática utilizada. El objetivo es determinar si el entrenamiento parcial de estas redes da resultados lo más similares posibles al del entrenamiento total, ya que es bastante ineficiente y tardío. \vfill
+  Este Trabajo de Fin de Máster consiste en la construcción de un sistema evolutivo para la generación de Redes de Neuronas Artificiales. Concretamente, se estudia si es posible entrenar parcialmente las Redes de Neuronas Artificiales, en lugar de un entrenamiento completo, para el cálculo del grado de adaptación. \par
+  La Programación Genética es una técnica evolutiva que se utiliza en problemas de optimización cuyas soluciones son programas informáticos. La Programación Genética Guiada por Gramáticas extiende las posibilidades de la Programación Genética tradicional con la introducción de las gramáticas, que permiten crear individuos sintácticamente válidos. En este trabajo se aplica la Programación Genética Guiada por Gramáticas para laconstrucción de las arquitecturas neuronales. \par
+  Una Gramática Libre de Contexto permite definir arquitecturas de Redes de Neuronas Artificiales válidas, dado cualquier número de neuronas en la capa de entrada y en la capa de salida. El resultado de una ejecución nos devolverá la arquitectura de red que mejor se amolde al problema dado, teniendo en cuenta las propias peculiaridades de la gramática utilizada. El objetivo es determinar si el entrenamiento parcial de estas redes da resultados lo más similares posibles al del entrenamiento total, ya que es bastante ineficiente y tardío. \vfill
   \newpage\cleardoublepage
   
   \chapter{\vspace{-3cm}{\LARGE Summary}}
@@ -305,7 +305,17 @@
     En la capa de entrada (\emph{input layer}), las neuronas reciben datos o señales procedentes del entorno. Las neuronas de la capa de salida (\emph{output layer}) proporcionan la respuesta de la red a los estímulos de la entrada, aplicando una transformación que se lleva a cabo a lo ancho de la red. Entre la capa de entrada y la de salida están las capas ocultas (\emph{hidden layers}), que no reciben ni suministran informacion al entorno, sino que la modifican ya que llevan a cabo el procesamiento interno de la red. \par
     El proceso que sigue una Red de Neuronas Artificiales al actualizar los pesos se denomina aprendizaje y está determinado por el paradigma; si es o no un aprendizaje supervisado y por el algoritmo que utiliza para llevarlo a cabo. Con el aprendizaje supervisado, se supone que el usuario conoce la clasificación de aquello que desea clasificar, por lo que la red intentará minimizar el error entre la etiqueta que predice y su valor real para que la salida obtenida termine siendo la real. En cambio, en el aprendizaje no supervisado, la red recibe un conjunto de patrones de los que no conoce la respuesta deseada, e intentará extraer sus rasgos y agruparlos por similaridad. \par
     Cada neurona tiene asociada una función de activación. Existen muchas funciones, cada una con sus ventajas y desventajas, y adecuadas para ser utilizadas según ciertos criterios. Además, algunas de estas funciones tienen limitaciones, como la lineal, que no permite utilizar la propagación hacia atrás para entrenar el modelo, ya que su derivada es una constante y no tiene relación con la entrada. En Fig. 12 se muestran las funciones de activación más destacadas.
-    
+    %www.mini.pw.edu.pl/~macukow/wspolne/selection.pdf
+    \begin{figure}[H]
+      \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width = 0.7\linewidth]{resources/Fig12_1.pdf}
+      \end{minipage}l
+      \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width = 0.7\linewidth]{resources/Fig12_2.pdf}
+      \end{minipage}
+    \end{figure}
     \section*{\Large 3.3. Tipos}
     
   

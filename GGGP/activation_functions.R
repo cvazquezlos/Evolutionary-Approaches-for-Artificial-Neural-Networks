@@ -185,16 +185,16 @@ square_nonlinearity <- function(x) {
   }
 }
 
-domain <- seq(-2, 2, 0.01)
+domain <- seq(-2.5, 2.5, 0.01)
 square_nonlinearity_df <- data.frame(x = domain, y = unlist(lapply(domain, square_nonlinearity)), stringsAsFactors = F)
 square_nonlinearity_plot <- ggplot(data = square_nonlinearity_df, aes(x = x, y = y)) +
   geom_vline(xintercept = 0, colour = "#B6B6B6", linetype = "dashed") +
   geom_hline(yintercept = 0, colour = "#B6B6B6", linetype = "dashed") +
   geom_line(color = "orange", size = 1) +
-  scale_x_continuous(breaks = seq(-2, 2, 0.5)) +
+  scale_x_continuous(breaks = seq(-2.5, 2.5, 0.5)) +
   scale_y_continuous(breaks = seq(-6, 6, 1)) +
   theme_classic() +
-  ggtitle("Square Nonlinearity (SQNL)") +
+  ggtitle("SQNL") +
   labs(x = "", y = "") +
   theme (
     panel.grid.minor = element_blank(),
