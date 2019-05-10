@@ -124,7 +124,7 @@
     \caption{Ciclo Evolutivo que rige el desarrollo de los algoritmos en la Computación Evolutiva.}
     \label{fig:1}
   \end{figure}
-  En Fig. \ref{fig:1} se puede apreciar este Ciclo Evolutivo. Todo comienza con una población inicial, que se corresponderá con un conjunto de individuos de tamaño $\alpha$ del espacio de búsqueda $E$, que es la codificación del espacio de soluciones $S$. Un individuo codifica una solución a partir de un alfabeto $A$ y una función de codificación $\Omega$. La elección del alfabeto $A$ es fundamental, ya que, dependiendo de su precisión, puede que haya individuos del espacio $S$ que no tengan representación en el espacio $E$, y si es una solución potencialmente buena (incluyendo la óptima), entonces el proceso evolutivo nunca la encontrará. \par
+  En la Fig. \ref{fig:1} se puede apreciar este Ciclo Evolutivo. Todo comienza con una población inicial, que se corresponderá con un conjunto de individuos de tamaño $\alpha$ del espacio de búsqueda $E$, que es la codificación del espacio de soluciones $S$. Un individuo codifica una solución a partir de un alfabeto $A$ y una función de codificación $\Omega$. La elección del alfabeto $A$ es fundamental, ya que, dependiendo de su precisión, puede que haya individuos del espacio $S$ que no tengan representación en el espacio $E$, y si es una solución potencialmente buena (incluyendo la óptima), entonces el proceso evolutivo nunca la encontrará. \par
   Tras la conformación de la población inicial (a partir del espacio de búsqueda $E$), se evalúa, por medio de una función de evaluación (\emph{fitness function}), a sus individuos para determinar su grado de adaptación, es decir, la calidad de la solucoón que representa para el problema en cuestión. Para este proceso de evaluación, es necesario decodificar a los individuos, por lo que se aplica la función $\Omega$. \par
   Tras el proceso de generación de la población inicial, se determina si se cumple alguna condición de parada y en caso contrario, continúa. Algunas condiciones de parada pueden ser:
   \begin{enumerate}
@@ -147,71 +147,71 @@
   \section*{\Large 2.3. Programación Genética}
   La Programación Genética (Cramer, 1985; Koza, 1988) es una heurística de la familia de la Computación Evolutiva que permite resolver problemas de búsqueda y optimización cuya solución es un programa informático. La Programación Genética es similar a los Algoritmos Genéticos (Holland, 1967), donde el espacio de soluciones está compuesto por programas informáticos.
     \subsection*{\large 2.3.1. Codificación y representación de los individuos}
-    Los individuos en la Programación Genética se representan mediante árboles, conformados por operadores (\emph{operators}) y operandos (\emph{operands}). Los operadores, que son los nodos intermedios y el nodo raíz, representan funciones, mientras que los operandos son los nodos hoja. Esta representación permite la construcción de expresiones matemáticas que son fáciles de evolucionar y de evaluar.
+    Los individuos en la Programación Genética se representan mediante árboles, formados por operadores o funciones y operandos. Los operadores son los nodos intermedios, mientras que los operandos son los nodos hoja. Esta representación permite la codificación de programas informáticos. En la Fig. \ref{fig:2} se ejemplifican dos individuos en forma de árbol y su codificación. \vfill
     \begin{figure}[H]
       \centering
       \includegraphics[width = 0.7\textwidth]{resources/Fig2.pdf}
       \caption{Individuos de un programa genético codificados en forma de árbol y su correspondiente decodificación.}
       \label{fig:2}
     \end{figure} \par
-    La creación de los individuos debe cumplir dos propiedades. La primera de ellas se refiere a la propiedad del cierre (\emph{closure property}), que evita la creación de individuos sintácticamente inválidos estableciendo que la salida de una función debe poder servir de entrada para otra. La segunda propiedad es la explosión de código (\emph{code bloat}) (Tackett, 1995), que recoge el crecimiento desmesurado del código sin mejora de la adaptación, y, por lo tanto, debería evitarse en la medida de lo posible, ya que propicia el aparecimiento de intrones (\emph{introns}), que son fragmentos de código totalmente inútiles ya que no favorecen la adaptación y que se traduce en una convergencia lenta y una demora en la evaluación de los individuos. Además, el alfabeto $A$ con el que se vayan a codificar los elementos del espacio de soluciones $S$ estará formado por operadores y operandos, buscando en la medida de lo posible la biyección. Para la codificación, se lee de arriba a abajo y de izquierda a derecha.
+    La creación de los individuos debe cumplir dos propiedades. La primera de ellas se refiere a la propiedad del cierre (\emph{closure property}), que evita la creación de individuos sintácticamente no válidos, estableciendo que la salida de una función debe poder servir de entrada para otra. La segunda propiedad es la explosión de código (\emph{code bloat}) (Tackett, 1995), que recoge el crecimiento desmesurado del código sin mejora de la adaptación, y, por lo tanto, debe evitarse en la medida de lo posible. La explosión de código propicia el aparecimiento de intrones (\emph{introns}), que son fragmentos de código totalmente inútiles y que no favorecen la adaptación y que se traduce en una convergencia lenta y una demora en la evaluación de los individuos. Además, el alfabeto $A$ con el que se codifican los elementos del espacio de búsqueda está formado por operadores y operandos, buscando en la medida de lo posible la biyección con el espacio de soluciones. Para la decodificación, se lee de arriba a abajo y de izquierda a derecha.
   
-    \subsection*{\large 2.3.2. Operadores}
-    La Programación Genética cuenta con cuatro operadores: selección, cruce, mutación y reemplazo. Aquellos que actúan sobre la población y no sobre el espacio de búsqueda son el de selección y el de reemplazo, por lo que funcionan de forma análoga a como hacen en otras heurísticas como en los Algoritmos Genéticos o en la Evolución Gramatical, por lo que solo se explicará el operador de cruce y el de mutación.
+    \subsection*{\large 2.3.2. Generación de la población inicial}
+    El programa genético debe partir de una población de individuos inicial, que es un subconjunto del espacio de búsqueda. La metodología de creación de individuos en Programación Genética suele ser aleatoria. \par
+    Si se generan individuos de forma aleatoria, hay una gran probabilidad de que no se cumpla la propiedad del cierre y que haya explosión de código. Por tanto, es necesario un proceso de reparación de individuos. Normalmente, se basan en la sustitución de nodos mal colocados por otros correctos de forma aleatoria, como se muestra en la Fig. \ref{fig:5}. \par
     
-      \subsubsection*{\normalsize 2.3.2.1. Cruce}
-      El operador de cruce se aplica sobre los individuos que han sido seleccionados y que se encuentran en el mating pool. Al tratarse de árboles, es necesario que los operadores que se utilizan en el proceso evolutivo aseguren que se cumple la propiedad del cierre y la de la explosión de código. \par
-      
-        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de Koza}}
-        \vspace{-0.5cm}
-        El operador de cruce de Koza (Koza, 1992) selecciona un nodo de cada padre de forma aleatoria y se intercambian los subárboles. Aparentemente, en la Programación Genética tradicional este operador funciona sin errores ya que genera individuos sintácticamente correctos, cumpliéndose la propiedad del cierre. Sin embargo, como en el ejemplo mostrado en Fig. \ref{fig:3}, se corre el riesgo de que se produzcan intrones como consecuencia de la explosión de código, ya que no cuenta con un mecanismo de control de profundidad.
-        \begin{figure}[H]
-          \centering
-          \includegraphics[width = 1\textwidth]{resources/Fig3.pdf}
-          \caption{Ejemplo de aplicación del operador de cruce de Koza.}
-          \label{fig:3}
-        \end{figure} \par
-        Sin embargo, en la Programación Genética Guiada por Gramáticas, este operador no es útil ya que genera individuos que no respetan las reglas de derivación de la gramática utilizada.
-        
-        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador basado en un punto}}
-        \vspace{-0.5cm}
-        El operador de cruce basado en un punto (Poli and Langdon, 1997a, 1997b, 1998) de la Programación Genética se inspira en el igualmente llamado de los Algoritmos Genéticos (Goldberg, 1989). Este operador selecciona el nodo de cruce después de un proceso de alineamiento (\emph{alignment}) entre los padres, donde se seleccionan los nodos potenciales para realizar el intercambio.
-        \begin{figure}[H]
-          \centering
-          \includegraphics[width = 1\textwidth]{resources/Fig4.pdf}
-          \caption{Ejemplo de aplicación del operador de cruce basado en un punto.}
-          \label{fig:4}
-        \end{figure} \par
-        Este operador selecciona un nodo de forma aleatoria de entre los coincidentes entre los dos padres. El problema que tiene este operador es que si la estructura de los padres es totalmente distinta, los descendientes coincidirán con los padres y su genoma será el mismo.
-        
-      \subsubsection*{\normalsize 2.3.2.2. Mutación}
-      El operador de mutación se aplica con una muy baja probabilidad (de entre el 5 y el 10\%) a un individuo en cada generación. Debido a la baja probabilidad, puede que haya ejecuciones completas en las que no se haya dado ningún caso de mutación. De hecho, hay programas genéticos que no utilizan este operador. Al no existir una gramática que contenga reglas de derivación, este operador selecciona un nodo de forma aleatoria en el individuo seleccionado, y a continuación, genera un subárbol a partir de ese nodo seleccionado de forma análoga a como se inicializan las poblaciones en esta heurística, reparando al individuo resultante si fuera necesario.
-  
-    \subsection*{\large 2.3.3. Generación de la población inicial}
-    El programa genético debe partir de una población de individuos inicial $Z$, que es un subconjunto del espacio de búsqueda $E$. La metodología de creación de individuos en Programación Genética es aleatoria, ya que no existen gramáticas que regulen su formación (como sucede por el contrario en la Programación Genética Guiada por Gramáticas). \par
-    Al generar individuos de forma aleatoria, hay una gran probabilidad de que no se cumplan las propiedades que gobiernan la Programación Genética: la propiedad del cierre y la de la explosión de código. Por tanto, es necesario un proceso de reparación de individuos. Normalmente, se basan en la sustitución de nodos mal colocados por otros correctos de forma aleatoria, como en Fig. \ref{fig:5}. \par
+    Este proceso de reparación muchas veces es más tardío que la generación de un nuevo individuo, por lo que en la práctica los individuos inválidos se descartan y se sustituyen por otros, que si son nuevamente inválidos se descartan, repitiendo ese proceso hasta que se alcanza una población del tamaño deseado, con todos sus individuos siendo estructuralmente válidos.
     \begin{figure}[H]
       \centering
       \includegraphics[width = 1\textwidth]{resources/Fig5.pdf}
       \caption{Ejemplo de aplicación de la función de reparación de individuos inválidos.}
       \label{fig:5}
     \end{figure} \par
-    Este proceso de reparación muchas veces es más tardío que la generación de un nuevo individuo, por lo que en la práctica los individuos inválidos se descartan y se sustituyen por otros, que si son nuevamente inválidos se descartan, repitiendo ese proceso hasta que se alcanza una población $Z$ de tamaño $\alpha$.
+  
+    \subsection*{\large 2.3.3. Operadores}
+    La Programación Genética cuenta con cuatro operadores: selección, cruce, mutación y reemplazo. Aquellos que no modifican a los individuos son el de selección y el de reemplazo, por lo que funcionan de forma análoga a como hacen en otras heurísticas como en los Algoritmos Genéticos o en la Evolución Gramatical, por lo que solo se explica el operador de cruce y el de mutación.
+    
+      \subsubsection*{\normalsize 2.3.2.1. Cruce}
+      El operador de cruce se aplica sobre los individuos que han sido seleccionados y que se encuentran en el mating pool, por tanto, no se aplica en todos los individuos. El cruce debe asegurar que se cumple la propiedad del cierre y que no haya explosión de código. \par
+      
+        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de Koza}}
+        \vspace{-0.5cm}
+        El operador de cruce de Koza (Koza, 1992) selecciona un nodo de cada padre de forma aleatoria y se intercambian los subárboles. Este operador no asegura que se cumpla la propiedad del cierre, además, como en el ejemplo mostrado en la Fig. \ref{fig:3}, se corre el riesgo de que se produzcan intrones como consecuencia de la explosión de código, ya que no cuenta con un mecanismo de control de profundidad.
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width = 1\textwidth]{resources/Fig3.pdf}
+          \caption{Ejemplo de aplicación del operador de cruce de Koza.}
+          \label{fig:3}
+        \end{figure} \par
+        
+        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador basado en un punto}}
+        \vspace{-0.5cm}
+        El operador de cruce basado en un punto (Poli and Langdon, 1997a, 1997b, 1998) de la Programación Genética se inspira en el de los Algoritmos Genéticos (Goldberg, 1989). Este operador selecciona el nodo de cruce después de un proceso de alineamiento (\emph{alignment}) entre los padres, donde se seleccionan los nodos potenciales para realizar el intercambio.
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width = 1\textwidth]{resources/Fig4.pdf}
+          \caption{Ejemplo de aplicación del operador de cruce basado en un punto.}
+          \label{fig:4}
+        \end{figure} \par
+        Este operador selecciona un nodo de forma aleatoria de entre los coincidentes entre los dos padres. El problema que tiene este operador es que si la estructura de los padres es totalmente distinta, los descendientes coincidirán con los padres y su genoma será el mismo, por lo que se puede dar una convergencia prematura a un óptimo local.
+        
+      \subsubsection*{\normalsize 2.3.2.2. Mutación}
+      El operador de mutación se aplica con una muy baja probabilidad a un individuo en cada generación. Debido a la baja probabilidad, puede que haya generaciones en las que no haya mutación. De hecho, hay programas genéticos que no utilizan este operador. Este operador selecciona un nodo de forma aleatoria en el individuo seleccionado, y a continuación, genera un subárbol a partir de ese nodo seleccionado de forma análoga a como se inicializan las poblaciones.
 
   \section*{\Large 2.4. Programación Genética Guiada por Gramáticas}
-  La Programación Genética Guiada por Gramáticas (Whigham, 1995) surge por las dificultades encontradas en el desarrollo de los programas genéticos en relación con sus dos propiedades: la propiedad del cierre y la explosión de código. En concreto, la aleatoriedad en la creación de individuos resulta una carga cuando los problemas son grandes y la cantidad de símbolos es elevada, pues hay más probabilidades de generar un individuo inválido (Vanneschi et al., 2010). Además, la función de reparación o la sustitución de individuos inválidos por otros bien formados es una pérdida de tiempo y aumenta la complejidad computacional en buena medida. \par
-  La Programación Genética Guiada por Gramáticas acaba con los problemas de la creación de individuos inválidos gracias a la utilización de Gramáticas Libres de Contexto (\emph{context-free grammars}) (Chomsky, 1959), que permiten que la solución que codifican los individuos forme parte del espacio de búsqueda $E$, y por tanto, se cumpla el propiedad del cierre aunque estos individuos sean generados de forma aleatoria.
+  La Programación Genética Guiada por Gramáticas (Whigham, 1995) surge por las dificultades encontradas en el desarrollo de los programas genéticos en relación con la propiedad del cierre. En concreto, la aleatoriedad en la creación de individuos resulta una dificultad cuando los problemas son grandes y la cantidad de símbolos es elevada, pues hay más probabilidades de generar un individuo no válido (Vanneschi et al., 2010). Además, la función de reparación o la sustitución de individuos no válidos por otros bien formados aumenta la complejidad computacional. \par
+  La Programación Genética Guiada por Gramáticas evita los problemas de la creación de individuos no válidos gracias a la utilización de Gramáticas Libres de Contexto (\emph{context-free grammars}) (Chomsky, 1959), que permiten que las soluciones que codifican los individuos formen parte del espacio de soluciones aunque sean generados de forma aleatoria.
   
     \subsection*{\large 2.4.1. Gramáticas Libres de Contexto}
     Una Gramática Libre de Contexto $G$ está definida por una 4-tupla (Hopcroft and Ullman, 1979) de la forma: 
     \begin{align}
     G = (\Sigma_{N}, \Sigma_{T}, S, P), \label{eq:1}\tag{1}
     \end{align}
-    donde $\Sigma_{N}$ se corresponde con el conjunto de símbolos no terminales (variables), $\Sigma_{T}$ con el conjunto de símbolos terminales (constantes), $S$ es el axioma o símbolo principal, del que derivarán las reglas que conformen al individuo y $P$ es el conjunto de reglas de producción. \par
-    Una regla de producción (\emph{production rule}) de $P$ tienen la forma $\alpha \rightarrow \beta$, donde $\alpha$ es un símbolo no terminal con $\alpha \in \Sigma_{N}$ y $\beta$ es una cadena de variables y/o terminales con $\beta \in (\Sigma_{N} \cup \Sigma_{T})$. \par
-    Una derivación (\emph{derivation}) de la gramática $G$ se puede entender como una regla $R$ perteneciente a $S$ tal que $\alpha \rightarrow \beta$. Esta derivación tiene asociada una palabra (\emph{word}), que se corresponde con la decodificación del individuo en el espacio $S$. \par
-    La Programación Genética Guiada por Gramáticas favorece la convergencia de los individuos al eliminar el problema del cierre. También, asegura que los individuos generados son siempre válidos y limita formalmente a los individuos que siempre tendrán una sintaxis basada en las reglas de producción acotadas. Sin embargo, para reglas de producción concretas se pueden producir ciclos, luego la profundidad de un individuo no se puede controlar con estas gramáticas. \par
-    Otro problema de estas gramáticas es que puede haber redundancia (\emph{redundancy}), es decir, puede generar dos individuos distintos estructuralmente pero que deriven la misma palabra. Por ejemplo, la siguiente gramática es redundante: \\
+    donde $\Sigma_{N}$ se corresponde con el conjunto de símbolos no terminales (variables), $\Sigma_{T}$ con el conjunto de símbolos terminales (constantes), $S$ es el axioma o símbolo inicial, del que derivan las reglas que forman al individuo y $P$ es el conjunto de reglas de producción. \par
+    Una regla de producción (\emph{production rule}) de $P$ tienen la forma $\alpha \rightarrow \beta$, donde $\alpha$ es un símbolo no terminal, $\alpha \in \Sigma_{N}$, y $\beta$ es una cadena de variables o terminales con $\beta \in (\Sigma_{N} \cup \Sigma_{T})^*$. \par
+    Una derivación de la gramática $G$ es un conjunto de reglas de producción $\alpha \rightarrow^*s$, $s \in \Sigma_{T}^*$, donde $s$ es palabra, que se corresponde con la decodificación del individuo en el espacio de soluciones. \par
+    La Programación Genética Guiada por Gramáticas asegura que los individuos generados son siempre válidos porque siguen la sintaxis definida en la gramática. Sin embargo, pueden existir reglas de producción recursivas, luego la profundidad de un individuo no se puede controlar con estas gramáticas. \par
+    Otro problema de estas gramáticas es que puede haber ambigüedad, es decir, puede haber dos individuos distintos pero que deriven la misma palabra. Por ejemplo, la siguiente gramática es ambigua: \\
     \begin{align*}
     G &= (\Sigma_{N}, \Sigma_{T}, S, P) \label{eq:2}\tag{2} \\
     \Sigma_{N} &= \{S, E, F, N\} \\
@@ -223,47 +223,49 @@
     &N ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 \\
     \}
     \end{align*} \par
-    Con esta gramática, se han representado dos individuos que reflejan esta condición en Fig. \ref{fig:6}. Se puede comprobar que los símbolos terminales $F$ y $E$ son equivalentes, ya que derivan reglas idénticas. \par
     \begin{figure}[H]
       \centering
       \includegraphics[width = 0.8\textwidth]{resources/Fig6.pdf}
       \caption{Individuos conformados por una gramática redundante.}
       \label{fig:6}
     \end{figure} \par
-    Una gramática sin redundancia es una gramática depurada. Algunas veces, la redundancia es útil, ya que, por ejemplo, la solución óptima puede ser alcanzada de forma más fácil si está codificada varias veces. Como inconveniente, se produce una convergencia tardía.
+    La Fig. \ref{fig:6} muestra dos individuos diferentes que representan la misma palabra. Se puede comprobar que los símbolos terminales $F$ y $E$ son equivalentes, ya que derivan reglas idénticas. \par
     
     \subsection*{\large 2.4.2. Codificación y representación de los individuos}
-    Como sucedía con la Programación Genética, los individuos se representan en forma de árbol. Estos árboles son creados empleando una Gramática Libre de Contexto. La codificación de estos individuos, al contrario de lo que sucedía con la Programación Genética, se obtiene leyendo los nodos terminales de izquierda a derecha, sin incluir los nodos interiores. \par
-    La Programación Genética Guiada por Gramáticas cumple con la propiedad del cierre gracias a las gramáticas, asegurando la creación de individuos sintácticamente válidos. Sin embargo, la explosión de código se ve en entredicho o no, dependiendo de si la gramática tiende a formar ciclos. \par
-    Una gramática formará ciclos cuando las reglas de producción se llamen a sí mismas en su consecuente. Por ejemplo, la gramática mostrada en Eq. \ref{eq:2} es recursiva, ya que tres de las cuatro reglas del nodo no terminal $E$ se llaman a sí mismas. En tal caso, dependiendo del algoritmo de generación de individuos que se utilice, se producirán o no intrones, retrasando la convergencia. Sin embargo, la recursión que puede determinar la regla $E ::= E + E$ no tiene el mismo grado que la regla $E ::= F + E$, ya que en la primera existe una doble recursión.
+    Los individuos son árboles de derivación. Estos árboles son creados empleando una Gramática Libre de Contexto. La decodificación de estos individuos se obtiene leyendo los nodos terminales de izquierda a derecha, sin incluir los nodos interiores. \par
+    Una gramática es recursiva cuando tiene producciones recursivas. Por ejemplo, la gramática mostrada en la Eq. \ref{eq:2} es recursiva, ya que tres de las cuatro producciones del nodo no terminal $E$ son recursivas. En tal caso, dependiendo del algoritmo de generación de individuos que se utilice, se pueden producir o no intrones. 
     
-    \subsection*{\large 2.4.3. Operadores}
-    Los operadores de la Programación Genética de cruce y mutación son también útiles en la Programación Genética Guiada por Gramáticas, al igual que los operadores comunes de selección y de reemplazo. Con la adición de las gramáticas, han surgido varias implementaciones nuevas sobre el operador de cruce. Sin embargo, el operador de mutación sigue coincidiendo con el algoritmo de generación de individuos seleccinado.
+    \subsection*{\large 2.4.3. Generación de la población inicial}
+    Para la creación de individuos para la población inicial, hay dos técnicas: una aleatoria y otra controlada. La primera de ellas, utiliza la Gramática Libre de Contexto y genera derivaciones de forma aleatoria, siguiendo las reglas de producción. A pesar de que genera individuos sintácticamente válidos y es simple de aplicar, además de óptimo en problemas de dominio reducido, es incapaz de controlar la profundidad, facilitando la aparición de la explosión de código. \par
+    El segundo método es una variante del primero, ya que los individuos también se generan de forma aleatoria, pero controlando en todo momento la profundidad de la derivación, no permitiendo en ningún caso que se sobrepase la profundidad máxima. Para ello, el algoritmo conoce en todo momento la profundidad actual del individuo que está generando y busca reglas de producción que mantengan la profundidad del individuo dentro del límite de profundidad.
     
+    \subsection*{\large 2.4.4. Operadores}
+    Los operadores de la Programación Genética de cruce y mutación son también útiles en la Programación Genética Guiada por Gramáticas, al igual que los operadores comunes de selección y de reemplazo. Con la adición de las gramáticas, existen varias implementaciones nuevas sobre el operador de cruce.
+    
+      \vspace{-0.5cm}
       \subsubsection*{\normalsize 2.4.3.1. Cruce}
-      Si bien los operadores de cruce de la Programación Genética pueden utilizarse en la Programación Genética Guiada por Gramáticas, los individuos generados con ellos serán inválidos y no cumplirán con la propiedad de cierre. El ejemplo más evidente se hace palpable con el operador de cruce de Koza, que genera puntos de cruce de forma aleatoria y que no tiene en cuenta las reglas de producción, tal y como se muestra en Fig. \ref{fig:7} con la gramática mostrada en Eq. \ref{eq:2}. \par
+      Si bien los operadores de cruce de la Programación Genética pueden utilizarse en la Programación Genética Guiada por Gramáticas, los individuos generados con ellos pueden ser no válidos y no cumplirán, por tanto, con la propiedad de cierre. El ejemplo más evidente se hace palpable con el operador de cruce de Koza, que genera puntos de cruce de forma aleatoria y que no tiene en cuenta las reglas de producción, tal y como se muestra en la Fig. \ref{fig:7} con la gramática mostrada en la Eq. \ref{eq:2}. \par
       \begin{figure}[H]
         \centering
         \includegraphics[width = 1\textwidth]{resources/Fig7.pdf}
         \caption{Errores (en rojo) producidos en el cruce de dos individuos generados con gramáticas al aplicar el operador de Koza.}
         \label{fig:7}
-      \end{figure} \par
-      
-        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de cruce preservador del contexto}}
-        \vspace{-0.5cm}
-        El operador de cruce preservador del contexto (\emph{context preserving crossover}) (D'haeseleer, 1994) restringe el cruce sólo entre subárboles que tienen localizaciones similares. Estas localizaciones vienen dadas por las coordenadas (\emph{coordinates}), reduciendo el exceso de exploración del operador de Koza. Estas coordenadas se definen como el camino entre la raíz y el nodo elegido. Este cruce sólo selecciona un nodo aleatorio: el del primer progenitor. A continuación, extrae las coordenadas de ese nodo aleatorio y las busca en el segundo progenitor. Si esas coordenadas existen en el segundo progenitor, entonces cruza los árboles. En caso contrario, selecciona otro nodo aleatorio del primer padre, realizando ese proceso repetidamente hasta que se puede efectuar el cruce. En Fig. \ref{fig:8} se puede observar el funcionamiento de este cruce. \par
+      \end{figure} 
         \begin{figure}[H]
           \centering
           \includegraphics[width = 1\textwidth]{resources/Fig8.pdf}
           \caption{Ejemplo de aplicación del operador de cruce preservador del contexto.}
           \label{fig:8}
-        \end{figure} \par
-        El problema que tiene es que es útil para individuos que son estructuralmente similares, es decir, que habrá individuos que nunca se podrán cruzar, por lo que presenta serios problemas de exploración. Además, tiene amplia capacidad de explotación, por lo que, si bien es útil en fases tempranas del programa genético, produciría una convergencia demasiado rápida y problemas de caídas en óptimos locales. Tampoco limita la profundidad de los árboles, por lo que propicia la aparición de intrones.
+        \end{figure} \par \vfill
+      
+        \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de cruce preservador del contexto}}
+        \vspace{-0.5cm}
+        El operador de cruce preservador del contexto (\emph{context preserving crossover}) (D'haeseleer, 1994) restringe el cruce sólo entre subárboles que tienen localizaciones similares. Estas localizaciones vienen dadas por las coordenadas, reduciendo el exceso de exploración del operador de Koza. Estas coordenadas se definen como el camino entre la raíz y el nodo elegido. Este cruce sólo selecciona un nodo aleatorio: el del primer progenitor. A continuación, extrae las coordenadas de ese nodo aleatorio y las busca en el segundo progenitor. Si esas coordenadas existen en el segundo progenitor, entonces cruza los árboles. En caso contrario, selecciona otro nodo aleatorio del primer padre, realizando ese proceso repetidamente hasta que se puede efectuar el cruce. En la Fig. \ref{fig:8} se puede observar el funcionamiento de este cruce. \par
+        El problema que tiene es que es útil para individuos que son estructuralmente similares, es decir, que hay individuos que no se pueden cruzar, por lo que presenta serios problemas de exploración. Además, tiene amplia capacidad de explotación, por lo que, si bien es útil en fases tempranas del programa genético, puede producir una convergencia prematura y caídas en óptimos locales. Tampoco limita la profundidad de los árboles, por lo que propicia la aparición de intrones.
         
         \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de Whigham}}
         \vspace{-0.5cm}
-        El operador de Whigham (Whigham, 1995) busca establecer un equilibrio entre exploración y explotación. No utiliza las coordenadas, sino que selecciona un símbolo no terminal (exceptuando el axioma) del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor, selecciona uno aleatorio de entre aquellos que son iguales al nodo del primer progenitor. En Fig. \ref{fig:9} se puede apreciar cómo funciona este operador. \par
-        La única desventaja es que no controla la profundidad de los descendientes. Si se aplica sobre una gramática ambigua, puede generar individuos que representan la misma solución. Este operador también es utilizado en la Programación Genética tradicional, pero puede generar individuos no válidos, ya que en ella, todos los nodos interiores pueden ser elegidos. \par
+        El operador de Whigham (Whigham, 1995) busca establecer un equilibrio entre exploración y explotación. No utiliza las coordenadas, sino que selecciona un símbolo no terminal (exceptuando el axioma) del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor, selecciona uno aleatorio de entre aquellos que son iguales al nodo del primer progenitor. En la Fig. \ref{fig:9} se puede apreciar cómo funciona este operador. La única desventaja es que no controla la profundidad de los descendientes. \par
         \begin{figure}[H]
           \centering
           \includegraphics[width = 1\textwidth]{resources/Fig9.pdf}
@@ -271,9 +273,6 @@
           \label{fig:9}
         \end{figure} \par
         
-    \subsection*{\large 2.4.4. Generación de la población inicial}
-    Para la creación de individuos para la población inicial, hay dos técnicas: una aleatoria y otra controlada. La primera de ellas, utiliza la Gramática Libre de Contexto y genera derivaciones de forma aleatoria, siguiendo las reglas de producción. A pesar de que genera individuos sintácticamente válidos y es simple de aplicar, además de óptimo en problemas de dominio reducido, es incapaz de controlar la profundidad, facilitando la aparición de la explosión de código. \par
-    El segundo método es una variante del primero, ya que los individuos también se generan de forma aleatoria, pero controlando en todo momento la profundidad de la derivación, no permitiendo en ningún caso que se sobrepase la profundidad máxima. \vfill
     
   \chapter{\vspace{-3cm}{\LARGE 3. Redes de Neuronas Artificiales}}
   \setcounter{figure}{9}
@@ -310,7 +309,7 @@
       \begin{minipage}{0.5\textwidth}
         \centering
         \includegraphics[width = 0.7\linewidth]{resources/Fig12_1.pdf}
-      \end{minipage}l
+      \end{minipage}
       \begin{minipage}{0.49\textwidth}
         \centering
         \includegraphics[width = 0.7\linewidth]{resources/Fig12_2.pdf}
