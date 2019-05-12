@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "4194151871",
+    "hash" : "1784332301",
     "id" : "D20A6CC8",
-    "lastKnownWriteTime" : 1557176688,
-    "last_content_update" : 1557176688741,
+    "lastKnownWriteTime" : 1557526129,
+    "last_content_update" : 1557526129995,
     "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP/activation_functions.R",
     "project_path" : "activation_functions.R",
     "properties" : {
-        "cursorPosition" : "175,36",
-        "scrollLine" : "168"
+        "cursorPosition" : "212,0",
+        "scrollLine" : "177"
     },
     "relative_order" : 2,
     "source_on_save" : false,

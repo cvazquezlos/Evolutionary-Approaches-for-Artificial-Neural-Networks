@@ -303,22 +303,80 @@
     \end{figure} \par
     En la capa de entrada (\emph{input layer}), las neuronas reciben datos o señales procedentes del entorno. Las neuronas de la capa de salida (\emph{output layer}) proporcionan la respuesta de la red a los estímulos de la entrada, aplicando una transformación que se lleva a cabo a lo ancho de la red. Entre la capa de entrada y la de salida están las capas ocultas (\emph{hidden layers}), que no reciben ni suministran informacion al entorno, sino que la modifican ya que llevan a cabo el procesamiento interno de la red. \par
     El proceso que sigue una Red de Neuronas Artificiales al actualizar los pesos se denomina aprendizaje y está determinado por el paradigma; si es o no un aprendizaje supervisado y por el algoritmo que utiliza para llevarlo a cabo. Con el aprendizaje supervisado, se supone que el usuario conoce la clasificación de aquello que desea clasificar, por lo que la red intentará minimizar el error entre la etiqueta que predice y su valor real para que la salida obtenida termine siendo la real. En cambio, en el aprendizaje no supervisado, la red recibe un conjunto de patrones de los que no conoce la respuesta deseada, e intentará extraer sus rasgos y agruparlos por similaridad. \par
-    Cada neurona tiene asociada una función de activación. Existen muchas funciones, cada una con sus ventajas y desventajas, y adecuadas para ser utilizadas según ciertos criterios. Además, algunas de estas funciones tienen limitaciones, como la lineal, que no permite utilizar la propagación hacia atrás para entrenar el modelo, ya que su derivada es una constante y no tiene relación con la entrada. En Fig. 12 se muestran las funciones de activación más destacadas.
+    Cada neurona tiene asociada una función de activación. Existen muchas funciones, cada una con sus ventajas y desventajas, y adecuadas para ser utilizadas según ciertos criterios. Además, algunas de estas funciones tienen limitaciones, como la lineal, que no permite utilizar la propagación hacia atrás para entrenar el modelo, ya que su derivada es una constante y no tiene relación con la entrada. En la Fig. \ref{fig:12} se muestran las funciones de activación más destacadas.
     %www.mini.pw.edu.pl/~macukow/wspolne/selection.pdf
     \begin{figure}[H]
-      \begin{minipage}{0.5\textwidth}
+      \begin{minipage}{0.49\textwidth}
         \centering
-        \includegraphics[width = 0.7\linewidth]{resources/Fig12_1.pdf}
+        \includegraphics[width = 1\linewidth]{resources/Fig12_1.pdf}
       \end{minipage}
       \begin{minipage}{0.49\textwidth}
         \centering
-        \includegraphics[width = 0.7\linewidth]{resources/Fig12_2.pdf}
+        \includegraphics[width = 1\linewidth]{resources/Fig12_2.pdf}
       \end{minipage}
     \end{figure}
-    \section*{\Large 3.3. Tipos}
+    \begin{figure}[H]
+      \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width = 1\linewidth]{resources/Fig12_3.pdf}
+      \end{minipage}
+      \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width = 1\linewidth]{resources/Fig12_4.pdf}
+      \end{minipage}
+    \end{figure}
+    \begin{figure}[H]
+      \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width = 1\linewidth]{resources/Fig12_5.pdf}
+      \end{minipage}
+      \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width = 1\linewidth]{resources/Fig12_6.pdf}
+      \end{minipage}
+    \end{figure}
+    \begin{figure}[H]
+      \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width = 1\linewidth]{resources/Fig12_7.pdf}
+      \end{minipage}
+      \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width = 1\linewidth]{resources/Fig12_8.pdf}
+      \end{minipage}
+      \caption{Gráficas de las funciones de activación más utilizadas.}
+      \label{fig:12}
+    \end{figure} \par
+    El proceso de entrenamiento de una red consiste en la actualización de los pesos entre las conexiones de las neuronas que la forman. El entrenamiento comienza tras asignar estos pesos iniciales de forma aleatoria. Este proceso varía según sea un entrenamiento supervisado o no supervisado. \par
+    En el entrenamiento supervisado, la red conoce tanto las entradas como las salidas. La red procesa las entradas y compara las salidas predichas con las reales. Los errores se propagan hacia atrás en la red (\emph{backpropagation}), provocando la actualización de los pesos de sus conexiones. La red utiliza el conjunto de entrenamiento durante todo el proceso, que tiene una duración limitada, medida en términos de sobreajuste (\emph{overfitting}) o en épocas (\emph{epochs}). \par
+    En el entrenamiento no supervisado, la red recibe la entrada, pero no la salida deseada. En el proceso, la red debe considerar cómo agrupar estos datos.
     
-  
+    \section*{\Large 3.3. Deep Learning}
+    El Aprendizaje Profundo (\emph{deep learning}) es un subcampo del Aprendizaje Automático (\emph{machine learning}) y basado en Redes de Neuronas Artificiales Profundas (\emph{deep artificial neural networks}). Una red es profunda si tiene más de una capa oculta. \par
   \chapter{\vspace{-3cm}{\LARGE 4. Construcción de Redes de Neuronas}}
+  \setcounter{figure}{12}
+  \vspace{-1cm}
+  Para la construcción de Redes de Neuronas Artificiales se ha utilizado la Programación Genética Guiada por Gramáticas, siguiendo el trabajo de Manrique (Manrique et al., 2018). \par
+  El autor propone una gramática para generar arquitecturas neuronales que son estructuralmente válidas. Por tanto, los individuos no serán redes como tal, sino que simbolizarán la estructura de una red. La gramática propuesta es la siguiente: \par
+  \begin{align*}
+    G_{I\thinspace O} &= (S, \Sigma_{N}, \Sigma_{T}, P_{I\thinspace O}) \label{eq:3}\tag{3} \\
+    \Sigma_{N} &= \{S, A, H, Z, N\} \\
+    \Sigma_{T} &= \{n, /\} \\
+    P_{I\thinspace O} &= \{ \\
+    &S ::= AH/Z \\
+    &A ::= n^I \\
+    &H ::= HH | /N \\
+    &Z ::= n^O \\
+    &N ::= nN | n \\
+    \}
+    \end{align*} \par
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 1\textwidth]{resources/Fig13.pdf}
+      \caption{Individuo de ejemplo generado por la Eq. \ref{eq:3}.}
+      \label{fig:13}
+    \end{figure} \par
+    
   
   \chapter{\vspace{-3cm}{\LARGE 5. Planteamiento del problema}}
   
@@ -347,6 +405,7 @@
   \bibitem{Bremermann1962} Bremermann, H.J. (1962). Optimization through evolution and recombination. \emph{Self-Organizing Systems 1962}: 93-106.
   \bibitem{Chomsky1959} Chomsky, N. (1959). On Certain Formal Properties of Grammars. \emph{Information and Control}. 2(2):137-167.
   \bibitem{Couchet2006} Couchet, J. and Manrique, D. (2006). Crossover and mutation operations for grammar-guided genetic programming. \emph{Soft Computing}. 11(10):943-955.
+  \bibitem{Couchet2007} Couchet, J., Manrique, D. and Porras, L. (2007). Grammar-Guided Neural Architecture Evolution. \emph{Bio-inspired Modeling of Cognitive Tasks}: 438-446.
   \bibitem{Cramer1985} Cramer, N.L. (1985). A representation for the Adaptive Generation of Simple Sequential Programs. \emph{Proceedings of the First International Conference on Genetic Algorithms and the Applications}: 183-187.
   \bibitem{Dhaeseleer1994} D'haeseleer, P. (1994). Context preserving crossover in genetic programming. \emph{Proceedings of the First IEEE Conference on Evolutionary Computation}. 1:256-261.
   \bibitem{Dantzig1990} Dantzig, G.B. (1990). Origins of the simplex method. \emph{A history of scientific computing}, pages 141-151.
@@ -376,6 +435,7 @@
   \bibitem{Koza1996} Koza, J.R., Goldberg, D.E., Fogel, D.B. and Riolo, R.L. (1996). \emph{Genetic Programming 1996} (Cambridge, MA: MIT Press).
   \bibitem{Kosorukoff2001} Kosorukoff, A. (2001). Human based genetic algorithm. \emph{2001 IEEE International Conference on Systems, Man and Cybernetics. e-Systems and e-Man for Cybernetics in Cyberspace}: 3464-3469.
   \bibitem{Langton1986} Langton, C.G. (1986). Studying artificial life with cellular automata. \emph{Physica D: Nonlinear Phenomena}. 22(1):120-149.
+  \bibitem{Manrique2018} Manrique, D., Barrios, D.R., Delgado, G.M. (2018). Multilayered neural architectures evolution for computing sequences of orthogonal polynomials. \emph{Annals of Mathematics and Artificial Intelligence}. 84(3):161-184.
   \bibitem{McCulloch1943} McCulloch, W.S. and Pitts, W.H. (1943) A Logical Calculus of the Ideas Immanent in Nervous Activity. \emph{Bulletin of Mathematical Biophysics}. 5:115-133.
   \bibitem{Minsky1969} Minsky, M.L. and Papert, S. (1969). \emph{Perceptrons: An Introduction to Computational Geometry} (Cambridge: MIT Press).
   \bibitem{Moscato1989} Moscato, P. (1989). On Evolution, Search, Optimization, Genetic Algorithms and Martial Arts - Towards Memetic Algorithms. \emph{Caltech Concurrent Computation Program}: 158-179.

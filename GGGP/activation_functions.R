@@ -22,7 +22,8 @@ identity_plot <- ggplot(data = identity_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", size = 45, hjust = 0.5, margin = margin(0, 0, 25, 0))
   )
 identity_plot
 
@@ -49,7 +50,8 @@ binary_step_plot <- ggplot(data = binary_step_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 45, margin = margin(0, 0, 25, 0))
   )
 binary_step_plot
 
@@ -72,7 +74,8 @@ sigmoid_plot <- ggplot(data = sigmoid_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 45, margin = margin(0, 0, 25, 0))
   )
 sigmoid_plot
 
@@ -91,7 +94,8 @@ tanh_plot <- ggplot(data = tanh_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 45, margin = margin(0, 0, 25, 0))
   )
 tanh_plot
 
@@ -118,7 +122,8 @@ relu_plot <- ggplot(data = relu_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 45, margin = margin(0, 0, 25, 0))
   )
 relu_plot
 
@@ -145,7 +150,8 @@ leaky_relu_plot <- ggplot(data = leaky_relu_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 45, margin = margin(0, 0, 25, 0))
   )
 leaky_relu_plot
 
@@ -168,7 +174,8 @@ softplus_plot <- ggplot(data = softplus_df, aes(x = x, y = y)) +
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 45, margin = margin(0, 0, 25, 0))
   )
 softplus_plot
 
@@ -191,7 +198,7 @@ square_nonlinearity_plot <- ggplot(data = square_nonlinearity_df, aes(x = x, y =
   geom_vline(xintercept = 0, colour = "#B6B6B6", linetype = "dashed") +
   geom_hline(yintercept = 0, colour = "#B6B6B6", linetype = "dashed") +
   geom_line(color = "orange", size = 1) +
-  scale_x_continuous(breaks = seq(-2.5, 2.5, 0.5)) +
+  scale_x_continuous(breaks = seq(-2.5, 2.5, 1)) +
   scale_y_continuous(breaks = seq(-6, 6, 1)) +
   theme_classic() +
   ggtitle("SQNL") +
@@ -199,6 +206,7 @@ square_nonlinearity_plot <- ggplot(data = square_nonlinearity_df, aes(x = x, y =
   theme (
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "#E8E8E8"),
-    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 50, margin = margin(0, 0, 25, 0))
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", hjust = 0.5, size = 45, margin = margin(0, 0, 25, 0))
   )
 square_nonlinearity_plot
