@@ -292,7 +292,7 @@
       \caption{Arquitectura básica de un Perceptrón.}
       \label{fig:10}
     \end{figure} \par
-    Sin embargo, la arquitectura de una red no es tan simple como la mostrada en Fig. \ref{fig:10}. Una Red de Neuronas Artificiales que no es un Perceptrón suele componerse por, al menos, una capa oculta (\emph{hidden layer}). Cuando una red tiene más de una capa oculta (es decir, más de 3 capas incluyendo la de entrada y la de salida), la red se denomina Red de Neuronas Artificiales Profunda (\emph{deep artificial neural network}) (Aizenberg et al., 2000). En Fig. 11 se muestra una arquitectura profunda con 2 capas ocultas. \par
+    Sin embargo, la arquitectura de una red no es tan simple como la mostrada en Fig. \ref{fig:10}. Una Red de Neuronas Artificiales que no es un Perceptrón suele componerse por, al menos, una capa oculta (\emph{hidden layer}). Cuando una red tiene más de una capa oculta (es decir, más de 5 capas incluyendo la de entrada y la de salida), la red se denomina Red de Neuronas Artificiales Profunda (\emph{deep artificial neural network}) (Aizenberg et al., 2000). En Fig. 11 se muestra una arquitectura neuronal 2 capas ocultas. \par
     \begin{figure}[H]
       \centering
       \includegraphics[width = 0.8\textwidth]{resources/Fig11.pdf}
@@ -350,11 +350,27 @@
     
     \section*{\Large 3.3. Deep Learning}
     El Aprendizaje Profundo (\emph{deep learning}) es un subcampo del Aprendizaje Automático (\emph{machine learning}) y basado en Redes de Neuronas Artificiales Profundas (\emph{deep artificial neural networks}). Una red es profunda si tiene más de una capa oculta. \par
+    Estos modelos se entrenan con una gran cantidad de datos etiquetados, sin necesidad de una extracción manual de características. En Fig. \ref{fig:13} se muestra una arquitectura neuronal profunda.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 0.8\textwidth]{resources/Fig13.pdf}
+      \caption{Ejemplo de Red de Neuronas Artificiales Profunda.}
+      \label{fig:13}
+    \end{figure} \par
+    Uno de los usos más destacados del Deep Learning es lo relativo a clasificación de imágenes con Redes de Neuronas Convolucionales (Fukushima, 1975). La diferencia más notable entre este tipo de aprendizaje y el Aprendizaje Autónomo reside en que en el segundo tipo es necesario un proceso de extracción manual de las características relevantes de las imágenes, a partir de las cuales se entrena un modelo que aprende de ellas. En el Deep Learning, las características las aprende el modelo, provisto de datos (imágenes) sin procesar. \par
+    En la Fig. \ref{fig:14}, en el primer gráfico, se muestra un ejemplo de cómo funciona el Aprendizaje Automático. En el segundo, el funcionamiento del Deep Learning.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width = 1\textwidth]{resources/Fig14.pdf}
+      \caption{Ejemplo de Red de Neuronas Artificiales Profunda.}
+      \label{fig:14}
+    \end{figure} \vfill
+    \newpage\cleardoublepage
   \chapter{\vspace{-3cm}{\LARGE 4. Construcción de Redes de Neuronas}}
   \setcounter{figure}{12}
   \vspace{-1cm}
   Para la construcción de Redes de Neuronas Artificiales se ha utilizado la Programación Genética Guiada por Gramáticas, siguiendo el trabajo de Manrique (Manrique et al., 2018). \par
-  El autor propone una gramática para generar arquitecturas neuronales que son estructuralmente válidas. Por tanto, los individuos no serán redes como tal, sino que simbolizarán la estructura de una red. La gramática propuesta es la siguiente: \par
+  El autor propone una gramática para generar arquitecturas neuronales que son sintácticamente válidas. Por tanto, los individuos no serán redes como tal, sino que simbolizarán la estructura de una red. La gramática propuesta es la siguiente: \par
   \begin{align*}
     G_{I\thinspace O} &= (S, \Sigma_{N}, \Sigma_{T}, P_{I\thinspace O}) \label{eq:3}\tag{3} \\
     \Sigma_{N} &= \{S, A, H, Z, N\} \\
@@ -369,11 +385,11 @@
     \end{align*} \par
     \begin{figure}[H]
       \centering
-      \includegraphics[width = 1\textwidth]{resources/Fig13.pdf}
+      \includegraphics[width = 0.8\textwidth]{resources/Fig15.pdf}
       \caption{Individuo de ejemplo generado por la Eq. \ref{eq:3}.}
-      \label{fig:13}
+      \label{fig:15}
     \end{figure} \par
-    
+    En la Fig. \ref{fig:15} se muestra un individuo que se ha generado con la gramática \ref{eq:3} y sus reglas de producción en orden de aplicación.
   
   \chapter{\vspace{-3cm}{\LARGE 5. Planteamiento del problema}}
   
