@@ -389,12 +389,12 @@
     En la gramática, hay dos símbolos terminales: $n$, que se refiere a una neurona, y $/$, que denota el separador entre capas. Hay un total de cinco símbolos no terminales, de los cuales se mantiene el axioma, $S$ y símbolo tradicional de inicio en todas las Gramáticas Libres de Contexto usadas en la Programación Genética Guiada por Gramáticas. $A$ simboliza la capa de entrada, formada por $n^I$ neuronas, es decir, con tantas neuronas como entradas a la red hay. $H$ crea recursivamente capas ocultas o inicia la creación de neuronas en la capa oculta. Un individuo al menos tendrá una capa oculta. $Z$ simboliza la capa de salida, formada por $n^O$ neuronas, es decir, con tantas neuronas como salidas de la red hay. $N$ crea recursivamente cualquier número de neuronas en una capa.
     \begin{figure}[H]
       \centering
-      \includegraphics[width = 0.8\textwidth]{resources/Fig15.pdf}
+      \includegraphics[width = 0.8\textwidth]{resources/Fig15_1.pdf}
     \end{figure} \par
     \vspace{-1cm}
     \begin{figure}[H]
       \centering
-      \includegraphics[width = 0.55\textwidth]{resources/Fig16.pdf}
+      \includegraphics[width = 0.55\textwidth]{resources/Fig15_2.pdf}
       \caption{Individuo de ejemplo generado por la Eq. \ref{eq:3} y su decodificación en la arquitectura neuronal correspondiente.}
       \label{fig:15}
     \end{figure} \par
@@ -424,7 +424,14 @@
   \vspace{-1cm}
   La Programación Genética permite la resolución de problemas de búsqueda y de optimización donde las soluciones son programas informáticos. Por tanto, cada uno de los individuos que forme parte del problema es un programa informático. La ampliación de esta técnica para soportar Gramáticas Libres de Contexto ha permitido no sólo aumentar la complejidad de los problemas que puede resolver esta técnica, sino que también ha permitido no perder tiempo y esfuerzo computacional en reparar individuos no válidos sintácticamente. \par
   La existencia de una gramática que permite generar Redes de Neuronas Artificiales resuelve el problema de encontrar la mejor arquitectura que mejor se adapte a un problema determinado. Anteriormente, este problema se abordaba con el conocimiento experto, no siempre acertado, ya que una arquitectura neuronal depende no sólo del número de instancias, sino de las variables predictoras y de las de clase. \par
-  En el proceso evolutivo, cada individuo tiene que ser entrenado para la obtención de su fitness. Como cada individuo codifica una arquitectura de red, cada individuo se transforma en una Red de Neuronas Artificial, el cual se entrena y se obtiene su accuracy.
+  En el proceso evolutivo, cada individuo tiene que ser entrenado para la obtención de su fitness. Como cada individuo codifica una arquitectura de red, cada individuo se transforma en una Red de Neuronas Artificial, que se entrena. El resultado de este entrenamiento es el fitness del individuo. Este proceso de entrenamiento se utiliza para cada nuevo individuo de la población. \par
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig16.pdf}
+    \caption{Proceso evolutivo idéntico al de la Fig. \ref{fig:1} pero aplicado al ámbito de creación de Redes de Neuronas Artificiales.}
+    \label{fig:16}
+  \end{figure} \par
+  Sin embargo, para problemas pequeños, el entrenamiento de estas redes es prácticamente instantáneo. A medida que los datos van cogiendo mayor dimensión, la demora en el entrenamiento comienza a ser significativa. Este aspecto hace que esta metodología pierda efectividad cuando realmente es más necesaria; en el ámbito del Deep Learning, donde hay una gran cantidad de información y las arquitecturas neuronales deben ser complejas para entrenar bien con ella. \par
     
   \chapter{\vspace{-3cm}{\LARGE 6. Solución propuesta}}
   
