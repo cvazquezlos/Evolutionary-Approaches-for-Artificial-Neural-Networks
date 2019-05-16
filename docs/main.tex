@@ -369,7 +369,7 @@
     \end{figure} \vfill
     
   \chapter{\vspace{-3cm}{\LARGE 4. Construcción de Redes de Neuronas}}
-  \setcounter{figure}{12}
+  \setcounter{figure}{14}
   \vspace{-1cm}
   Para la construcción de Redes de Neuronas Artificiales se ha utilizado la Programación Genética Guiada por Gramáticas, siguiendo el trabajo de Manrique (Manrique et al., 2018). \par
   El autor propone una gramática para generar arquitecturas neuronales que son sintácticamente válidas. Por tanto, los individuos no serán redes como tal, sino que simbolizarán la estructura de una red. La gramática en cuestión se muestra en la Eq. \ref{eq:3}, que recibe dos parámetros: las neuronas de entrada ($I$) y las neuronas de salida ($O$). \par
@@ -417,8 +417,15 @@
     \end{align*} \par
     La gramática anterior tiene las mismas ventajas que la mostrada en Eq. \ref{eq:3} pero sustituye el separador de capa por una función de activación. En este trabajo no se ha utilizado esta gramática actualizada, ya que sólo se ha enfocado el problema en problemas de clasficiación.
   
-  \chapter{\vspace{-3cm}{\LARGE 5. Planteamiento del problema}}
+  \newpage\cleardoublepage
   
+  \chapter{\vspace{-3cm}{\LARGE 5. Planteamiento del problema}}
+  \setcounter{figure}{15}
+  \vspace{-1cm}
+  La Programación Genética permite la resolución de problemas de búsqueda y de optimización donde las soluciones son programas informáticos. Por tanto, cada uno de los individuos que forme parte del problema es un programa informático. La ampliación de esta técnica para soportar Gramáticas Libres de Contexto ha permitido no sólo aumentar la complejidad de los problemas que puede resolver esta técnica, sino que también ha permitido no perder tiempo y esfuerzo computacional en reparar individuos no válidos sintácticamente. \par
+  La existencia de una gramática que permite generar Redes de Neuronas Artificiales resuelve el problema de encontrar la mejor arquitectura que mejor se adapte a un problema determinado. Anteriormente, este problema se abordaba con el conocimiento experto, no siempre acertado, ya que una arquitectura neuronal depende no sólo del número de instancias, sino de las variables predictoras y de las de clase. \par
+  En el proceso evolutivo, cada individuo tiene que ser entrenado para la obtención de su fitness. Como cada individuo codifica una arquitectura de red, cada individuo se transforma en una Red de Neuronas Artificial, el cual se entrena y se obtiene su accuracy.
+    
   \chapter{\vspace{-3cm}{\LARGE 6. Solución propuesta}}
   
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
