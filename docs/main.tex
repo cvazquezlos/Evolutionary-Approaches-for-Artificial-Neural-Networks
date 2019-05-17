@@ -303,9 +303,9 @@
       \caption{Distintas capas de una Red de Neuronas Artificiales.}
       \label{fig:11}
     \end{figure} \par
-    En la capa de entrada, las neuronas reciben datos o señales procedentes del entorno. Las neuronas de la capa de salida proporcionan la respuesta de la red a los estímulos de la entrada, aplicando una transformación que se lleva a cabo en la red. Entre la capa de entrada y la de salida están las capas ocultas (\emph{hidden layers}), que no reciben ni suministran informacion al entorno, sino que la modifican ya que llevan a cabo el procesamiento interno de la red. \par
+    En la capa de entrada, las neuronas reciben datos o señales procedentes del entorno. Las neuronas de la capa de salida proporcionan la respuesta del modelo a los estímulos de la entrada, aplicando una transformación que se lleva a cabo en la red. Entre la capa de entrada y la de salida están las capas ocultas (\emph{hidden layers}), que no reciben ni suministran informacion al entorno, sino que la modifican ya que llevan a cabo el procesamiento interno de la red. \par
     El proceso que sigue una Red de Neuronas Artificiales al actualizar los pesos se denomina aprendizaje. En el aprendizaje supervisado, la red conoce la salida correcta ante cada entrada, por lo que la red intentará minimizar el error entre el valor que predice la red y su valor deseado. En cambio, en el aprendizaje no supervisado, la red recibe un conjunto de patrones de los que no conoce la respuesta deseada. En este caso, extrae patrones y relaciones entre los datos. \par
-    Cada neurona tiene asociada una función de activación. Existen muchas funciones, cada una con sus ventajas y desventajas, y adecuadas para ser utilizadas según ciertos criterios. Además, algunas de estas funciones tienen limitaciones, como la lineal, que no permite utilizar la propagación hacia atrás para entrenar el modelo, ya que su derivada es una constante y no tiene relación con la entrada. En la Fig. \ref{fig:12} se muestran las funciones de activación más destacadas.
+    Cada neurona oculta o de salida tiene asociada una función de activación. En la Fig. \ref{fig:12} se muestran las funciones de activación más destacadas.
     \begin{figure}[H]
       \begin{minipage}{0.49\textwidth}
         \centering
@@ -315,7 +315,7 @@
         \centering
         \includegraphics[width = 1\linewidth]{resources/Fig12_2.pdf}
       \end{minipage}
-    \end{figure}
+    \end{figure} \vfill
     \begin{figure}[H]
       \begin{minipage}{0.49\textwidth}
         \centering
@@ -348,20 +348,12 @@
       \caption{Gráficas de las funciones de activación más utilizadas.}
       \label{fig:12}
     \end{figure} \par
-    El proceso de entrenamiento de una red consiste en la actualización de los pesos entre las conexiones de las neuronas que la forman. El entrenamiento comienza tras asignar estos pesos iniciales de forma aleatoria. Este proceso varía según sea un entrenamiento supervisado o no supervisado. \par
-    En el entrenamiento supervisado, la red conoce tanto las entradas como las salidas. La red procesa las entradas y compara las salidas predichas con las reales. Los errores se propagan hacia atrás en la red (\emph{backpropagation}), provocando la actualización de los pesos de sus conexiones. La red utiliza el conjunto de entrenamiento durante todo el proceso, que tiene una duración limitada, medida en términos de sobreajuste (\emph{overfitting}) o en épocas (\emph{epochs}). \par
-    En el entrenamiento no supervisado, la red recibe la entrada, pero no la salida deseada. En el proceso, la red debe considerar cómo agrupar estos datos.
+    El proceso de entrenamiento de una red consiste en la actualización de los pesos entre las conexiones de las neuronas que la forman para reducir el error entre el valor de la salida predicha por la red y el valor de la salida deseado. El entrenamiento comienza tras asignar estos pesos iniciales de forma aleatoria. Este proceso varía según sea un entrenamiento supervisado o no supervisado. En este trabajo se utiliza el aprendizaje supervisado. \par
+    En el entrenamiento supervisado, la red conoce tanto las entradas como las salidas. La red procesa las entradas y compara las salidas predichas con las reales. Los gradientes del error se propagan hacia atrás en la red, provocando la actualización de los pesos de sus conexiones. La red utiliza el conjunto de entrenamiento durante todo el proceso, que tiene una duración limitada, medida en épocas (\emph{epochs}), que es el número de veces que la red utiliza los datos provistos para entrenar y ajustar los pesos de sus conexiones. \par
     
     \section*{\Large 3.3. Deep Learning}
-    El Aprendizaje Profundo (\emph{deep learning}) es un subcampo del Aprendizaje Automático (\emph{machine learning}) y basado en Redes de Neuronas Artificiales Profundas (\emph{deep artificial neural networks}). Una red es profunda si tiene más de una capa oculta. \par
-    Estos modelos se entrenan con una gran cantidad de datos etiquetados, sin necesidad de una extracción manual de características. En Fig. \ref{fig:13} se muestra una arquitectura neuronal profunda.
-    \begin{figure}[H]
-      \centering
-      \includegraphics[width = 0.8\textwidth]{resources/Fig13.pdf}
-      \caption{Ejemplo de Red de Neuronas Artificiales Profunda.}
-      \label{fig:13}
-    \end{figure} \par
-    Uno de los usos más destacados del Deep Learning es lo relativo a clasificación de imágenes con Redes de Neuronas Convolucionales (Fukushima, 1975). La diferencia más notable entre este tipo de aprendizaje y el Aprendizaje Autónomo reside en que en el segundo tipo es necesario un proceso de extracción manual de las características relevantes de las imágenes, a partir de las cuales se entrena un modelo que aprende de ellas. En el Deep Learning, las características las aprende el modelo, provisto de datos (imágenes) sin procesar. \par
+    El Aprendizaje Profundo (\emph{deep learning}) es un subcampo del Aprendizaje Automático y basado en Redes de Neuronas Artificiales. Se considera que una red es profunda si tiene más de tres capas ocultas. \par
+    Una de las aplicaciones más destacadas del Deep Learning es lo relativo a clasificación de imágenes con Redes de Neuronas Convolucionales (Fukushima, 1975). La diferencia más notable entre este tipo de aprendizaje y el Aprendizaje Autónomo reside en que en el segundo tipo es necesario un proceso de extracción manual de las características relevantes de las imágenes, a partir de las cuales se entrena un modelo que aprende de ellas. En el Deep Learning, las características las aprende el modelo, provisto de datos (imágenes) sin procesar. \par
     En la Fig. \ref{fig:14}, en el primer gráfico, se muestra un ejemplo de cómo funciona el Aprendizaje Automático. En el segundo, el funcionamiento del Deep Learning.
     \begin{figure}[H]
       \centering
