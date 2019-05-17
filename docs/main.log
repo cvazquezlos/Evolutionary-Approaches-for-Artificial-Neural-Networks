@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.16)  17 MAY 2019 14:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.16)  17 MAY 2019 14:36
 entering extended mode
 **./main.tex
 (main.tex
@@ -735,13 +735,13 @@ Package epstopdf Info: Output file is already uptodate.
 
 pdfTeX warning: pdflatex.exe (file ./resources/FACINFO-eps-converted-to.pdf): P
 DF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<resources/FACINFO-eps-converted-to.pdf, id=47, 420.57124pt x 458.71375pt>
+<resources/FACINFO-eps-converted-to.pdf, id=43, 420.57124pt x 458.71375pt>
 File: resources/FACINFO-eps-converted-to.pdf Graphic file (type pdf)
 <use resources/FACINFO-eps-converted-to.pdf>
 Package pdftex.def Info: resources/FACINFO-eps-converted-to.pdf  used on input 
 line 38.
 (pdftex.def)             Requested size: 64.01869pt x 69.819pt.
-<resources/logoupm.png, id=48, 184.43906pt x 201.75375pt>
+<resources/logoupm.png, id=44, 184.43906pt x 201.75375pt>
 File: resources/logoupm.png Graphic file (type png)
 <use resources/logoupm.png>
 Package pdftex.def Info: resources/logoupm.png  used on input line 40.
@@ -806,7 +806,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig1.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig1.pdf, id=114, 963.6pt x 542.025pt>
+<resources/Fig1.pdf, id=110, 963.6pt x 542.025pt>
 File: resources/Fig1.pdf Graphic file (type pdf)
 <use resources/Fig1.pdf>
 Package pdftex.def Info: resources/Fig1.pdf  used on input line 123.
@@ -832,7 +832,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig2.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig2.pdf, id=151, 963.6pt x 542.025pt>
+<resources/Fig2.pdf, id=147, 963.6pt x 542.025pt>
 File: resources/Fig2.pdf Graphic file (type pdf)
 <use resources/Fig2.pdf>
 Package pdftex.def Info: resources/Fig2.pdf  used on input line 154.
@@ -841,7 +841,7 @@ Package pdftex.def Info: resources/Fig2.pdf  used on input line 154.
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig5.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig5.pdf, id=153, 963.6pt x 542.025pt>
+<resources/Fig5.pdf, id=149, 963.6pt x 542.025pt>
 File: resources/Fig5.pdf Graphic file (type pdf)
 <use resources/Fig5.pdf>
 Package pdftex.def Info: resources/Fig5.pdf  used on input line 165.
@@ -853,7 +853,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig3.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig3.pdf, id=168, 963.6pt x 542.025pt>
+<resources/Fig3.pdf, id=164, 963.6pt x 542.025pt>
 File: resources/Fig3.pdf Graphic file (type pdf)
 <use resources/Fig3.pdf>
 Package pdftex.def Info: resources/Fig3.pdf  used on input line 181.
@@ -865,7 +865,7 @@ Underfull \vbox (badness 1354) has occurred while \output is active []
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig4.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig4.pdf, id=183, 963.6pt x 542.025pt>
+<resources/Fig4.pdf, id=179, 963.6pt x 542.025pt>
 File: resources/Fig4.pdf Graphic file (type pdf)
 <use resources/Fig4.pdf>
 Package pdftex.def Info: resources/Fig4.pdf  used on input line 191.
@@ -886,7 +886,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 213--214
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig6.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig6.pdf, id=211, 963.6pt x 542.025pt>
+<resources/Fig6.pdf, id=207, 963.6pt x 542.025pt>
 File: resources/Fig6.pdf Graphic file (type pdf)
 <use resources/Fig6.pdf>
 Package pdftex.def Info: resources/Fig6.pdf  used on input line 227.
@@ -895,7 +895,7 @@ Package pdftex.def Info: resources/Fig6.pdf  used on input line 227.
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig7.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig7.pdf, id=243, 963.6pt x 542.025pt>
+<resources/Fig7.pdf, id=239, 963.6pt x 542.025pt>
 File: resources/Fig7.pdf Graphic file (type pdf)
 <use resources/Fig7.pdf>
 Package pdftex.def Info: resources/Fig7.pdf  used on input line 249.
@@ -904,7 +904,7 @@ Package pdftex.def Info: resources/Fig7.pdf  used on input line 249.
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig8.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig8.pdf, id=244, 963.6pt x 542.025pt>
+<resources/Fig8.pdf, id=240, 963.6pt x 542.025pt>
 File: resources/Fig8.pdf Graphic file (type pdf)
 <use resources/Fig8.pdf>
 Package pdftex.def Info: resources/Fig8.pdf  used on input line 255.
@@ -917,7 +917,7 @@ le pdfs with page group included in a single page
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig9.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig9.pdf, id=269, 963.6pt x 542.025pt>
+<resources/Fig9.pdf, id=265, 963.6pt x 542.025pt>
 File: resources/Fig9.pdf Graphic file (type pdf)
 <use resources/Fig9.pdf>
 Package pdftex.def Info: resources/Fig9.pdf  used on input line 270.
@@ -936,7 +936,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig10.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig10.pdf, id=293, 963.6pt x 542.025pt>
+<resources/Fig10.pdf, id=289, 963.6pt x 542.025pt>
 File: resources/Fig10.pdf Graphic file (type pdf)
 <use resources/Fig10.pdf>
 Package pdftex.def Info: resources/Fig10.pdf  used on input line 295.
@@ -945,38 +945,38 @@ Package pdftex.def Info: resources/Fig10.pdf  used on input line 295.
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig11.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig11.pdf, id=295, 963.6pt x 542.025pt>
+<resources/Fig11.pdf, id=291, 963.6pt x 542.025pt>
 File: resources/Fig11.pdf Graphic file (type pdf)
 <use resources/Fig11.pdf>
 Package pdftex.def Info: resources/Fig11.pdf  used on input line 302.
 (pdftex.def)             Requested size: 341.43437pt x 192.05217pt.
 [18 <./resources/Fig10.pdf>]
-<resources/Fig12_1.pdf, id=317, 844.15375pt x 597.23125pt>
+<resources/Fig12_1.pdf, id=313, 844.15375pt x 597.23125pt>
 File: resources/Fig12_1.pdf Graphic file (type pdf)
 <use resources/Fig12_1.pdf>
 Package pdftex.def Info: resources/Fig12_1.pdf  used on input line 312.
 (pdftex.def)             Requested size: 209.1301pt x 147.95871pt.
-<resources/Fig12_2.pdf, id=318, 844.15375pt x 597.23125pt>
+<resources/Fig12_2.pdf, id=314, 844.15375pt x 597.23125pt>
 File: resources/Fig12_2.pdf Graphic file (type pdf)
 <use resources/Fig12_2.pdf>
 Package pdftex.def Info: resources/Fig12_2.pdf  used on input line 316.
 (pdftex.def)             Requested size: 209.1301pt x 147.95871pt.
-<resources/Fig12_3.pdf, id=319, 844.15375pt x 597.23125pt>
+<resources/Fig12_3.pdf, id=315, 844.15375pt x 597.23125pt>
 File: resources/Fig12_3.pdf Graphic file (type pdf)
 <use resources/Fig12_3.pdf>
 Package pdftex.def Info: resources/Fig12_3.pdf  used on input line 322.
 (pdftex.def)             Requested size: 209.1301pt x 147.95871pt.
-<resources/Fig12_4.pdf, id=320, 844.15375pt x 597.23125pt>
+<resources/Fig12_4.pdf, id=316, 844.15375pt x 597.23125pt>
 File: resources/Fig12_4.pdf Graphic file (type pdf)
 <use resources/Fig12_4.pdf>
 Package pdftex.def Info: resources/Fig12_4.pdf  used on input line 326.
 (pdftex.def)             Requested size: 209.1301pt x 147.95871pt.
-<resources/Fig12_5.pdf, id=321, 844.15375pt x 597.23125pt>
+<resources/Fig12_5.pdf, id=317, 844.15375pt x 597.23125pt>
 File: resources/Fig12_5.pdf Graphic file (type pdf)
 <use resources/Fig12_5.pdf>
 Package pdftex.def Info: resources/Fig12_5.pdf  used on input line 332.
 (pdftex.def)             Requested size: 209.1301pt x 147.95871pt.
-<resources/Fig12_6.pdf, id=322, 844.15375pt x 597.23125pt>
+<resources/Fig12_6.pdf, id=318, 844.15375pt x 597.23125pt>
 File: resources/Fig12_6.pdf Graphic file (type pdf)
 <use resources/Fig12_6.pdf>
 Package pdftex.def Info: resources/Fig12_6.pdf  used on input line 336.
@@ -993,12 +993,12 @@ tiple pdfs with page group included in a single page
 pdfTeX warning: pdflatex.exe (file ./resources/Fig12_2.pdf): PDF inclusion: mul
 tiple pdfs with page group included in a single page
 >]
-<resources/Fig12_7.pdf, id=352, 844.15375pt x 597.23125pt>
+<resources/Fig12_7.pdf, id=348, 844.15375pt x 597.23125pt>
 File: resources/Fig12_7.pdf Graphic file (type pdf)
 <use resources/Fig12_7.pdf>
 Package pdftex.def Info: resources/Fig12_7.pdf  used on input line 342.
 (pdftex.def)             Requested size: 209.1301pt x 147.95871pt.
-<resources/Fig12_8.pdf, id=353, 844.15375pt x 597.23125pt>
+<resources/Fig12_8.pdf, id=349, 844.15375pt x 597.23125pt>
 File: resources/Fig12_8.pdf Graphic file (type pdf)
 <use resources/Fig12_8.pdf>
 Package pdftex.def Info: resources/Fig12_8.pdf  used on input line 346.
@@ -1025,128 +1025,116 @@ pdfTeX warning: pdflatex.exe (file ./resources/Fig12_8.pdf): PDF inclusion: mul
 tiple pdfs with page group included in a single page
 >]
 
-pdfTeX warning: pdflatex.exe (file ./resources/Fig13.pdf): PDF inclusion: found
- PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig13.pdf, id=404, 963.6pt x 542.025pt>
-File: resources/Fig13.pdf Graphic file (type pdf)
-<use resources/Fig13.pdf>
-Package pdftex.def Info: resources/Fig13.pdf  used on input line 359.
-(pdftex.def)             Requested size: 341.43437pt x 192.05217pt.
-
-
 pdfTeX warning: pdflatex.exe (file ./resources/Fig14.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig14.pdf, id=406, 963.6pt x 542.025pt>
+<resources/Fig14.pdf, id=400, 963.6pt x 542.025pt>
 File: resources/Fig14.pdf Graphic file (type pdf)
 <use resources/Fig14.pdf>
-Package pdftex.def Info: resources/Fig14.pdf  used on input line 367.
+Package pdftex.def Info: resources/Fig14.pdf  used on input line 360.
 (pdftex.def)             Requested size: 426.79135pt x 240.06314pt.
-[21 <./resources/Fig13.pdf>] [22 <./resources/Fig14.pdf>]
-Cap\'{\i }tulo 7.
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\new@ifnextchar' on input line 372.
-
-
+[21 <./resources/Fig14.pdf>]
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig15_1.pdf): PDF inclusion: fou
 nd PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig15_1.pdf, id=432, 963.6pt x 542.025pt>
+<resources/Fig15_1.pdf, id=417, 963.6pt x 542.025pt>
 File: resources/Fig15_1.pdf Graphic file (type pdf)
 <use resources/Fig15_1.pdf>
-Package pdftex.def Info: resources/Fig15_1.pdf  used on input line 393.
+Package pdftex.def Info: resources/Fig15_1.pdf  used on input line 384.
 (pdftex.def)             Requested size: 341.43437pt x 192.05217pt.
-[23
 
-]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [22]
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig15_2.pdf): PDF inclusion: fou
 nd PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig15_2.pdf, id=439, 963.6pt x 542.025pt>
+<resources/Fig15_2.pdf, id=423, 963.6pt x 542.025pt>
 File: resources/Fig15_2.pdf Graphic file (type pdf)
 <use resources/Fig15_2.pdf>
-Package pdftex.def Info: resources/Fig15_2.pdf  used on input line 398.
+Package pdftex.def Info: resources/Fig15_2.pdf  used on input line 389.
 (pdftex.def)             Requested size: 234.73654pt x 132.03224pt.
-[24 <./resources/Fig15_1.pdf> <./resources/Fig15_2.pdf
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [23 <./resources/Fig15_1.pdf> <./resources/Fig15_2.pdf
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig15_2.pdf): PDF inclusion: mul
 tiple pdfs with page group included in a single page
->] [25] [26
-
-]
-Cap\'{\i }tulo 8.
+>] [24]
+Cap\'{\i }tulo 7.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\new@ifnextchar' on input line 423.
+(hyperref)                removing `\new@ifnextchar' on input line 413.
 
 
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig16.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig16.pdf, id=484, 963.6pt x 542.025pt>
+<resources/Fig16.pdf, id=465, 963.6pt x 542.025pt>
 File: resources/Fig16.pdf Graphic file (type pdf)
 <use resources/Fig16.pdf>
-Package pdftex.def Info: resources/Fig16.pdf  used on input line 431.
+Package pdftex.def Info: resources/Fig16.pdf  used on input line 421.
 (pdftex.def)             Requested size: 426.79135pt x 240.06314pt.
+[25
+
+
+ <./resources/Fig16.pdf>] [26]
+Cap\'{\i }tulo 8.
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\new@ifnextchar' on input line 436.
+
 [27
 
- <./resources/Fig16.pdf>] [28]
+]
 Cap\'{\i }tulo 9.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\new@ifnextchar' on input line 446.
+(hyperref)                removing `\new@ifnextchar' on input line 438.
 
-[29
+[28
 
 ]
 Cap\'{\i }tulo 10.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\new@ifnextchar' on input line 448.
+(hyperref)                removing `\new@ifnextchar' on input line 440.
 
-[30
+[29
 
-]
-Cap\'{\i }tulo 11.
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\new@ifnextchar' on input line 450.
-
-[31
-
-] [32
+] [30
 
 ]
-Underfull \hbox (badness 1152) in paragraph at lines 489--490
+Underfull \hbox (badness 1152) in paragraph at lines 479--480
 [] \T1/cmr/m/n/12 Has-san, R., Coha-nim, B., de Weck, O. and Ven-ter, G. (2005)
 . A com-
  []
 
 
-Underfull \hbox (badness 1052) in paragraph at lines 489--490
+Underfull \hbox (badness 1052) in paragraph at lines 479--480
 \T1/cmr/m/n/12 pa-ri-son of par-ti-cle swarm op-ti-mi-za-tion and the ge-ne-tic
  al-go-rithm. \T1/cmr/m/it/12 46th
  []
 
-[33] [34] [35]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 536.
- [36]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 536.
+[31] [32] [33]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 526.
+ [34]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 526.
  (main.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 536.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 536.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 526.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 526.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: FDA35E090441FAFAF4233ABED7C29E44;691.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 536.
+(rerunfilecheck)             Checksum: 1485ADAEFF706720E9C258B41A3A422D;610.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 526.
  ) 
 Here is how much of TeX's memory you used:
- 19637 strings out of 492945
- 343350 string characters out of 3124920
+ 19626 strings out of 492945
+ 343161 string characters out of 3124920
  541205 words of memory out of 3000000
- 23175 multiletter control sequences out of 15000+200000
+ 23169 multiletter control sequences out of 15000+200000
  548090 words of font info for 57 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  40i,9n,63p,1396b,473s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1173,9 +1161,9 @@ AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:
 /Users/cvazquez/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/c
 m/cmsy8.pfb><C:/Users/cvazquez/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (44 pages, 1344177 bytes).
+Output written on main.pdf (42 pages, 1337995 bytes).
 PDF statistics:
- 1165 PDF objects out of 1200 (max. 8388607)
- 160 named destinations out of 1000 (max. 500000)
- 219 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1146 PDF objects out of 1200 (max. 8388607)
+ 156 named destinations out of 1000 (max. 500000)
+ 206 words of extra memory for PDF output out of 10000 (max. 10000000)
 
