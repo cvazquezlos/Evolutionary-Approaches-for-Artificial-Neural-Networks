@@ -354,13 +354,13 @@
     \section*{\Large 3.3. Deep Learning}
     El Aprendizaje Profundo (\emph{deep learning}) es un subcampo del Aprendizaje Automático y basado en Redes de Neuronas Artificiales. Se considera que una red es profunda si tiene más de tres capas ocultas. \par
     Una de las aplicaciones más destacadas del Deep Learning es lo relativo a clasificación de imágenes con Redes de Neuronas Convolucionales (Fukushima, 1975). La diferencia más notable entre este tipo de aprendizaje y el Aprendizaje Autónomo reside en que en el segundo tipo es necesario un proceso de extracción manual de las características relevantes de las imágenes, a partir de las cuales se entrena un modelo que aprende de ellas. En el Deep Learning, las características las aprende el modelo, provisto de datos (imágenes) sin procesar. \par
-    En la Fig. \ref{fig:14}, en el primer gráfico, se muestra un ejemplo de cómo funciona el Aprendizaje Automático. En el segundo, el funcionamiento del Deep Learning.
     \begin{figure}[H]
       \centering
-      \includegraphics[width = 1\textwidth]{resources/Fig14.pdf}
+      \includegraphics[width = 1\textwidth]{resources/Fig13.pdf}
       \caption{Ejemplo de Red de Neuronas Artificiales Profunda.}
-      \label{fig:14}
-    \end{figure} \vfill
+      \label{fig:13}
+    \end{figure}
+    En la Fig. \ref{fig:13}, se muestra una comparativa entre el Aprendizaje Automático y el Deep Learning. En ambos se utilizan Redes de Neuronas Artificiales. En el diagrama superior, se detalla el funcionamiento del Aprendizaje Profundo, en el que se utiliza poca cantidad de datos, de los que se extraen características manualmente. Estas características son utilizadas para realizar predecciones. En el diagrama inferior, se detalla el funcionamiento del Deep Learning, en el que, en contraposición del Aprendizaje Automático, se utiliza una gran cantidad de información. La extracción de características de los datos se realiza de forma automática, las cuales posibilitan las predicciones.
     
     \section*{\Large 3.4. Construccion de Redes de Neuronas}
     Para la construcción de Redes de Neuronas Artificiales se ha utilizado de forma satisfactoria la Programación Genética Guiada por Gramáticas utilizando (Manrique et al., 2018). \par
@@ -381,16 +381,16 @@
       En la gramática, hay dos símbolos terminales: $n$, que se refiere a una neurona, y $/$, que denota el separador entre capas. Hay un total de cinco símbolos no terminales, de los cuales $S$ es el axioma de la gramática. $A$ simboliza la capa de entrada, formada por $I$ neuronas. $H$ crea recursivamente capas ocultas o inicia la creación de neuronas en la capa oculta. Un individuo al menos tendrá una capa oculta. $Z$ simboliza la capa de salida, formada por $O$ neuronas. $N$ crea recursivamente cualquier número de neuronas en una capa.
       \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.8\textwidth]{resources/Fig15_1.pdf}
+        \includegraphics[width = 0.8\textwidth]{resources/Fig14_1.pdf}
       \end{figure} \par
       \vspace{-1cm}
       \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.55\textwidth]{resources/Fig15_2.pdf}
+        \includegraphics[width = 0.55\textwidth]{resources/Fig14_2.pdf}
         \caption{Individuo de ejemplo generado por la Eq. \ref{eq:3} y su decodificación en la arquitectura neuronal correspondiente.}
-        \label{fig:15}
+        \label{fig:14}
       \end{figure} \par
-      En la Fig. \ref{fig:15} se muestra un individuo que se ha generado con la gramática de la Eq. \ref{eq:3} y sus reglas de producción en orden de aplicación, donde la cantidad de neuronas de entradas es $I = 3$ y la cantidad de neuronas de salida es $O = 2$. También se muestra la palabra que codifica el árbol y su decodificación como arquitectura neuronal. \par
+      En la Fig. \ref{fig:14} se muestra un individuo que se ha generado con la gramática de la Eq. \ref{eq:3} y sus reglas de producción en orden de aplicación, donde la cantidad de neuronas de entradas es $I = 3$ y la cantidad de neuronas de salida es $O = 2$. También se muestra la palabra que codifica el árbol y su decodificación como arquitectura neuronal. \par
       Esta gramática permite, por tanto, la construcción de arquitecturas de redes neuronales con varias capas ocultas. Como estas redes están totalmente conectadas, crea palabras fáciles de interpretar y de decodificar, sin preocuparse sobre las conexiones entre las capas y entre las neuronas. Sin embargo, la gramática no permite la creación de estructuras neuronales parcialmente conectadas. \par
       La gramática base mostrada en la Eq. \ref{eq:3} no permite añadir funciones de activación a cada capa, aunque puede ser fácilmente modificada para incluirlas, de tal forma que se sustituye el separador de capa por una función de activación. Esta modificación se puede ver en la gramática de la Eq. \ref{eq:4}. \par
       La función de activación es la misma en las neuronas de una misma capa, por eso la gramática funciona.
@@ -411,18 +411,18 @@
   \newpage\cleardoublepage
   
   \chapter{\vspace{-3cm}{\LARGE 5. Planteamiento del problema}}
-  \setcounter{figure}{15}
+  \setcounter{figure}{14}
   \vspace{-1cm}
   La Programación Genética permite la resolución de problemas de búsqueda y de optimización donde las soluciones son programas informáticos. Por tanto, cada uno de los individuos que forme parte del problema es un programa informático. La ampliación de esta técnica para soportar Gramáticas Libres de Contexto ha permitido no sólo aumentar la complejidad de los problemas que puede resolver esta técnica, sino que también ha permitido no perder tiempo y esfuerzo computacional en reparar individuos no válidos sintácticamente. \par
   La existencia de una gramática que permite generar Redes de Neuronas Artificiales resuelve el problema de encontrar la mejor arquitectura que mejor se adapte a un problema determinado. Anteriormente, este problema se abordaba con el conocimiento experto, no siempre acertado, ya que una arquitectura neuronal depende no sólo del número de instancias, sino de las variables predictoras y de las de clase. \par
   En el proceso evolutivo, cada individuo tiene que ser entrenado para la obtención de su fitness. Como cada individuo codifica una arquitectura de red, cada individuo se transforma en una Red de Neuronas Artificial, que se entrena. El resultado de este entrenamiento es el fitness del individuo. Este proceso de entrenamiento se utiliza para cada nuevo individuo de la población. \par
   \begin{figure}[H]
     \centering
-    \includegraphics[width = 1\textwidth]{resources/Fig16.pdf}
+    \includegraphics[width = 1\textwidth]{resources/Fig15.pdf}
     \caption{Proceso evolutivo idéntico al de la Fig. \ref{fig:1} pero aplicado al ámbito de creación de Redes de Neuronas Artificiales.}
-    \label{fig:16}
+    \label{fig:15}
   \end{figure} \par
-  Este proceso evolutivo puede verse reflejado en la Fig. \ref{fig:16}. Comienza a partir de los datos, para poder generar la gramática. Se utiliza esta gramática para generar la población inicial, que se evalúa en primera instancia y se comprueba si la población generada cumple alguna condición de parada. Si es así, finaliza. En caso negativo, itera de la misma forma que en la Fig. \ref{fig:1}. \par
+  Este proceso evolutivo puede verse reflejado en la Fig. \ref{fig:15}. Comienza a partir de los datos, para poder generar la gramática. Se utiliza esta gramática para generar la población inicial, que se evalúa en primera instancia y se comprueba si la población generada cumple alguna condición de parada. Si es así, finaliza. En caso negativo, itera de la misma forma que en la Fig. \ref{fig:1}. \par
   Para problemas pequeños, el entrenamiento de estas redes es prácticamente instantáneo. A medida que los datos adquieren mayor dimensión, la demora en el entrenamiento comienza a ser significativa. Este aspecto hace que esta metodología pierda efectividad cuando realmente es más necesaria; en el ámbito del Deep Learning, donde hay una gran cantidad de información y las arquitecturas neuronales deben ser profundas para entrenar bien con ella. \par
   La única forma de reducir la complejidad temporal que este problema atañe es la parada prematura del entrenamiento de los individuos a la hora de calcular su fitness. Hay varios elementos que son clave en el entrenamiento de las Redes de Neuronas Artificiales: \par
   \begin{itemize}
