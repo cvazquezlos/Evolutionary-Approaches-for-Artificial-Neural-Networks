@@ -391,22 +391,22 @@
         \label{fig:15}
       \end{figure} \par
       En la Fig. \ref{fig:15} se muestra un individuo que se ha generado con la gramática de la Eq. \ref{eq:3} y sus reglas de producción en orden de aplicación, donde la cantidad de neuronas de entradas es $I = 3$ y la cantidad de neuronas de salida es $O = 2$. También se muestra la palabra que codifica el árbol y su decodificación como arquitectura neuronal. \par
-      Esta gramática permite, por tanto, la construcción de arquitecturas de redes neuronales con varias capas ocultas. Como estas redes están totalmente conectadas, crea palabras fáciles de interpretar y de decodificar, sin preocuparse sobre las conexiones entre las capas y entre las neuronas. \par
-      La gramática no permite la creación de estructuras neuronales parcialmente conectadas. Puede ser fácilmente modificable para incluir la codificación de las funciones de activación de cada capa en la red. Esta modificación se puede ver en la gramática de la Eq. \ref{eq:4}.\par
-  \begin{align*}
-    G_{I\thinspace O\thinspace \mathbb{F}} &= (S, \Sigma_{N}, \Sigma_{T}, P_{I\thinspace O\thinspace \mathbb{F}}) \label{eq:4}\tag{4} \\
-    \Sigma_{N} &= \{S, A, H, Z, N, F\} \\
-    \Sigma_{T} &= \{n, f_1, f_2, ..., f_{\Phi}\} \\
-    P_{I\thinspace O\thinspace \mathbb{F}} &= \{ \\
-    &S ::= AHFZ \\
-    &A ::= n^I \\
-    &H ::= HH | FN \\
-    &Z ::= n^O \\
-    &N ::= nN | n \\
-    &F ::= f_1 | f_2 | ... | f_{\Phi} \\
-    \}
-    \end{align*} \par
-    La gramática anterior tiene las mismas ventajas que la mostrada en Eq. \ref{eq:3} pero sustituye el separador de capa por una función de activación. En este trabajo no se ha utilizado esta gramática actualizada, ya que sólo se ha enfocado el problema en problemas de clasficiación.
+      Esta gramática permite, por tanto, la construcción de arquitecturas de redes neuronales con varias capas ocultas. Como estas redes están totalmente conectadas, crea palabras fáciles de interpretar y de decodificar, sin preocuparse sobre las conexiones entre las capas y entre las neuronas. Sin embargo, la gramática no permite la creación de estructuras neuronales parcialmente conectadas. \par
+      La gramática base mostrada en la Eq. \ref{eq:3} no permite añadir funciones de activación a cada capa, aunque puede ser fácilmente modificada para incluirlas, de tal forma que se sustituye el separador de capa por una función de activación. Esta modificación se puede ver en la gramática de la Eq. \ref{eq:4}. \par
+      La función de activación es la misma en las neuronas de una misma capa, por eso la gramática funciona.
+    \begin{align*}
+      G_{I\thinspace O\thinspace \mathbb{F}} &= (S, \Sigma_{N}, \Sigma_{T}, P_{I\thinspace O\thinspace \mathbb{F}}) \label{eq:4}\tag{4} \\
+      \Sigma_{N} &= \{S, A, H, Z, N, F\} \\
+      \Sigma_{T} &= \{n, f_1, f_2, ..., f_{\Phi}\} \\
+      P_{I\thinspace O\thinspace \mathbb{F}} &= \{ \\
+      &S ::= AHFZ \\
+      &A ::= n^I \\
+      &H ::= HH | FN \\
+      &Z ::= n^O \\
+      &N ::= nN | n \\
+      &F ::= f_1 | f_2 | ... | f_{\Phi} \\
+      \}
+      \end{align*}
   
   \newpage\cleardoublepage
   
@@ -422,18 +422,26 @@
     \caption{Proceso evolutivo idéntico al de la Fig. \ref{fig:1} pero aplicado al ámbito de creación de Redes de Neuronas Artificiales.}
     \label{fig:16}
   \end{figure} \par
-  Sin embargo, para problemas pequeños, el entrenamiento de estas redes es prácticamente instantáneo. A medida que los datos adquieren mayor dimensión, la demora en el entrenamiento comienza a ser significativa. Este aspecto hace que esta metodología pierda efectividad cuando realmente es más necesaria; en el ámbito del Deep Learning, donde hay una gran cantidad de información y las arquitecturas neuronales deben ser profundas para entrenar bien con ella. \par
-  La única forma de reducir la complejidad temporal que este problema atañe es la parada prematura del entrenamiento de los individuos a la hora de calcular su fitness. \par
-  Hay varios elementos que son clave en el entrenamiento de las Redes de Neuronas Artificiales: \par
+  Este proceso evolutivo puede verse reflejado en la Fig. \ref{fig:16}. Comienza a partir de los datos, para poder generar la gramática. Se utiliza esta gramática para generar la población inicial, que se evalúa en primera instancia y se comprueba si la población generada cumple alguna condición de parada. Si es así, finaliza. En caso negativo, itera de la misma forma que en la Fig. \ref{fig:1}. \par
+  Para problemas pequeños, el entrenamiento de estas redes es prácticamente instantáneo. A medida que los datos adquieren mayor dimensión, la demora en el entrenamiento comienza a ser significativa. Este aspecto hace que esta metodología pierda efectividad cuando realmente es más necesaria; en el ámbito del Deep Learning, donde hay una gran cantidad de información y las arquitecturas neuronales deben ser profundas para entrenar bien con ella. \par
+  La única forma de reducir la complejidad temporal que este problema atañe es la parada prematura del entrenamiento de los individuos a la hora de calcular su fitness. Hay varios elementos que son clave en el entrenamiento de las Redes de Neuronas Artificiales: \par
   \begin{itemize}
     \item Tamaño del lote (\emph{batch size}). El entrenamiento por lotes es muy común en las redes. En esta metodología, un lote es un subconjunto de los datos de entrenamiento que recorre la red modificando sus pesos.
     \item Época (\emph{epoch}). Cuando todos los lotes sobre los que se ha dividido el conjunto de datos han pasado por la red, se cumple una época.
     \item Iteración (\emph{iteration}). Número de lotes necesarios para completar una época. Por ejemplo, si la red quiere entrenar con un conjunto de datos que tiene 20000 instancias y se establece un tamaño del lote de 128 instancias, entonces habrá 157 iteraciones en cada época.
-  \end{itemize}
-  Hay varias formas de reducir la complejidad temporal del problema: una de ellas, es aumentar el tamaño del lote, reduciendo así las iteraciones necesarias para cumplir una época. Sin embargo, una máquina que no tenga acceso a una tarjeta gráfica sobre la que realizar los cálculos, no notará la diferencia prácticamente. Otra alternativa es disminuir el número de épocas. De esta forma, los individuos se entrenan por igual independientemente de si la máquina tuviera tarjeta gráfica o no. \par
-  Por tanto, 
+  \end{itemize} \par
+  Con estos elementos, la parada prematura del entrenamiento se establece como una reducción en el número de épocas de entrenamiento del individuo. \par
+  Se quiere demostrar si un programa genético con un entrenamiento parcial de los individuos codificados como Redes de Neuronas Artificiales es comparable a un programa genético con un entrenamiento total, ya que supone un ahorro de tiempo y esfuerzo computacional elevado.
     
   \chapter{\vspace{-3cm}{\LARGE 6. Solución propuesta}}
+  \setcounter{figure}{16}
+  \vspace{-1cm}
+  La solución propuesta para este trabajo consiste en: \par
+  \begin{itemize}
+    \item Implementación de un Programa Genético Guiado por Gramáticas que construya Redes de Neuronas Artificiales y donde el grado de adaptación de los individuos que representan redes neuronales se calcule en base a su error en el proceso de entrenamiento.
+    \item Búsqueda de conjuntos de datos, en concreto 3, que tengan tamaños incrementales, a fin de probar el mecanismo evolutivo con la mayor variedad posible.
+    \item Realizar dos ejecuciones para cada conjunto de datos; una primera ejecución realizando el entrenamiento completo de los individuos y una segunda, con una parada prematura del entrenamiento.
+  \end{itemize}
   
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
   
