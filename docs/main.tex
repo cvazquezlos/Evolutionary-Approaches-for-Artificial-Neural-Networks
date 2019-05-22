@@ -414,25 +414,24 @@
   \setcounter{figure}{14}
   \vspace{-1cm}
   La Programación Genética permite la resolución de problemas de búsqueda y de optimización donde las soluciones son programas informáticos. Por tanto, cada uno de los individuos que codifica una solución al problema representa un programa informático. La ampliación de esta técnica con Gramáticas Libres de Contexto permite asegurar la generación de individuos sintácticamente válido, ahorrando tiempo y esfuerzo en reparar aquellos individuos no válidos que se dan sin la inclusión de estas gramáticas. \par
-  En el caso de este trabajo, la existencia de una gramática que permite generar Redes de Neuronas Artificiales resuelve el problema de encontrar la mejor arquitectura que se adapte a un problema determinado. Anteriormente, este problema se abordaba con el conocimiento experto y la prueba y error, ya que una arquitectura neuronal depende no sólo del número de instancias, sino de las variables predictoras y de las de clase. \par
+  La existencia de una gramática que permite generar Redes de Neuronas Artificiales establece una alternativa al problema de encontrar la mejor arquitectura que se adapte a un problema determinado. Anteriormente, este problema se abordaba con el conocimiento experto y la prueba y error. \par
   En el proceso evolutivo, cada individuo representa una red de neuronas, por lo que tiene que ser entrenado para la obtención de su grado de adaptación. Este proceso de entrenamiento se utiliza para cada nuevo individuo de la población. \par
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig15.pdf}
-    \caption{Proceso evolutivo idéntico al de la Fig. \ref{fig:1} pero aplicado al ámbito de creación de Redes de Neuronas Artificiales.}
+    \caption{Proceso evolutivo aplicado al ámbito de creación de Redes de Neuronas Artificiales.}
     \label{fig:15}
   \end{figure} \par
-  Este proceso evolutivo de construcción de redes neuronales puede verse reflejado en la Fig. \ref{fig:15}. Comienza a partir de un conjunto de datos, para poder generar la gramática en base al número de entradas y de salidas. Se utiliza esta gramática para generar la población inicial, que se evalúa en primera instancia y se comprueba si la población generada cumple alguna condición de parada. Si es así, finaliza. En caso negativo, itera aplicando los operadores genéticos. \par
-  Para problemas pequeños, el entrenamiento de estas redes requiere de poco tiempo. A medida que los datos adquieren mayor dimensión, la demora en el entrenamiento comienza a ser significativa. Este aspecto hace que esta metodología pierda eficiencia cuando realmente es más necesaria; en el ámbito del Deep Learning, donde hay una gran cantidad de información y las arquitecturas neuronales deben ser profundas para ajustarse a los datos adecuadamente. \par
-  Se propone en este Trabajo de Fin de Máster reducir la complejidad temporal que este problema atañe mediante la parada prematura del entrenamiento de los individuos a la hora de calcular su grado de adaptación. Hay varios elementos que son clave en el entrenamiento de las Redes de Neuronas Artificiales: \par
+  Este proceso evolutivo de construcción de redes neuronales se observa en la Fig. \ref{fig:15}. Comienza a partir de un conjunto de datos, para poder generar la gramática en base al número de entradas y de salidas. Se utiliza esta gramática para generar la población inicial, que se evalúa en primera instancia y se comprueba si la población generada cumple alguna condición de parada. Si es así, finaliza. En caso negativo, itera aplicando los operadores genéticos. \par
+  Para problemas pequeños, el entrenamiento de estas redes requiere de poco tiempo. A medida que los datos y la arquitectura neuronal adquieren mayor dimensión, la demora en el entrenamiento comienza a ser significativa. Este aspecto hace que esta metodología pierda eficiencia cuando realmente es más necesaria; en el ámbito del Deep Learning, donde hay una gran cantidad de información y las arquitecturas neuronales deben ser profundas para ajustarse a los datos adecuadamente. \par
+  Se propone en este Trabajo de Fin de Máster la reducción de la complejidad temporal mediante la parada prematura del entrenamiento de los individuos a la hora de calcular su grado de adaptación. Hay varios elementos que son clave en el entrenamiento de las Redes de Neuronas Artificiales: \par
   \begin{itemize}
     \item Tamaño del lote (\emph{batch size}). El entrenamiento por lotes (o mini-lotes) es muy común en las redes de neuronas. Un lote es un subconjunto de los datos de entrenamiento.
-    \item Época (\emph{epoch}). Es cada iteración de la red por los lotes en los que se ha dividido el conjunto de entrenamiento.
+    \item Época (\emph{epoch}). Es la presentación de todos los lotes de entrenamiento a la red para el ajuste de sus pesos.
     \item Iteración de entrenamiento. Proceso mediante el cual se presenta a la red neuronal un lote y se ajustan sus pesos. El número total de iteraciones que habrá en una época se corresponde con la cantidad de lotes.
   \end{itemize} \par
-  La parada prematura del entrenamiento se establece como una reducción en el número de épocas de entrenamiento de cada individuo. \par
-  Se quiere mostrar si un programa genético con un entrenamiento parcial de los individuos codificados como Redes de Neuronas Artificiales es comparable a un programa genético con un entrenamiento total, ya que supone un ahorro de tiempo y esfuerzo computacional elevado. \par
-  Este proceso se realiza de forma síncrona: mientras se entrena la red de neuronas codificada por un nuevo individuo de la población para calcular su grado de adaptación, el sistema evolutivo queda suspendido a la espera de que finalice el proceso de entrenamiento, ya sea de forma total o parcial.
+  La parada prematura del entrenamiento se establece como una reducción en el número de épocas de entrenamiento de cada individuo. Se quiere mostrar si los resultados obtenidos en términos de la precisión de las redes de neuronas solución de un programa genético con un entrenamiento parcial de los individuos codificados como Redes de Neuronas Artificiales son comparables a un programa genético con un entrenamiento total, lo que supondría un ahorro de tiempo y esfuerzo computacional elevado. \par
+  Ambos procesos se realizan de forma síncrona: mientras se entrena la red de neuronas codificada por un nuevo individuo de la población para calcular su grado de adaptación, el sistema evolutivo queda suspendido a la espera de que finalice el proceso de entrenamiento, ya sea de forma total o parcial.
     
   \chapter{\vspace{-3cm}{\LARGE 6. Solución propuesta}}
   \setcounter{figure}{16}
