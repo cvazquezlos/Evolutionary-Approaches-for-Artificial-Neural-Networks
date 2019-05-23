@@ -3,7 +3,8 @@
 % MAIN CONFIGURATION
 \usepackage[top = 2.5cm, bottom = 3cm, left = 4cm, right = 2cm]{geometry}
 
-\usepackage{algorithm,algorithmic}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -450,9 +451,60 @@
     \item Operador de selección. El operador de selección que se ha elegido es por torneo, que escoge al azar tantos individuos de la población como el tamaño deseado, en este caso sin reemplazamiento, y se selecciona al mejor grupo de entre los elegidos. Este operador permite que haya un equilibrio entre exploración y explotación.
     \item Operador de cruce. El operador de cruce que se ha decidido implementar es el operador de Whigham. En él, se selecciona un símbolo no terminal aleatorio del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor, selecciona uno aleatorio de entre aquellos idénticos al seleccionado del primero. Esta decisión es adecuada ya que establece un equilibrio entre exploración y explotación.
     \item Operador de mutación. El operador de mutación elegido coincide con el algoritmo de generación de individuos: es aleatorio. Cuando un individuo se ve afectado por una mutación, se escoge un nodo no terminal de forma aleatoria y se sustituye por una derivación, también aleatoria, partiendo de ese nodo seleccionado.
-    \item Operador de reemplazo.
-    
-  \end{itemize}
+    \item Operador de reemplazo. Tras aplicar los tres operadores anteriores, el operador de reemplazo elegido es por reducción elitista, en el que la población y los descendientes se juntan y se seleccionan los $\lambda$ mejores.
+  \end{itemize} \par
+  En los siguientes algoritmos se pueden visualizar las implementaciones seguidas para cada uno de los operadores. Estas implementaciones son ideales, y en la práctica se han utilizado funciones más eficientes que el propio lenguaje $R$ provee.
+  \begin{algorithm}
+    \caption{Algoritmo del operador de selección por torneo}\label{selop}
+    \begin{algorithmic}[1]
+      \Function{selection}{$p, n$} \Comment{\textit{p} = Población, \textit{n} = Tamaño}
+        \State $matting\_pool \gets \thinspace $[ ]
+        \State $i \gets \thinspace $0
+        \While{$i < \textnormal{round}(n/2)$}
+          \State $seleccionados \gets \thinspace $sample(p, n)
+          \State $p \gets \thinspace $remove(seleccionados, p)
+          \State order(\textit{seleccionados})
+          \State $mejores \gets \thinspace $head(\textit{seleccionados}, round(\textit{n}/2))
+          \State append(\textit{matting\_pool}, \textit{mejores})
+          \State $i \gets \thinspace $\textit{i} + 1
+        \EndWhile
+        \State \Return \textit{matting\_pool}
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+  \vspace{0.5cm}
+  \begin{algorithm}
+    \caption{Algoritmo del operador de cruce de Whigham}\label{cruzop}
+    \begin{algorithmic}[1]
+      \Function{crossover}{$f$} \Comment{\textit{f} = Progenitores}
+        \State $no\_terminales1 \gets \thinspace $extraer(\textit{f[0]}) \Comment{Extraer símbolos no terminales}
+        \State $no\_terminales2 \gets \thinspace $extraer(\textit{f[1]})
+        \State $simbolo1 \gets \thinspace $sample(\textit{no\_terminales1}, 1)
+        \State $simbolo2 \gets \thinspace $sample.choice([\textit{n} for \textit{n} in \textit{no\_terminales2} if \textit{n} == \textit{simbolo1}])
+        \State $d \gets \thinspace $[] \Comment{Descendientes}
+        \State $d[0] \gets \thinspace $replace(\textit{f[1]}, \textit{f[0]}, \textit{simbolo1}, \textit{simbolo2})
+        \State $d[1] \gets \thinspace $replace(\textit{f[0]}, \textit{f[1]}, \textit{simbolo2}, \textit{simbolo1})
+        \State \Return \textit{d}
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+  
+  \begin{algorithm}
+    \caption{Algoritmo del operador de mutación}\label{mutaop}
+    \begin{algorithmic}[1]
+      \Function{crossover}{$f$} \Comment{\textit{f} = Progenitores}
+        \State $no\_terminales1 \gets \thinspace $extraer(\textit{f[0]}) \Comment{Extraer símbolos no terminales}
+        \State $no\_terminales2 \gets \thinspace $extraer(\textit{f[1]})
+        \State $simbolo1 \gets \thinspace $sample(\textit{no\_terminales1}, 1)
+        \State $simbolo2 \gets \thinspace $sample.choice([\textit{n} for \textit{n} in \textit{no\_terminales2} if \textit{n} == \textit{simbolo1}])
+        \State $d \gets \thinspace $[] \Comment{Descendientes}
+        \State $d[0] \gets \thinspace $replace(\textit{f[1]}, \textit{f[0]}, \textit{simbolo1}, \textit{simbolo2})
+        \State $d[1] \gets \thinspace $replace(\textit{f[0]}, \textit{f[1]}, \textit{simbolo2}, \textit{simbolo1})
+        \State \Return \textit{d}
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+  
   
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
   
