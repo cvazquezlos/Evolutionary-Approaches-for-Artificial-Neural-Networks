@@ -441,6 +441,17 @@
     \item Implementación de un Programa Genético Guiado por Gramáticas que construya Redes de Neuronas Artificiales y donde el grado de adaptación de los individuos que representan redes neuronales se calcule en base a su error en el proceso de entrenamiento.
     \item Búsqueda de conjuntos de datos, en concreto 3, que tengan tamaños incrementales, a fin de probar el mecanismo evolutivo con la mayor variedad posible.
     \item Realizar dos ejecuciones para cada conjunto de datos; una primera ejecución realizando el entrenamiento completo de los individuos y una segunda, con una parada prematura del entrenamiento.
+  \end{itemize} \par
+  Para realizar el trabajo, se ha desarrollado el código fuente de una librería utilizando el lenguaje de programación \emph{R}. Se ha decidido implementar esta librería por el hecho de que no había ningún otro paquete en este lenguaje que permitiese ejecutar programas genéticos con gramáticas definidas por un usuario. \par
+  La implementación de esta librería consiste en el desarrollo de todos los operadores genéticos que constituyen el ciclo evolutivo, además del resto de elementos que intervienen en él.  \par
+  Los operadores genéticos seleccionados e implementados son:
+  \begin{itemize}
+    \item Generación de individuos. El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción aleatorias y sin una profundidad máxima determinada.
+    \item Operador de selección. El operador de selección que se ha elegido es por torneo, que escoge al azar tantos individuos de la población como el tamaño deseado, en este caso sin reemplazamiento, y se selecciona al mejor grupo de entre los elegidos. Este operador permite que haya un equilibrio entre exploración y explotación.
+    \item Operador de cruce. El operador de cruce que se ha decidido implementar es el operador de Whigham. En él, se selecciona un símbolo no terminal aleatorio del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor, selecciona uno aleatorio de entre aquellos idénticos al seleccionado del primero. Esta decisión es adecuada ya que establece un equilibrio entre exploración y explotación.
+    \item Operador de mutación. El operador de mutación elegido coincide con el algoritmo de generación de individuos: es aleatorio. Cuando un individuo se ve afectado por una mutación, se escoge un nodo no terminal de forma aleatoria y se sustituye por una derivación, también aleatoria, partiendo de ese nodo seleccionado.
+    \item Operador de reemplazo.
+    
   \end{itemize}
   
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
