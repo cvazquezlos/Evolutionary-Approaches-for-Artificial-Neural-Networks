@@ -529,11 +529,30 @@
   Los parámetros de entrenamiento que se han utilizado son los siguientes: \par
   \begin{itemize}
     \item Tamaño del lote. El tamaño del lote que se ha seleccionado ha sido de 64 elementos, independientemente del dataset y de si el entrenamiento es parcial o total.
-    \item Épocas. El número de épocas es el único elemento que difiere según se trate de un entrenamiento parcial o total. Para los entrenamientos totales, se utilizan 
-    \item 
+    \item Épocas. El número de épocas es el único elemento que difiere según se trate de un entrenamiento parcial o total. Para los entrenamientos totales, se utiliza un número de épocas que sobrepasa el máximo necesario, pero como el algoritmo cuenta que mecanismos que impiden que haya sobreentrenamiento, el proceso se detiene antes. Para entrenamientos totales, el número de épocas utilizado es, para conjuntos de datos inferiores a 200 instancias, 100 épocas, y para conjuntos mayores, un tercio del número de instancias menos el producto de las variables predictoras y las de clase, según puede verse en la Eq. \ref{eq:5}.
+    \begin{align*}
+      \textnormal{número épocas} = \left\{ \begin{array}{lcc} \label{eq:5}\tag{5}
+             100 &   si  & N < 200 \\
+             \\ \frac{N}{3} - (E \cdot S) &  si & N \geq 200
+             \end{array}
+      \right.
+    \end{align*}
+    donde $N$ es el número de instancias del conjunto de datos, $E$ es el número de variables de entrada y $S$ es el número de variables de salida. Para entrenamientos parciales, la primera aproximación en la que se pensó fue en el corte entre el error y el tiempo en la curva de entrenamiento, de tal forma que llegaría, se supone, un punto en el que para disminuir el error una cantidad pequeña, se requeriría una carga de tiempo grande, por lo cual se podría parar en ese punto. Sin embargo, para conjuntos de datos pequeños y que entrenan rápido esto no se cumple, ya que también está condicionado por la arquitectura, por lo que sería un número dinámico dependiente del modelo, restando consistencia a los resultados. El número de épocas deseado para el entrenamiento parcial es de, para conjuntos inferiores a 3500 instancias, el producto entre sus entradas y sus salidas más una unidad, y para conjuntos de más instancias, el doble del cociente entre el producto entre la entrada, la salida y 10 y el número de instancias, según puede verse en la Eq. \ref{eq:6}.
+    \begin{align*}
+      \textnormal{número épocas} = \left\{ \begin{array}{lcc} \label{eq:6}\tag{6}
+             (E \cdot S) + 1 &   si  & N < 3500 \\
+             \\ \frac{E \cdot S \cdot 10}{N} \cdot 2 &  si & N \geq 3500
+             \end{array}
+      \right.
+    \end{align*}
+    donde $N$ es el número de instancias del conjunto de datos, $E$ es el número de variables de entrada y $S$ es el número de variables de salida.
+    \item Control del sobreentrenamiento. Se ha establecido un mecanismo que controla el sobreentrenamiento de la red. 
     \item División del conjunto de datos en entrenamiento, validación y test.
     \item 
   \end{itemize}
+  
+  % TOTAL: 100 IRIS, 500 CAR
+  % PARCIAL: 13 IRIS, 20 CAR, 300 OCEAN PROXIMITY
   
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
   
