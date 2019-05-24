@@ -444,8 +444,9 @@
     \item Realizar dos ejecuciones para cada conjunto de datos; una primera ejecución realizando el entrenamiento completo de los individuos y una segunda, con una parada prematura del entrenamiento.
   \end{itemize} \par
   Para realizar el trabajo, se ha desarrollado el código fuente de una librería utilizando el lenguaje de programación \emph{R}. Se ha decidido implementar esta librería por el hecho de que no había ningún otro paquete en este lenguaje que permitiese ejecutar programas genéticos con gramáticas definidas por un usuario. \par
+  \section*{\Large 6.1. Generación de individuos y operadores genéticos}
   La implementación de esta librería consiste en el desarrollo de todos los operadores genéticos que constituyen el ciclo evolutivo, además del resto de elementos que intervienen en él.  \par
-  El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción aleatorias y sin una profundidad máxima determinada. Su funcionamiento puede verse en el algoritmo 1.\par
+  El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción aleatorias y sin una profundidad máxima determinada.\par
   El operador de selección elegido es por torneo, que escoge al azar tantos individuos de la población como el tamaño deseado, en este caso sin reemplazamiento, y se selecciona al mejor grupo de entre los elegidos. Este operador permite que haya un equilibrio entre exploración y explotación. Su funcionamiento puede verse en el algoritmo 1. \par\par
   El operador de cruce que se ha elegido es el de Whigham. En él, se selecciona un símbolo aleatorio del conjunto de símbolos no terminales del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor se selecciona uno aleatorio de entre aquellos idénticos al elegido. Esta decisión es adecuada ya que establece un equilibrio entre exploración y explotación. \par
   La implementación se aproxima en el algoritmo 2. \par
@@ -467,7 +468,7 @@
       \EndFunction
     \end{algorithmic}
   \end{algorithm} 
-   \begin{algorithm}[H]
+  \begin{algorithm}[H]
     \caption{Algoritmo del operador de cruce de Whigham}\label{cruzop}
     \begin{algorithmic}[1]
       \Function{crossover}{$f$} \Comment{\textit{f} = Progenitores}
@@ -482,51 +483,57 @@
       \EndFunction
     \end{algorithmic}
   \end{algorithm}
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  Los operadores genéticos seleccionados e implementados son:
-  \begin{itemize}
-    \item Generación de individuos. El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción aleatorias y sin una profundidad máxima determinada.
-    \item Operador de selección. El operador de selección que se ha elegido es por torneo, que escoge al azar tantos individuos de la población como el tamaño deseado, en este caso sin reemplazamiento, y se selecciona al mejor grupo de entre los elegidos. Este operador permite que haya un equilibrio entre exploración y explotación.
-    \item Operador de cruce. El operador de cruce que se ha decidido implementar es el operador de Whigham. En él, se selecciona un símbolo no terminal aleatorio del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor, selecciona uno aleatorio de entre aquellos idénticos al seleccionado del primero. Esta decisión es adecuada ya que establece un equilibrio entre exploración y explotación.
-    \item Operador de mutación. El operador de mutación elegido coincide con el algoritmo de generación de individuos: es aleatorio. Cuando un individuo se ve afectado por una mutación, se escoge un nodo no terminal de forma aleatoria y se sustituye por una derivación, también aleatoria, partiendo de ese nodo seleccionado.
-    \item Operador de reemplazo. Tras aplicar los tres operadores anteriores, el operador de reemplazo elegido es por reducción elitista, en el que la población y los descendientes se juntan y se seleccionan los $\lambda$ mejores.
-  \end{itemize} \par
-  En los siguientes algoritmos se pueden visualizar las implementaciones seguidas para cada uno de los operadores. Estas implementaciones son ideales, y en la práctica se han utilizado funciones más eficientes que el propio lenguaje $R$ provee.
- 
- 
-  
-  \begin{algorithm}
-    \caption{Algoritmo del operador de mutación}\label{mutaop}
+  La mutación se lleva a cabo de forma aleatoria tal y como se generan los individuos. Cuando un individuo se ve afectado por una mutación, se escoge un nodo no terminal de forma aleatoria y se sustituye por una derivación. Como la gramática utilizada favorece a las arquitecturas pequeñas al disminuir la probabilidad de recursión a medida que se llevan a cabo otras, este algoritmo es adecuado. \par
+  \begin{algorithm}[H]
+    \caption{Algoritmo del operador de reemplazo por reducción elitista}\label{reemop}
     \begin{algorithmic}[1]
-      \Function{crossover}{$f$} \Comment{\textit{f} = Progenitores}
-        \State $no\_terminales1 \gets \thinspace $extraer(\textit{f[0]}) \Comment{Extraer símbolos no terminales}
-        \State $no\_terminales2 \gets \thinspace $extraer(\textit{f[1]})
-        \State $simbolo1 \gets \thinspace $sample(\textit{no\_terminales1}, 1)
-        \State $simbolo2 \gets \thinspace $sample.choice([\textit{n} for \textit{n} in \textit{no\_terminales2} if \textit{n} == \textit{simbolo1}])
-        \State $d \gets \thinspace $[] \Comment{Descendientes}
-        \State $d[0] \gets \thinspace $replace(\textit{f[1]}, \textit{f[0]}, \textit{simbolo1}, \textit{simbolo2})
-        \State $d[1] \gets \thinspace $replace(\textit{f[0]}, \textit{f[1]}, \textit{simbolo2}, \textit{simbolo1})
-        \State \Return \textit{d}
+      \Function{replacement}{$p, d$} \Comment{\textit{p} = Población, \textit{d} = Descendientes}
+        \State $tamano \gets \thinspace $length(\textit{p})
+        \State $total \gets \thinspace $merge(\textit{p}, \textit{d})
+        \State $total\_ordenado \gets \thinspace $order(\textit{total})
+        \State $p \gets \thinspace $head(\thinspace{total\_ordenado}, \textit{tamano})
       \EndFunction
     \end{algorithmic}
   \end{algorithm}
-  
+  Finalmente, el operador de reemplazo que se ha escogido es por reducción elitista. En él, tras seleccionar a los individuos de la población que pasarán a formar parte del \emph{matting pool} y cruzarlos para conformar su descendencia, los progenitores, el resto de individuos y los descendientes, se juntan y posteriormente se seleccionan a los $\lambda$ mejores. \par
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig16_1.pdf}
+  \end{figure} \par
+  \vspace{-1cm}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig16_2.pdf}
+    \caption{Proceso de evaluación de un individuo.}
+    \label{fig:16}
+  \end{figure} \par
+  \section*{\Large 6.2. Entrenamiento de individuos}
+  Los individuos codifican arquitecturas neuronales gracias a la gramática utilizada. En el proceso evolutivo, interviene el proceso de evaluación de los individuos, que consiste en la decodificación, entrenamiento y cálculo de la precisión de los mismos. \par
+  Este proceso puede verse en el diagrama de la Fig. \ref{fig:16}. \par
+  Para el entrenamiento de los individuos se ha utilizado la librería de R \emph{Keras}, ya que permite la parametrización avanzada de las características del proceso, como las funciones de activación de cada neurona de la red, el número de épocas o un parámetro para detener el proceso en caso de sobreentrenamiento. \par
+  La implementación del entrenamiento se puede visualizar en el algoritmo 4. \par
+  \begin{algorithm}[H]
+    \caption{Algoritmo de entrenamiento}\label{entren}
+    \begin{algorithmic}[1]
+      \Function{train}{$d, data, params$} \Comment{\textit{d} = Individuo}
+        \State $palabra \gets \thinspace $toString(\textit{d}) \Comment{Extraer la palabra}
+        \State $arquitectura \gets \thinspace $extraer(\textit{palabra})
+        \State $train, test, val \gets \thinspace $split(\textit{data})
+        \State $modelo \gets \thinspace $keras::train(\textit{arquitectura}, \textit{train}, \textit{val}, \textit{params})
+        \State $accuracy \gets \thinspace $keras::predict(\textit{modelo}, \textit{test})
+        \State \Return \textit{accuracy}
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+  Este algoritmo es idéntico según se trate de un entrenamiento parcial o de uno total. La diferencia entre los dos modos residirá en el número de épocas que vayan a intervenir en el proceso. \par
+  Los parámetros de entrenamiento que se han utilizado son los siguientes: \par
+  \begin{itemize}
+    \item Tamaño del lote. El tamaño del lote que se ha seleccionado ha sido de 64 elementos, independientemente del dataset y de si el entrenamiento es parcial o total.
+    \item Épocas. El número de épocas es el único elemento que difiere según se trate de un entrenamiento parcial o total. Para los entrenamientos totales, se utilizan 
+    \item 
+    \item División del conjunto de datos en entrenamiento, validación y test.
+    \item 
+  \end{itemize}
   
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
   
