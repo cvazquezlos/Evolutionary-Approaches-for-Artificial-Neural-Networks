@@ -546,11 +546,51 @@
       \right.
     \end{align*}
     donde $N$ es el número de instancias del conjunto de datos, $E$ es el número de variables de entrada y $S$ es el número de variables de salida.
-    \item Control del sobreentrenamiento. Se ha establecido un mecanismo que controla el sobreentrenamiento de la red. 
-    \item División del conjunto de datos en entrenamiento, validación y test.
-    \item 
-  \end{itemize}
-  
+    \item Control del sobreentrenamiento. Se ha establecido un mecanismo que controla el sobreentrenamiento de la red. El procedimiento que se sigue se lleva a cabo mientras la red está entrenando, de tal forma que en cada época se mide el error de la red con el subconjunto de validación. Si el error aumenta durante un 10\% de las épocas seguidas, el entrenamiento se detiene. En caso contrario, sigue entrenando. Este mecanismo es especialmente necesario en los entrenamientos totales, ya que en los parciales la inmensa mayoría de los individuos entrenan sin sobreentrenar.
+    \item Tasa de aprendizaje dinámica. Junto con el control de entrenamiento anterior, la posibilidad de contar con una tasa de aprendizaje dinámica evita el sobreentrenamiento y también el estancamiento de las redes. Se establece también un mecanismo que, si el modelo se estanca durante un 5\% de las épocas seguidas, disminuya la tasa de aprendizaje en un 15\%, y si el modelo sobreentrena durante un 5\% de las épocas seguidas, la aumente un 20\%. De esta forma se facilita que el entrenamiento sea dinámico, permitiendo que el parámetro de aprendizaje de la red se adapte según el estado de los pesos y del algoritmo de aprendizaje, y evitando que el control del sobreentrenamiento se aplique siempre.
+    \item División del conjunto de datos en entrenamiento, validación y test. Para todos los conjuntos de datos, se ha extraído un subconjunto de entrenamiento (con, aproximadamente, un 70\% de instancias), de validación (con, aproximadamente, un 20\% de instancias) y de test (con las restantes).
+    \item Pesos de clase. Si bien la mayoría de los conjuntos de datos cuentan con, aproximadamente, un número semejante de instancias de cada clase, en otros casos sucede que hay una desproporción en su conteo. En tal caso, es necesario que estas clases más mayoritarias tengan un menor peso en el cálculo del error. Este cálculo se refleja en la Eq. \ref{eq:7}.
+    \begin{align*}
+      w_{C_i} = \frac{1 - \frac{N_{C_i}}{N}}{\sum_{j=1}^{m}1 - \frac{N_{C_j}}{N}} \label{eq:7}\tag{7}
+    \end{align*}
+    donde $w_{C_i}$ es peso que se le asocia a la clase $C_i$ en el cálculo del error en cada época, $N_{C_i}$ es el número de instancias del conjunto de datos etiquetadas con la clase $C_i$ y el sumatorio es la suma de las proporciones inversas de las clases en el conjunto de datos.
+  \end{itemize} \par
+  El proceso de entrenamiento concluye con el cálculo del \emph{accuracy} con el subconjunto de entrenamiento. La justificación de utilizar este subconjunto y no otros reside en que si la red tiene un mal desempeño con estos datos, también lo tendrá con los de validación y test. Por tanto, aquellos individuos con un \emph{accuracy} malo en entrenamiento, son descartables por su bajo grado de adaptación.
+  \section*{\Large 6.3. Programa genético}
+  El programa genético sigue el ciclo evolutivo y se ejecutará un total de 80 veces, para entrenamientos totales y parciales. \par
+  Para cada ejecución, se almacena el modelo entrenado de cada individuo, así como su historial de entrenamiento, con la variación del error y del \emph{accuracy} para cada época. \par
+  \begin{algorithm}[H]
+    \caption{Algoritmo del programa genético}\label{entren}
+    \begin{algorithmic}[1]
+      \Function{genetic\_program}{$n, cfg, d, p$} \Comment{\textit{n} = Tamaño, \textit{cfg} = Gramática, \textit{d} = Datos, \textit{p} = Parámetros}
+        \For{\texttt{$i \gets \thinspace $1 to 80}}
+          \State $poblacion \gets \thinspace $generar(\textit{n}, \textit{cfg})
+          \For{\texttt{$j \gets \thinspace $1 to n}}
+            \State $poblacion[j] \gets \thinspace $train(\textit{poblacion[j]}, d, p)
+          \EndFor
+          \While{!condicion\_parada(\textit{poblacion})}
+            \State $progenitores \gets \thinspace $selection(\textit{poblacion}, \textit{round(n/2)})
+            \State $descendencia \gets \thinspace $crossover(\textit{matting\_pool})
+            \State $m \gets \thinspace $length(\textit{descendencia})
+            \For{\texttt{$j \gets \thinspace $1 to m}}
+              \State $descendencia[j] \gets \thinspace $train(\textit{descendencia[j]}, d, p)
+            \EndFor
+            \State $\textit{descendencia}, \textit{progenitores} \gets \thinspace $mutation(\textit{descendencia}, \textit{progenitores})
+            \State $poblacion \gets \thinspace $replacement(\textit{poblacion}, \textit{descendencia})
+          \EndWhile
+          \State $solucion \gets \thinspace $obtener\_solucion(\thinspace{poblacion})
+          \State guardar\_resultados(\textit{solucion})
+        \EndFor
+        \State analizar\_resultados
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm} \par
+  El procedimiento que sigue el programa genético se puede ver en el algoritmo 5. \par
+  La cantidad de individuos seleccionados, para un tamaño de la población es del 20\%, es decir, de 6 progenitores para conformar una descendencia de 6 individuos (cada pareja de progenitores genera una pareja de descendientes). \par
+  Sobre los individuos seleccionados y sus descendientes se aplica la mutación con una probabilidad del 5\%, que a lo l \par
+  El tiempo de ejecución depende directamente del número de épocas, de la dimensión de los datos y de si el sistema que lo ejecuta cuenta con una unidad de procesamiento gráfico. Para dimensiones pequeñas y 80 ejecuciones, la diferencia entre el uso de procesamiento gráfico y el no uso es prácticamente nula. En el caso opuesto, la red no entrenará a menos que cuente con una unidad de procesamiento gráfico que lo permita. \par
+  En el caso concreto de este trabajo, cuando la dimensión de los datos superaba las 35.000 instancias, las redes nunca llegaron a entrenar totalmente. \par
+  Por lo tanto, si bien este programa genético funciona de forma adecuada, la máquina es totalmente influyente en su éxito o fracaso, de tal forma que sin una potencia de cómputo adecuada, habrá problemas que sean irresolubles, al menos con el entrenamiento total. Con el entrenamiento parcial, al reducir el número de épocas de forma considerable, es posible llegar a realizar una ejecución completa.
   % TOTAL: 100 IRIS, 500 CAR
   % PARCIAL: 13 IRIS, 20 CAR, 300 OCEAN PROXIMITY
   
