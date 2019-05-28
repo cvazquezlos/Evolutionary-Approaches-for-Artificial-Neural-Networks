@@ -445,11 +445,10 @@
   \end{itemize} \par
   Para realizar el trabajo, se ha desarrollado el código fuente de una librería utilizando el lenguaje de programación \emph{R}. Se ha decidido implementar esta librería por el hecho de que no había ningún otro paquete en este lenguaje que permitiese ejecutar programas genéticos con gramáticas definidas por un usuario. \par
   \section*{\Large 6.1. Generación de individuos y operadores genéticos}
-  La implementación de esta librería consiste en el desarrollo de todos los operadores genéticos que constituyen el ciclo evolutivo, además del resto de elementos que intervienen en él.  \par
-  El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción aleatorias y sin una profundidad máxima determinada.\par
-  El operador de selección elegido es por torneo, que escoge al azar tantos individuos de la población como el tamaño deseado, en este caso sin reemplazamiento, y se selecciona al mejor grupo de entre los elegidos. Este operador permite que haya un equilibrio entre exploración y explotación. Su funcionamiento puede verse en el algoritmo 1. \par\par
-  El operador de cruce que se ha elegido es el de Whigham. En él, se selecciona un símbolo aleatorio del conjunto de símbolos no terminales del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor se selecciona uno aleatorio de entre aquellos idénticos al elegido. Esta decisión es adecuada ya que establece un equilibrio entre exploración y explotación. \par
-  La implementación se aproxima en el algoritmo 2. \par
+  La implementación de esta librería consiste en el desarrollo de todos los operadores genéticos que constituyen el ciclo evolutivo, además del resto de elementos que intervienen en él, como el entrenamiento de los individuos y la generación de la población inicial.  \par
+  El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción elegidas de forma aleatoria, asegurando la validez de los individuos.\par
+  El operador de selección elegido es por torneo, que escoge al azar un conjunto de individuos de la población, en este caso sin reemplazamiento, y selecciona a los dos mejores. Este operador permite que haya un equilibrio entre exploración y explotación. Su funcionamiento puede verse en el algoritmo 1. \par\par
+  El operador de cruce que se ha elegido es el de Whigham. En él, se selecciona un símbolo aleatorio del conjunto de símbolos no terminales del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor se selecciona uno aleatorio de entre aquellos idénticos al elegido. La implementación se describe en el algoritmo 2. \par
   \begin{algorithm}[H]
     \caption{Algoritmo del operador de selección por torneo}\label{selop}
     \begin{algorithmic}[1]
@@ -460,7 +459,7 @@
           \State $seleccionados \gets \thinspace $sample(p, n)
           \State $p \gets \thinspace $remove(seleccionados, p)
           \State order(\textit{seleccionados})
-          \State $mejores \gets \thinspace $head(\textit{seleccionados}, round(\textit{n}/2))
+          \State $mejores \gets \thinspace $head(\textit{seleccionados}, 2)
           \State append(\textit{matting\_pool}, \textit{mejores})
           \State $i \gets \thinspace $\textit{i} + 1
         \EndWhile
@@ -483,7 +482,7 @@
       \EndFunction
     \end{algorithmic}
   \end{algorithm}
-  La mutación se lleva a cabo de forma aleatoria tal y como se generan los individuos. Cuando un individuo se ve afectado por una mutación, se escoge un nodo no terminal de forma aleatoria y se sustituye por una derivación. Como la gramática utilizada favorece a las arquitecturas pequeñas al disminuir la probabilidad de recursión a medida que se llevan a cabo otras, este algoritmo es adecuado. \par
+  La mutación se lleva a cabo empleando el mismo procedimiento seguido para crear nuevos individuos, pero desde un nodo no terminal seleccionado al azar. En lugar de derivar el axioma hasta que todos los nodos hoja sean terminales, el desencadenante de la derivación es un nodo no terminal escogido al azar, desarrollándolo hasta que los nodos hoja de ese subárbol son terminales. Sin embargo, este crecimiento no es desmesurado, ya que la gramática favorece a individuos pequeños, y, tras cada recursión, hay probabilidad la mitad de inferior de volver a cometer otra recursión. \par
   \begin{algorithm}[H]
     \caption{Algoritmo del operador de reemplazo por reducción elitista}\label{reemop}
     \begin{algorithmic}[1]
