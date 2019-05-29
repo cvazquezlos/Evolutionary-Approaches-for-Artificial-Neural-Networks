@@ -495,6 +495,10 @@
     \end{algorithmic}
   \end{algorithm}
   Finalmente, el operador de reemplazo que se ha escogido es por reducción elitista. En él, tras seleccionar a los individuos de la población que pasarán a formar parte del \emph{matting pool} y cruzarlos para conformar su descendencia, los progenitores, el resto de individuos y los descendientes, se juntan y posteriormente se seleccionan a los $\lambda$ mejores. \par
+ \section*{\Large 6.2. Entrenamiento de individuos}
+  Los individuos codifican arquitecturas neuronales gracias a la gramática mostrada en \ref{eq:3}. En el proceso evolutivo, interviene el proceso de evaluación de los individuos, que consiste en la decodificación, entrenamiento y cálculo de la precisión de los mismos. \par
+  Este proceso puede verse en el diagrama de la Fig. \ref{fig:16}. Todo comienza con la creación del individuo, generado con el uso de reglas de producción elegidas al azar de la gramática. A continuación, con la palabra que codifica el individuo (leyendo los símbolos terminales de izquierda a derecha), se decodifica en forma de arquitectura neuronal. Esta arquitectura es uno de los parámetros que entran al entrenamiento de \emph{Keras}, permitiendo utilizar el algoritmo de retropropagación del gradiente para su entrenamiento. \par
+  Una vez entrenada, la red calcula la precisión (\emph{accuracy}) definida, en el problema de clasificación multi-clase, como la media de las precisiones de cada una de ellas, tal y como se muestra en la Eq. \ref{eq:5}
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig16_1.pdf}
@@ -506,9 +510,7 @@
     \caption{Proceso de evaluación de un individuo.}
     \label{fig:16}
   \end{figure} \par
-  \section*{\Large 6.2. Entrenamiento de individuos}
-  Los individuos codifican arquitecturas neuronales gracias a la gramática mostrada en \ref{eq:3}. En el proceso evolutivo, interviene el proceso de evaluación de los individuos, que consiste en la decodificación, entrenamiento y cálculo de la precisión de los mismos. \par
-  Este proceso puede verse en el diagrama de la Fig. \ref{fig:16}. \par
+ 
   Para el entrenamiento de los individuos se ha utilizado la librería de R \emph{Keras} (Chollet, 2015), ya que permite la parametrización avanzada de las características del proceso, como las funciones de activación de cada neurona de la red, el número de épocas o un parámetro para detener el proceso en caso de sobreentrenamiento. \par
   La implementación del entrenamiento se muestra en el algoritmo 4. \par
   \begin{algorithm}[H]

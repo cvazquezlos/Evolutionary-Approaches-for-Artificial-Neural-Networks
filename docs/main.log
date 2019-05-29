@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.16)  29 MAY 2019 11:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.16)  29 MAY 2019 11:58
 entering extended mode
 **./main.tex
 (main.tex
@@ -1103,36 +1103,36 @@ put line 453.
 
 pdfTeX warning: pdflatex.exe (file ./resources/Fig16_1.pdf): PDF inclusion: fou
 nd PDF version <1.7>, but at most version <1.5> allowed
-<resources/Fig16_1.pdf, id=509, 963.6pt x 542.025pt>
+<resources/Fig16_1.pdf, id=512, 963.6pt x 542.025pt>
 File: resources/Fig16_1.pdf Graphic file (type pdf)
 <use resources/Fig16_1.pdf>
-Package pdftex.def Info: resources/Fig16_1.pdf  used on input line 500.
+Package pdftex.def Info: resources/Fig16_1.pdf  used on input line 505.
 (pdftex.def)             Requested size: 426.79135pt x 240.06314pt.
-<resources/Fig16_2.pdf, id=510, 963.6pt x 542.025pt>
+<resources/Fig16_2.pdf, id=513, 963.6pt x 542.025pt>
 File: resources/Fig16_2.pdf Graphic file (type pdf)
 <use resources/Fig16_2.pdf>
-Package pdftex.def Info: resources/Fig16_2.pdf  used on input line 505.
+Package pdftex.def Info: resources/Fig16_2.pdf  used on input line 510.
 (pdftex.def)             Requested size: 426.79135pt x 240.06314pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3601) has occurred while \output is active []
 
- [29 <./resources/Fig16_1.pdf> <./resources/Fig16_2.pdf
-
-pdfTeX warning: pdflatex.exe (file ./resources/Fig16_2.pdf): PDF inclusion: mul
-tiple pdfs with page group included in a single page
->] [30] [31]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 565.
+ [29 <./resources/Fig16_1.pdf>] [30 <./resources/Fig16_2.pdf>] [31]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 568.
 
 
 ("C:\Users\cvazquez\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\t1cmtt.fd"
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [32] [33] [34
+)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+[33] [34
 
 ]
 Cap\'{\i }tulo 9.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\new@ifnextchar' on input line 599.
+(hyperref)                removing `\new@ifnextchar' on input line 602.
 
 [35
 
@@ -1140,41 +1140,41 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Cap\'{\i }tulo 10.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\new@ifnextchar' on input line 604.
+(hyperref)                removing `\new@ifnextchar' on input line 607.
 
 [36
 
 ] [37
 
 ]
-Underfull \hbox (badness 1152) in paragraph at lines 644--645
+Underfull \hbox (badness 1152) in paragraph at lines 647--648
 [] \T1/cmr/m/n/12 Has-san, R., Coha-nim, B., de Weck, O. and Ven-ter, G. (2005)
 . A com-
  []
 
 
-Underfull \hbox (badness 1052) in paragraph at lines 644--645
+Underfull \hbox (badness 1052) in paragraph at lines 647--648
 \T1/cmr/m/n/12 pa-ri-son of par-ti-cle swarm op-ti-mi-za-tion and the ge-ne-tic
  al-go-rithm. \T1/cmr/m/it/12 46th
  []
 
 [38] [39] [40]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 691.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 694.
  [41]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 691.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 694.
  (main.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 691.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 691.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 694.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 694.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 1485ADAEFF706720E9C258B41A3A422D;610.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 691.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 694.
  ) 
 Here is how much of TeX's memory you used:
  20078 strings out of 492945
@@ -1213,9 +1213,9 @@ ocal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/cv
 azquez/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.p
 fb><C:/Users/cvazquez/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsf
 onts/symbols/msbm10.pfb>
-Output written on main.pdf (49 pages, 1586060 bytes).
+Output written on main.pdf (49 pages, 1586994 bytes).
 PDF statistics:
- 1288 PDF objects out of 1440 (max. 8388607)
+ 1290 PDF objects out of 1440 (max. 8388607)
  174 named destinations out of 1000 (max. 500000)
  216 words of extra memory for PDF output out of 10000 (max. 10000000)
 
