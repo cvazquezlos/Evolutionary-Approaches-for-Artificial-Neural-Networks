@@ -12,15 +12,15 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "E7FE36A5",
+        "cacheKey" : "B930149F",
         "caption" : "ocean_proximity",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=ocean_proximity&cache_key=E7FE36A5",
-        "displayedObservations" : 20428,
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=ocean_proximity&cache_key=B930149F",
+        "displayedObservations" : "20428",
         "environment" : "",
         "object" : "ocean_proximity",
-        "preview" : 0,
-        "totalObservations" : 20428,
-        "variables" : 13
+        "preview" : "0",
+        "totalObservations" : "20428",
+        "variables" : "13"
     },
     "relative_order" : 4,
     "source_on_save" : false,
