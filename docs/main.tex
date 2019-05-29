@@ -507,10 +507,10 @@
     \label{fig:16}
   \end{figure} \par
   \section*{\Large 6.2. Entrenamiento de individuos}
-  Los individuos codifican arquitecturas neuronales gracias a la gramática utilizada. En el proceso evolutivo, interviene el proceso de evaluación de los individuos, que consiste en la decodificación, entrenamiento y cálculo de la precisión de los mismos. \par
+  Los individuos codifican arquitecturas neuronales gracias a la gramática mostrada en \ref{eq:3}. En el proceso evolutivo, interviene el proceso de evaluación de los individuos, que consiste en la decodificación, entrenamiento y cálculo de la precisión de los mismos. \par
   Este proceso puede verse en el diagrama de la Fig. \ref{fig:16}. \par
-  Para el entrenamiento de los individuos se ha utilizado la librería de R \emph{Keras}, ya que permite la parametrización avanzada de las características del proceso, como las funciones de activación de cada neurona de la red, el número de épocas o un parámetro para detener el proceso en caso de sobreentrenamiento. \par
-  La implementación del entrenamiento se puede visualizar en el algoritmo 4. \par
+  Para el entrenamiento de los individuos se ha utilizado la librería de R \emph{Keras} (Chollet, 2015), ya que permite la parametrización avanzada de las características del proceso, como las funciones de activación de cada neurona de la red, el número de épocas o un parámetro para detener el proceso en caso de sobreentrenamiento. \par
+  La implementación del entrenamiento se muestra en el algoritmo 4. \par
   \begin{algorithm}[H]
     \caption{Algoritmo de entrenamiento}\label{entren}
     \begin{algorithmic}[1]
@@ -524,11 +524,11 @@
       \EndFunction
     \end{algorithmic}
   \end{algorithm}
-  Este algoritmo es idéntico según se trate de un entrenamiento parcial o de uno total. La diferencia entre los dos modos residirá en el número de épocas que vayan a intervenir en el proceso. \par
+  Este algoritmo es idéntico según se trate de un entrenamiento parcial o de uno total. La diferencia entre los dos modos reside en el número de épocas que intervienen en el proceso. \par
   Los parámetros de entrenamiento que se han utilizado son los siguientes: \par
   \begin{itemize}
     \item Tamaño del lote. El tamaño del lote que se ha seleccionado ha sido de 64 elementos, independientemente del dataset y de si el entrenamiento es parcial o total.
-    \item Épocas. El número de épocas es el único elemento que difiere según se trate de un entrenamiento parcial o total. Para los entrenamientos totales, se utiliza un número de épocas que sobrepasa el máximo necesario, pero como el algoritmo cuenta que mecanismos que impiden que haya sobreentrenamiento, el proceso se detiene antes. Para entrenamientos totales, el número de épocas utilizado es, para conjuntos de datos inferiores a 200 instancias, 100 épocas, y para conjuntos mayores, un tercio del número de instancias menos el producto de las variables predictoras y las de clase, según puede verse en la Eq. \ref{eq:5}.
+    \item Épocas. El número de épocas es el único elemento que difiere según se trate de un entrenamiento parcial o total. Para los entrenamientos totales, se utiliza un número de épocas que sobrepasa el máximo necesario, pero como el algoritmo cuenta con mecanismos que impiden que haya sobreentrenamiento como la tasa de aprendizaje dinámica o el propio control de sobreentrenamiento implementado, el proceso se detiene antes. Para entrenamientos totales, el número de épocas utilizado es, para conjuntos de datos inferiores a 200 instancias, 100 épocas, y para conjuntos mayores, un tercio del número de instancias menos el producto de las variables predictoras y las de clase, según puede verse en la Eq. \ref{eq:5}.
     \begin{align*}
       \textnormal{número épocas} = \left\{ \begin{array}{lcc} \label{eq:5}\tag{5}
              100 &   si  & N < 200 \\
@@ -536,7 +536,7 @@
              \end{array}
       \right.
     \end{align*}
-    donde $N$ es el número de instancias del conjunto de datos, $E$ es el número de variables de entrada y $S$ es el número de variables de salida. Para entrenamientos parciales, la primera aproximación en la que se pensó fue en el corte entre el error y el tiempo en la curva de entrenamiento, de tal forma que llegaría, se supone, un punto en el que para disminuir el error una cantidad pequeña, se requeriría una carga de tiempo grande, por lo cual se podría parar en ese punto. Sin embargo, para conjuntos de datos pequeños y que entrenan rápido esto no se cumple, ya que también está condicionado por la arquitectura, por lo que sería un número dinámico dependiente del modelo, restando consistencia a los resultados. El número de épocas deseado para el entrenamiento parcial es de, para conjuntos inferiores a 3500 instancias, el producto entre sus entradas y sus salidas más una unidad, y para conjuntos de más instancias, el doble del cociente entre el producto entre la entrada, la salida y 10 y el número de instancias, según puede verse en la Eq. \ref{eq:6}.
+    donde $N$ es el número de instancias del conjunto de datos, $E$ es el número de variables de entrada y $S$ es el número de variables de salida. Para entrenamientos parciales, el número de épocas es de, para conjuntos inferiores a 3500 instancias, el producto entre sus entradas y sus salidas más una unidad, y para conjuntos de más instancias, el doble del cociente entre el producto entre la entrada, la salida y 10 y el número de instancias, según puede verse en la Eq. \ref{eq:6}.
     \begin{align*}
       \textnormal{número épocas} = \left\{ \begin{array}{lcc} \label{eq:6}\tag{6}
              (E \cdot S) + 1 &   si  & N < 3500 \\
@@ -545,10 +545,10 @@
       \right.
     \end{align*}
     donde $N$ es el número de instancias del conjunto de datos, $E$ es el número de variables de entrada y $S$ es el número de variables de salida.
-    \item Control del sobreentrenamiento. Se ha establecido un mecanismo que controla el sobreentrenamiento de la red. El procedimiento que se sigue se lleva a cabo mientras la red está entrenando, de tal forma que en cada época se mide el error de la red con el subconjunto de validación. Si el error aumenta durante un 10\% de las épocas seguidas, el entrenamiento se detiene. En caso contrario, sigue entrenando. Este mecanismo es especialmente necesario en los entrenamientos totales, ya que en los parciales la inmensa mayoría de los individuos entrenan sin sobreentrenar.
+    \item Control del sobreentrenamiento. Se ha establecido un mecanismo que controla el sobreentrenamiento de la red. El procedimiento que se sigue se lleva a cabo mientras la red está entrenando, de tal forma que en cada época se mide el error de la red con el subconjunto de validación. Si el error aumenta durante un 10\% de las épocas seguidas, el entrenamiento se detiene. En caso contrario, sigue entrenando. Este mecanismo es especialmente necesario en los entrenamientos totales, ya que en los parciales la inmensa mayoría de los individuos entrenan en la región del \emph{underfit}.
     \item Tasa de aprendizaje dinámica. Junto con el control de entrenamiento anterior, la posibilidad de contar con una tasa de aprendizaje dinámica evita el sobreentrenamiento y también el estancamiento de las redes. Se establece también un mecanismo que, si el modelo se estanca durante un 5\% de las épocas seguidas, disminuya la tasa de aprendizaje en un 15\%, y si el modelo sobreentrena durante un 5\% de las épocas seguidas, la aumente un 20\%. De esta forma se facilita que el entrenamiento sea dinámico, permitiendo que el parámetro de aprendizaje de la red se adapte según el estado de los pesos y del algoritmo de aprendizaje, y evitando que el control del sobreentrenamiento se aplique siempre.
     \item División del conjunto de datos en entrenamiento, validación y test. Para todos los conjuntos de datos, se ha extraído un subconjunto de entrenamiento (con, aproximadamente, un 70\% de instancias), de validación (con, aproximadamente, un 20\% de instancias) y de test (con las restantes).
-    \item Pesos de clase. Si bien la mayoría de los conjuntos de datos cuentan con, aproximadamente, un número semejante de instancias de cada clase, en otros casos sucede que hay una desproporción en su conteo. En tal caso, es necesario que estas clases más mayoritarias tengan un menor peso en el cálculo del error. Este cálculo se refleja en la Eq. \ref{eq:7}.
+    \item Pesos de clase. Si bien la mayoría de los conjuntos de datos cuentan con, aproximadamente, un número semejante de instancias de cada clase, en otros casos sucede que hay una desproporción. En tal caso, es necesario que estas clases más mayoritarias tengan un menor peso en el cálculo del error. Este cálculo se refleja en la Eq. \ref{eq:7}.
     \begin{align*}
       w_{C_i} = \frac{1 - \frac{N_{C_i}}{N}}{\sum_{j=1}^{m}1 - \frac{N_{C_j}}{N}} \label{eq:7}\tag{7}
     \end{align*}
@@ -556,8 +556,8 @@
   \end{itemize} \par
   El proceso de entrenamiento concluye con el cálculo del \emph{accuracy} con el subconjunto de entrenamiento. La justificación de utilizar este subconjunto y no otros reside en que si la red tiene un mal desempeño con estos datos, también lo tendrá con los de validación y test. Por tanto, aquellos individuos con un \emph{accuracy} malo en entrenamiento, son descartables por su bajo grado de adaptación.
   \section*{\Large 6.3. Programa genético}
-  El programa genético sigue el ciclo evolutivo y se ejecutará un total de 80 veces, para entrenamientos totales y parciales. \par
-  Para cada ejecución, se almacena el modelo entrenado de cada individuo, así como su historial de entrenamiento, con la variación del error y del \emph{accuracy} para cada época. \par
+  El programa genético sigue el ciclo evolutivo y se ejecuta un total de 80 veces, para entrenamientos totales y parciales. \par
+  Para cada ejecución, se almacena el modelo entrenado de cada individuo, así como su historial de entrenamiento, con la variación del error y de la precisión para cada época. \par
   \begin{algorithm}[H]
     \caption{Algoritmo del programa genético}\label{entren}
     \begin{algorithmic}[1]
@@ -586,10 +586,11 @@
   \end{algorithm} \par
   El procedimiento que sigue el programa genético se puede ver en el algoritmo 5. \par
   La cantidad de individuos seleccionados, para un tamaño de la población es del 20\%, es decir, de 6 progenitores para conformar una descendencia de 6 individuos (cada pareja de progenitores genera una pareja de descendientes). \par
-  Sobre los individuos seleccionados y sus descendientes se aplica la mutación con una probabilidad del 5\%, que a lo l \par
-  El tiempo de ejecución depende directamente del número de épocas, de la dimensión de los datos y de si el sistema que lo ejecuta cuenta con una unidad de procesamiento gráfico. Para dimensiones pequeñas y 80 ejecuciones, la diferencia entre el uso de procesamiento gráfico y el no uso es prácticamente nula. En el caso opuesto, la red no entrenará a menos que cuente con una unidad de procesamiento gráfico que lo permita. \par
-  En el caso concreto de este trabajo, cuando la dimensión de los datos superaba las 35.000 instancias, las redes nunca llegaron a entrenar totalmente. \par
-  Por lo tanto, si bien este programa genético funciona de forma adecuada, la máquina es totalmente influyente en su éxito o fracaso, de tal forma que sin una potencia de cómputo adecuada, habrá problemas que sean irresolubles, al menos con el entrenamiento total. Con el entrenamiento parcial, al reducir el número de épocas de forma considerable, es posible llegar a realizar una ejecución completa.
+  Sobre los individuos seleccionados y sus descendientes se aplica la mutación con una probabilidad del 5\%. Esta mutación es necesaria, ya que, si bien la gramática favorece a las redes pequeñas, este operador permite la creación de redes más grandes, añadiendo un factor necesario de exploración. \par
+  Si bien este programa genético funciona de forma adecuada, la máquina es totalmente influyente en su éxito o fracaso, de tal forma que el entrenamiento parcial permite encontrar soluciones a problemas que con un entrenamiento total requerirían tal necesidad de cómputo que las harían inviables.
+
+
+sin una potencia de cómputo adecuada, habrá problemas que sean irresolubles, al menos con el entrenamiento total. Con el entrenamiento parcial, al reducir el número de épocas de forma considerable, es posible llegar a realizar una ejecución completa.
   % TOTAL: 100 IRIS, 500 CAR
   % PARCIAL: 13 IRIS, 20 CAR, 300 OCEAN PROXIMITY
   
@@ -619,6 +620,7 @@
   \bibitem{Box1957} Box, G.E.P. (1957). Evolutionary operation: A method for increasing industrial productivity. \emph{Journal of the Royal Statistical Society. Series C}. 6(2):81-101.
   \bibitem{Box1969} Box, G.E.P. and Draper, N.P. (1969). \emph{Evolutionary Operation. A method for Increasing Industrial Productivity}.
   \bibitem{Bremermann1962} Bremermann, H.J. (1962). Optimization through evolution and recombination. \emph{Self-Organizing Systems 1962}: 93-106.
+  \bibitem{Chollet2015} Chollet, F. (2015) GitHub repository (https://github.com/keras-team/keras).
   \bibitem{Chomsky1959} Chomsky, N. (1959). On Certain Formal Properties of Grammars. \emph{Information and Control}. 2(2):137-167.
   \bibitem{Couchet2006} Couchet, J. and Manrique, D. (2006). Crossover and mutation operations for grammar-guided genetic programming. \emph{Soft Computing}. 11(10):943-955.
   \bibitem{Couchet2007} Couchet, J., Manrique, D. and Porras, L. (2007). Grammar-Guided Neural Architecture Evolution. \emph{Bio-inspired Modeling of Cognitive Tasks}: 438-446.
