@@ -444,9 +444,10 @@
     \item Realizar dos ejecuciones para cada conjunto de datos; una primera ejecución realizando el entrenamiento completo de los individuos y una segunda, con una parada prematura del entrenamiento.
   \end{itemize} \par
   Para realizar el trabajo, se ha desarrollado el código fuente de una librería utilizando el lenguaje de programación \emph{R}. Se ha decidido implementar esta librería por el hecho de que no había ningún otro paquete en este lenguaje que permitiese ejecutar programas genéticos con gramáticas definidas por un usuario. \par
+  Además, en esta librería, tanto el funcionamiento general como el entrenamiento de los individuos son dos elementos síncronos, es decir, que mientras se esté desarrollando el programa genético (todos los operadores y elementos exceptuando el entrenamiento), ningún entrenamiento se puede llevar a cabo. Por el contrario, si se está ejecutando un entrenamiento, el programa genético se encuentra a la espera de que finalice para continuar. \par
   \section*{\Large 6.1. Generación de individuos y operadores genéticos}
   La implementación de esta librería consiste en el desarrollo de todos los operadores genéticos que constituyen el ciclo evolutivo, además del resto de elementos que intervienen en él, como el entrenamiento de los individuos y la generación de la población inicial.  \par
-  El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción elegidas de forma aleatoria, asegurando la validez de los individuos.\par
+  El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción elegidas de forma aleatoria, asegurando la validez de los individuos. \vfill
   El operador de selección elegido es por torneo, que escoge al azar un conjunto de individuos de la población, en este caso sin reemplazamiento, y selecciona a los dos mejores. Este operador permite que haya un equilibrio entre exploración y explotación. Su funcionamiento puede verse en el algoritmo 1. \par\par
   El operador de cruce que se ha elegido es el de Whigham. En él, se selecciona un símbolo aleatorio del conjunto de símbolos no terminales del primer progenitor, y, a continuación, de los símbolos no terminales del segundo progenitor se selecciona uno aleatorio de entre aquellos idénticos al elegido. La implementación se describe en el algoritmo 2. \par
   \begin{algorithm}[H]
@@ -497,8 +498,7 @@
   Finalmente, el operador de reemplazo que se ha escogido es por reducción elitista. En él, tras seleccionar a los individuos de la población que pasarán a formar parte del \emph{matting pool} y cruzarlos para conformar su descendencia, los progenitores, el resto de individuos y los descendientes, se juntan y posteriormente se seleccionan a los $\lambda$ mejores. \par
  \section*{\Large 6.2. Entrenamiento de individuos}
   Los individuos codifican arquitecturas neuronales gracias a la gramática mostrada en \ref{eq:3}. En el proceso evolutivo, interviene el proceso de evaluación de los individuos, que consiste en la decodificación, entrenamiento y cálculo de la precisión de los mismos. \par
-  Este proceso puede verse en el diagrama de la Fig. \ref{fig:16}. Todo comienza con la creación del individuo, generado con el uso de reglas de producción elegidas al azar de la gramática. A continuación, con la palabra que codifica el individuo (leyendo los símbolos terminales de izquierda a derecha), se decodifica en forma de arquitectura neuronal. Esta arquitectura es uno de los parámetros que entran al entrenamiento de \emph{Keras}, permitiendo utilizar el algoritmo de retropropagación del gradiente para su entrenamiento. \par
-  Una vez entrenada, la red calcula la precisión (\emph{accuracy}) definida, en el problema de clasificación multi-clase, como la media de las precisiones de cada una de ellas, tal y como se muestra en la Eq. \ref{eq:5}
+  Este proceso puede verse en el diagrama de la Fig. \ref{fig:16}, que comienza con la generación del individuo empleando la gramática, para su posterior decodificación en red neuronal y entrenamiento con \emph{Keras}, empleando parámetros como las épocas, el tamaño del lote y la tasa de aprendizaje, entre otros. \vfill
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig16_1.pdf}
@@ -510,7 +510,7 @@
     \caption{Proceso de evaluación de un individuo.}
     \label{fig:16}
   \end{figure} \par
- 
+  Una vez entrenada, la red calcula la precisión (\emph{accuracy}) definida, en el problema de clasificación multi-clase, como la media de las precisiones de cada una de ellas, tal y como se muestra en la Eq. \ref{eq:5}
   Para el entrenamiento de los individuos se ha utilizado la librería de R \emph{Keras} (Chollet, 2015), ya que permite la parametrización avanzada de las características del proceso, como las funciones de activación de cada neurona de la red, el número de épocas o un parámetro para detener el proceso en caso de sobreentrenamiento. \par
   La implementación del entrenamiento se muestra en el algoritmo 4. \par
   \begin{algorithm}[H]
@@ -560,6 +560,9 @@
   \section*{\Large 6.3. Programa genético}
   El programa genético sigue el ciclo evolutivo y se ejecuta un total de 80 veces, para entrenamientos totales y parciales. \par
   Para cada ejecución, se almacena el modelo entrenado de cada individuo, así como su historial de entrenamiento, con la variación del error y de la precisión para cada época. \par
+  El procedimiento que sigue el programa genético se puede ver en el algoritmo 5. \par
+  La cantidad de individuos seleccionados, para un tamaño de la población es del 20\%, es decir, de 6 progenitores para conformar una descendencia de 6 individuos (cada pareja de progenitores genera una pareja de descendientes). \par
+  Sobre los individuos seleccionados y sus descendientes se aplica la mutación con una probabilidad del 5\%. Esta mutación es necesaria, ya que, si bien la gramática favorece a las redes pequeñas, este operador permite la creación de redes más grandes, añadiendo un factor necesario de exploración. \par
   \begin{algorithm}[H]
     \caption{Algoritmo del programa genético}\label{entren}
     \begin{algorithmic}[1]
@@ -586,13 +589,7 @@
       \EndFunction
     \end{algorithmic}
   \end{algorithm} \par
-  El procedimiento que sigue el programa genético se puede ver en el algoritmo 5. \par
-  La cantidad de individuos seleccionados, para un tamaño de la población es del 20\%, es decir, de 6 progenitores para conformar una descendencia de 6 individuos (cada pareja de progenitores genera una pareja de descendientes). \par
-  Sobre los individuos seleccionados y sus descendientes se aplica la mutación con una probabilidad del 5\%. Esta mutación es necesaria, ya que, si bien la gramática favorece a las redes pequeñas, este operador permite la creación de redes más grandes, añadiendo un factor necesario de exploración. \par
   Si bien este programa genético funciona de forma adecuada, la máquina es totalmente influyente en su éxito o fracaso, de tal forma que el entrenamiento parcial permite encontrar soluciones a problemas que con un entrenamiento total requerirían tal necesidad de cómputo que las harían inviables.
-
-
-sin una potencia de cómputo adecuada, habrá problemas que sean irresolubles, al menos con el entrenamiento total. Con el entrenamiento parcial, al reducir el número de épocas de forma considerable, es posible llegar a realizar una ejecución completa.
   % TOTAL: 100 IRIS, 500 CAR
   % PARCIAL: 13 IRIS, 20 CAR, 300 OCEAN PROXIMITY
   
