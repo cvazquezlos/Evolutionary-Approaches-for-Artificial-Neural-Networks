@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1560199246542.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1131461542",
+    "id" : "559B0C",
+    "lastKnownWriteTime" : 1554655174,
+    "last_content_update" : 1554655174,
+    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results/result_analysis-TOTAL.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "240,0",
+        "scrollLine" : "200",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
