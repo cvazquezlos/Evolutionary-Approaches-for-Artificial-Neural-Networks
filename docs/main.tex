@@ -4,6 +4,7 @@
 \usepackage[top = 2.5cm, bottom = 3cm, left = 4cm, right = 2cm]{geometry}
 
 \usepackage{algorithm}
+\usepackage{booktabs}
 \usepackage[noend]{algpseudocode}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -598,12 +599,49 @@
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
   \setcounter{figure}{17}
   \vspace{-1cm}
-  La implementación del Programa Genético Guiado por Gramáticas ha sido utilizada para tres tipos de datos, diferenciados según su cantidad de instancias:
+  La implementación del Programa Genético Guiado por Gramáticas ha sido probada con tres conjuntos de datos diferentes:
   \begin{itemize}
     \item \emph{Iris}. Este conjunto de datos (Fisher, 1936) es un ejemplo de análisis discriminante lineal y es multivariante y cuenta con 50 muestras de cada una de las tres especies de Iris: iris setosa, virginica y versicolor. Las 150 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 105, 30 y 15 instancias respectivamente, de forma aleatoria.
     \item \emph{Cars evaluation}. Este conjunto de datos (Bohanec and Rajkovic, 1988) es multivariante y cuenta con 1728 valoraciones de coches etiquetadas en 4 clases, según el coche tenga un estado inaceptable, aceptable, bueno o muy bueno. Las 1728 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 1210, 346 y 172 instancias respectivamente, de forma aleatoria.
-    \item \emph{Ocean proximity}. Este conjunto de datos proviene del Censo Californiano de la década de los 90.
+    \item \emph{California Housing Dataset}. Este conjunto de datos proviene del Censo Californiano de la década de los 90. Es multivariante y cuenta con 20428 instancias y 4 clases, según la proximidad al océano de la casa en cuestión. Las 20428 instancias han sido dividas en subconjuntos de entrenamiento, validación y prueba con 14300, 4086 y 2042 instancias respectivamente, de forma aleatoria.
+  \end{itemize} \par
+  Estos conjuntos de datos han permitido probar la implementación realizada y dar forma a nuestro estudio sobre la comparación del entrenamiento parcial y total de los individuos. \par
+  Para cada uno de estos datasets excepto para el de California se han lanzado un total de 160 ejecuciones; 80 para el entrenamiento total de los individuos y otras 80 para el entrenamiento parcial. Para el de California, solo se ha ejecutado en modo parcial ya que no se contaba con capacidad de cómputo suficiente. \par
+  El criterio de parada seleccionado para este programa consta de tres condiciones: \par
+  \begin{itemize}
+    \item Se ha encontrado la solución en la población. Se considera solución a un individuo con una precisión (\emph{accuracy} en Keras) superior al 98,5\% y un error (\emph{categorical crossentropy} en Keras) inferior al 0.05.
+    \item La población ha convergido. La población converge cuando todos los individuos tienen la misma arquitectura. En tal caso, se selecciona aquél con mayor precisión y menor error.
+    \item Se ha alcanzado el número máximo de generaciones. El número máximo de generaciones es de 30. Alcanzado este número, la ejecución se detiene, devolviendo el mejor individuo.
   \end{itemize}
+  De cada una de las ejecuciones se ha guardado el entrenamiento de cada uno de los individuos de la población, tanto la evolución del accuracy como del loss a lo largo de las épocas. También se ha guardado la población de la última generación de cada ejecución, que contiene los mejores individuos de la misma, incluyendo la solución final. \par
+  Por último, para cada ejecución, se guarda la infromación más relevante del individuo mejor adaptado (solución), segun se haya llevado a cabo un entrenamiento parcial o total. Para un entrenamiento total, se almacena la arquitectura representada por el individuo y su accuracy en entrenamiento, validación y prueba, además de su loss en ambos conjuntos. Para un entrenamiento parcial, se almacena la arquitectura, su accuracy en entrenamiento, validación y prueba parcial y el accuracy en entrenamiento, validación y prueba completando el proceso de entrenamiento del individuo. \par
+  \section*{\Large 7.1. Iris}
+  El conjunto de datos fue obtenido del UCI Repository y fue publicado (Fisher, 1936) como un ejemplo de prueba para algoritmos de Machine Learning. Cada una de las instancias representa una flor iris, incluyendo su especie y las dimensiones de sus partes botánicas: sépalo y pétalo, en centímetros. \par
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig17.pdf}
+    \caption{Especies de iris.}
+    \label{fig:17}
+  \end{figure} \vfill
+  En la Fig. \ref{fig:17} se pueden visualizar cada unas de las especies y sus diferencias estructurales. \par
+  El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13, ya que el conjunto de datos cuenta con 150 instancias. \par
+  Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla 1.
+\begin{center}
+ \begin{tabular}{c c c c}
+ \hline
+  & Media entrenamiento & Media validación & Media pruebas \\
+ \hline
+ \\ 
+ 4:5:3 & 0.98254 & 0.96667 & 0.9963 \\
+ 4:4:3 & 0.97871 & 0.97059 & 0.97647 \\
+ 4:6:3 & 0.97983 & 0.96275 & 0.99608\\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+  
+  
+  En el entrenamiento parcial, la primera condición de parada nunca se cumplirá, ya que la intención es entrenar a los individuos hasta un límite impuesto por el número de épocas. En tal caso, las ejecuciones tendrán 30 generaciones. \par
+  E
   
   \chapter{\vspace{-3cm}{\LARGE 8. Conclusiones y líneas futuras}}
   \vfill
