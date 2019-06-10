@@ -627,17 +627,33 @@
   El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13, ya que el conjunto de datos cuenta con 150 instancias. \par
   Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla 1.
 \begin{center}
- \begin{tabular}{c c c c}
- \hline
-  & Media entrenamiento & Media validación & Media pruebas \\
- \hline
- \\ 
- 4:5:3 & 0.98254 & 0.96667 & 0.9963 \\
- 4:4:3 & 0.97871 & 0.97059 & 0.97647 \\
- 4:6:3 & 0.97983 & 0.96275 & 0.99608\\ [1ex] 
- \hline
-\end{tabular}
-\end{center}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    4:5:3 & 0.98254 & 0.96667 & 0.99630 & 22.50\% \\
+    4:4:3 & 0.97871 & 0.97059 & 0.97647 & 21.25\% \\
+    4:6:3 & 0.97983 & 0.96275 & 0.99608 & 21.25\% \\
+    4:3:3 & 0.97524 & 0.96667 & 1.00000 & 6.25\% \\ 
+    4:7:3 & 0.98730 & 0.97778 & 1.00000 & 3.75\% \\ 
+    4:8:3 & 0.98730 & 0.95556 & 1.00000 & 3.75\% \\
+    4:5:5:3 & 0.98571 & 0.93333 & 0.96667 & 2.50\% \\
+    4:6:6:3 & 0.98095 & 0.96667 & 0.96667 & 2.50\% \\
+    4:9:3 & 0.98571 & 0.98333 & 1.00000 & 2.50\% \\ 
+    4:4:1:4:4:1:4:3 & 0.99047 & 1.00000 & 1.00000 & 1.25\% \\
+    4:4:4:3 & 0.99047 & 0.96667 & 1.00000 & 1.25\% \\
+    4:4:4:4:3 & 0.98095 & 0.93333 & 0.93333 & 1.25\% \\
+    4:4:4:6:3 & 0.98095 & 0.96667 & 1.00000 & 1.25\% \\
+    4:5:1:5:5:1:5:3 & 0.99048 & 0.93333 & 0.93333 & 1.25\% \\ 
+    Otras & 0.98095 & 0.93333 & 0.93333 & 7.50\% \\ [1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+  De esta tabla se puede extraer que todas las arquitecturas seleccionadas tienen unos buenos resultados para este conjunto de datos. Tras estudiar las arquitecturas a lo largo de las poblaciones de las 80 ejecuciones, se ha podido determinar que aquellas que no han aparecido en esta tabla (como la 4:1:3, 4:2:3, 4:10:3, 4:1:1:3, entre muchas otras) fueron descartadas en el proceso evolutivo por no alcanzar valores tan altos de precisión como otras. \par
+  Además, las arquitecturas profundas alcanzan, generalmente, precisiones superiores a las de otras que no lo son, pero, a su vez, son más difíciles de obtener, ya que la gramática favorece a las arquitecturas pequeñas.
+  
+  
+  
   
   
   En el entrenamiento parcial, la primera condición de parada nunca se cumplirá, ya que la intención es entrenar a los individuos hasta un límite impuesto por el número de épocas. En tal caso, las ejecuciones tendrán 30 generaciones. \par
