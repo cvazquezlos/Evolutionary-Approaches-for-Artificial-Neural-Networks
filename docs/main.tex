@@ -19,7 +19,17 @@
   labelfont = small,
   font = small
 }
+\captionsetup[table]{
+  format = hang,
+  name = Tabla,
+  position=above,
+  labelfont = small,
+  font = small,
+  singlelinecheck=false,
+  labelformat = empty
+}
 \setcounter{figure}{0}
+\setcounter{table}{0}
 \renewcommand{\thefigure}{\arabic{figure}}
 \usepackage{lipsum}
 \usepackage{mathtools}
@@ -597,7 +607,7 @@
   \newpage\cleardoublepage
 
   \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
-  \setcounter{figure}{17}
+  \setcounter{figure}{16}
   \vspace{-1cm}
   La implementación del Programa Genético Guiado por Gramáticas ha sido probada con tres conjuntos de datos diferentes:
   \begin{itemize}
@@ -625,9 +635,9 @@
   \end{figure} \vfill
   En la Fig. \ref{fig:17} se pueden visualizar cada unas de las especies y sus diferencias estructurales. \par
   El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13, ya que el conjunto de datos cuenta con 150 instancias. \par
-  Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla \ref{tab:1}.
+  Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla 1.
 \begin{center}
-  \captionof{table}{Arquitecturas de entrenamientos} \label{tab:1}
+  \captionof{table}{Tabla 1. Arquitecturas resultantes del entrenamiento total en Iris} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
     & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
@@ -663,8 +673,62 @@
   En cambio, por las propias peculiaridades de la gramática, ya desde la primera generación hay individuos que pueden considerarse buenos por su elevado grado de adaptación, pero nunca se encontraron individuos que satisfacieran la condición de parada de solución óptima. \par
   El entrenamiento total de los individuos con este conjunto de datos permite resolver el problema de forma muy sencilla, incluso en las primeras generaciones, sin la necesidad de llegar a ejecutar hasta la treintava. \par
   Además, el tiempo de entrenamiento por individuo oscila entre los 5 y 15 segundos, con un tiempo medio de ejecución de 3 a 5 minutos, dependiendo de su arquitectura. \par
-  El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo medio de ejecución de 1 a 2 minutos, dependiendo de su arquitectura. En la 
-  
+  El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo medio de ejecución de 1 a 2 minutos, dependiendo de su arquitectura. \par
+  En este entrenamiento parcial, se ha entrenado a cada uno de los individuos con el número de épocas especificado con anterioridad, con unos resultados a ese nivel de entrenamiento que se muestran en la Tabla 2 y en la Tabla 3, los resultados de los individuos entrenados de forma total con las épocas restantes. \par
+  \begin{center}
+  \captionof{table}{Tabla 2. Arquitecturas de entrenamientos} \label{table}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    4:4:3 & 0.66507 & 0.63333 & 0.56296 & 22.50\% \\
+    4:3:3 & 0.70842 & 0.67179 & 0.64102 & 16.25\% \\ 
+    4:5:3 & 0.66428 & 0.61250 & 0.55000 & 10.00\% \\
+    4:2:3 & 0.67482 & 0.60476 & 0.57142 & 8.75\% \\
+    4:7:3 & 0.73523 & 0.69999 & 0.69333 & 6.25\% \\ 
+    4:1:3 & 0.63571 & 0.59999 & 0.53333 & 5.00\% \\
+    4:4:4:3 & 0.76666 & 0.76666 & 0.75000 & 5.00\% \\
+    4:5:5:3 & 0.73809 & 0.73333 & 0.70000 & 2.50\% \\
+    4:6:3 & 0.62380 & 0.53333 & 0.53333 & 2.50\% \\
+    4:8:3 & 0.72857 & 0.69999 & 0.69999 & 2.50\% \\ 
+    4:9:3 & 0.68571 & 0.63333 & 0.60000 & 2.50\% \\
+    4:10:3 & 0.72857 & 0.66666 & 0.70000 & 2.50\% \\ 
+    Otras & 0.68571 & 0.63333 & 0.60000 & 13.75\% \\ [1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+  \begin{center}
+  \captionof{table}{Tabla 3. Arquitecturas de entrenamientos} \label{table}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    4:4:3 & 0.95714 & 0.93333 & 0.97407 & 22.50\% \\
+    4:3:3 & 0.93186 & 0.91282 & 0.93846 & 16.25\% \\ 
+    4:5:3 & 0.97619 & 0.94999 & 1.00000 & 10.00\% \\
+    4:2:3 & 0.81768 & 0.78571 & 0.79047 & 8.75\% \\
+    4:7:3 & 0.97904 & 0.96666 & 1.00000 & 6.25\% \\ 
+    4:1:3 & 0.69047 & 0.63333 & 0.61666 & 5.00\% \\
+    4:4:4:3 & 0.97380 & 0.96666 & 1.00000 & 5.00\% \\
+    4:5:5:3 & 0.83333 & 0.79999 & 0.80000 & 2.50\% \\
+    4:6:3 & 0.98095 & 0.96666 & 1.00000 & 2.50\% \\
+    4:8:3 & 0.97619 & 0.96666 & 1.00000 & 2.50\% \\ 
+    4:9:3 & 0.98095 & 0.96666 & 1.00000 & 2.50\% \\
+    4:10:3 & 0.97619 & 0.96666 & 1.00000 & 2.50\% \\ 
+    Otras & 0.98095 & 0.96666 & 1.00000 & 13.75\% \\ [1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+  Si bien la selección de individuos se ha llevado a cabo utilizando el entrenamiento parcial, han aparecido arquitecturas que, al ser entrenadas de forma total, dan resultados muy inferiores a los esperados, como la arquitectura 4:2:3, con unos resultados en el entrenamiento total que apenas alcanzan el 82\% de precisión. \par
+  Sin embargo, se mantienen en buena posición las arquitecturas más destacadas en el entrenamiento total, por lo que el estudio mantiene la consistencia. En la Fig. \ref{fig:19} se muestra la evolución de las poblaciones de las 80 ejecuciones con el modo de entrenamiento parcial.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig19.pdf}
+    \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento parcial de los individuos.}
+    \label{fig:19}
+  \end{figure} \par
+  Al tratarse de un entrenamiento parcial, el escalón se acentúa también en los mejores individuos a lo largo de las generaciones. Evidentemente, se trata de un entrenamiento parcial, que tiene como objetivo la reducción del tiempo invertido en entrenar a los individuos, haciendo que el programa finalice mucho antes que con un entrenamiento total. \par
+  Sobre este conjunto de datos, se puede concluir que el entrenamiento parcial ha sido completamente útil para acortar en más de un 60\%  el tiempo necesario para la obtención de la mejor arquitectura neuronal.
   \chapter{\vspace{-3cm}{\LARGE 8. Conclusiones y líneas futuras}}
   \vfill
   

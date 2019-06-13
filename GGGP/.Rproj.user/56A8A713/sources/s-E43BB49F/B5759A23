@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1560459165991.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B5759A23",
+    "lastKnownWriteTime" : 1560459428,
+    "last_content_update" : 1560459622955,
+    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results/result_analysis-PARTIAL.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "247,0",
+        "scrollLine" : "208",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

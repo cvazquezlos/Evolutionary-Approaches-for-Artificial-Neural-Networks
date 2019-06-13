@@ -233,7 +233,7 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   geom_line(aes(y = best_loss_mean, colour = "Mejores"), size = 1) +
   xlab("Generaciones") +
   scale_x_continuous(breaks = seq(1, 29, 2)) +
-  ylab("Fitness") + 
+  ylab("Categorical cross-entropy") + 
   ylim(0.4, 1.4) +
   scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
   ggtitle("Entrenamiento parcial de los individuos") + 
