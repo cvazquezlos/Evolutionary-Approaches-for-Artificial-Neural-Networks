@@ -625,8 +625,9 @@
   \end{figure} \vfill
   En la Fig. \ref{fig:17} se pueden visualizar cada unas de las especies y sus diferencias estructurales. \par
   El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13, ya que el conjunto de datos cuenta con 150 instancias. \par
-  Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla 1.
+  Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla \ref{tab:1}.
 \begin{center}
+  \captionof{table}{Arquitecturas de entrenamientos} \label{tab:1}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
     & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
@@ -652,7 +653,17 @@
   De esta tabla se puede extraer que todas las arquitecturas seleccionadas tienen unos buenos resultados para este conjunto de datos. Tras estudiar las arquitecturas a lo largo de las poblaciones de las 80 ejecuciones, se ha podido determinar que aquellas que no han aparecido en esta tabla (como la 4:1:3, 4:2:3, 4:10:3, 4:1:1:3, entre muchas otras) fueron descartadas en el proceso evolutivo por no alcanzar valores tan altos de precisión como otras. \par
   Además, las arquitecturas profundas alcanzan, generalmente, precisiones superiores a las de otras que no lo son, pero, a su vez, son más difíciles de obtener, ya que la gramática favorece a las arquitecturas pequeñas. \par
   Las tres arquitecturas más comunes han sido, por orden de proporción, la 4:5:3, 4:4:3 y 4:6:3. La cantidad de recursiones de cada una de ellas han sido de 4, 3 y 5, respectivamente, por lo que son bastante fáciles de conseguir. En cambio, arquitecturas como, por ejemplo, la 4:4:1:4:4:1:4:3 requieren de 27 recursiones, por lo que son complicadas de obtener, aunque tengan mejores resultados. \par
-  En la siguiente imagen se muestra 
+  En la Fig. \ref{fig:18} se muestra la evolución de las poblaciones de las 80 ejecuciones con el modo de entrenamiento total. Se puede apreciar que el \emph{categorical cross-entropy} (inversa del grado de adaptación del individuo) decrementa según avanzas las generaciones. Esto es así porque la población va convergiendo con el paso de las generaciones.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig18.pdf}
+    \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento total de los individuos.}
+    \label{fig:18}
+  \end{figure} \par
+  En cambio, por las propias peculiaridades de la gramática, ya desde la primera generación hay individuos que pueden considerarse buenos por su elevado grado de adaptación, pero nunca se encontraron individuos que satisfacieran la condición de parada de solución óptima. \par
+  El entrenamiento total de los individuos con este conjunto de datos permite resolver el problema de forma muy sencilla, incluso en las primeras generaciones, sin la necesidad de llegar a ejecutar hasta la treintava. \par
+  Además, el tiempo de entrenamiento por individuo oscila entre los 5 y 15 segundos, con un tiempo medio de ejecución de 3 a 5 minutos, dependiendo de su arquitectura. \par
+  El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo medio de ejecución de 1 a 2 minutos, dependiendo de su arquitectura. En la 
   
   \chapter{\vspace{-3cm}{\LARGE 8. Conclusiones y líneas futuras}}
   \vfill
