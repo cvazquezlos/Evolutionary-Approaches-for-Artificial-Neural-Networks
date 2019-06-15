@@ -4,7 +4,7 @@ library("ggplot2")
 
 setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
 
-TARGET_FOLDER <- "./classification/iris/partial/"
+TARGET_FOLDER <- "./classification/ocean_proximity/partial/"
 
 # Analysis of the resulting dataframes for each execution
 BASE_DATA_FRAME <- data.frame(architecture = character(),
@@ -38,13 +38,13 @@ analysis_results$percentage <- unlist(lapply(analysis_results$architecture, func
 }))
 analysis_results <- analysis_results[order(analysis_results$percentage, decreasing = TRUE),]
 row.names(analysis_results) <- c(1:nrow(analysis_results))
-write.csv(analysis_results, file = "../results/classification/iris/executions_results_partial.csv")
-write.xlsx(analysis_results, file = "../results/classification/iris/executions_results_partial.xlsx")
+write.csv(analysis_results, file = "../results/classification/ocean_proximity/executions_results_partial.csv")
+write.xlsx(analysis_results, file = "../results/classification/ocean_proximity/executions_results_partial.xlsx")
 
 # Plotting the executions
 executions_plotting_data <- data.frame(generation = c(1:29), stringsAsFactors = F)
 z <- lapply(c(1:80), function(x) {
-  df = readRDS(paste0("../results/classification/iris/partial/", x, "/", x, "_results.rds"))[, c(2:3)]
+  df = readRDS(paste0("../results/classification/ocean_proximity/partial/", x, "/", x, "_results.rds"))[, c(2:3)]
   n_colnames = c(paste0("avg_loss", x), paste0("best_loss", x))
   colnames(df) = n_colnames
   n = nrow(df)
@@ -233,7 +233,7 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   geom_line(aes(y = best_loss_mean, colour = "Mejores"), size = 1) +
   xlab("Generaciones") +
   scale_x_continuous(breaks = seq(1, 29, 2)) +
-  ylab("Fitness") + 
+  ylab("Categorical cross-entropy") + 
   ylim(0.4, 1.4) +
   scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
   ggtitle("Entrenamiento parcial de los individuos") + 

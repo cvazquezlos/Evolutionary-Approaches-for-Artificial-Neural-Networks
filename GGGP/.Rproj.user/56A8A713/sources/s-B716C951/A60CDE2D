@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1560619677534.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A60CDE2D",
+    "lastKnownWriteTime" : 1560619692,
+    "last_content_update" : 1560619692546,
+    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results/restore_executions.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "10,50",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

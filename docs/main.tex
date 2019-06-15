@@ -613,7 +613,7 @@
   \begin{itemize}
     \item \emph{Iris}. Este conjunto de datos (Fisher, 1936) es un ejemplo de análisis discriminante lineal y es multivariante y cuenta con 50 muestras de cada una de las tres especies de Iris: iris setosa, virginica y versicolor. Las 150 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 105, 30 y 15 instancias respectivamente, de forma aleatoria.
     \item \emph{Cars evaluation}. Este conjunto de datos (Bohanec and Rajkovic, 1988) es multivariante y cuenta con 1728 valoraciones de coches etiquetadas en 4 clases, según el coche tenga un estado inaceptable, aceptable, bueno o muy bueno. Las 1728 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 1210, 346 y 172 instancias respectivamente, de forma aleatoria.
-    \item \emph{California Housing Dataset}. Este conjunto de datos proviene del Censo Californiano de la década de los 90. Es multivariante y cuenta con 20428 instancias y 4 clases, según la proximidad al océano de la casa en cuestión. Las 20428 instancias han sido dividas en subconjuntos de entrenamiento, validación y prueba con 14300, 4086 y 2042 instancias respectivamente, de forma aleatoria.
+    \item \emph{California housing}. Este conjunto de datos proviene del Censo Californiano de la década de los 90. Es multivariante y cuenta con 20428 instancias y 4 clases, según la proximidad al océano de la casa en cuestión. Las 20428 instancias han sido dividas en subconjuntos de entrenamiento, validación y prueba con 14300, 4086 y 2042 instancias respectivamente, de forma aleatoria.
   \end{itemize} \par
   Estos conjuntos de datos han permitido probar la implementación realizada y dar forma a nuestro estudio sobre la comparación del entrenamiento parcial y total de los individuos. \par
   Para cada uno de estos datasets excepto para el de California se han lanzado un total de 160 ejecuciones; 80 para el entrenamiento total de los individuos y otras 80 para el entrenamiento parcial. Para el de California, solo se ha ejecutado en modo parcial ya que no se contaba con capacidad de cómputo suficiente. \par
@@ -637,7 +637,7 @@
   El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13, ya que el conjunto de datos cuenta con 150 instancias. \par
   Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla 1.
 \begin{center}
-  \captionof{table}{Tabla 1. Arquitecturas resultantes del entrenamiento total en Iris} \label{table}
+  \captionof{table}{Tabla 1. Arquitecturas resultantes del entrenamiento total en Iris y sus métricas} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
     & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
@@ -676,7 +676,7 @@
   El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo medio de ejecución de 1 a 2 minutos, dependiendo de su arquitectura. \par
   En este entrenamiento parcial, se ha entrenado a cada uno de los individuos con el número de épocas especificado con anterioridad, con unos resultados a ese nivel de entrenamiento que se muestran en la Tabla 2 y en la Tabla 3, los resultados de los individuos entrenados de forma total con las épocas restantes. \par
   \begin{center}
-  \captionof{table}{Tabla 2. Arquitecturas de entrenamientos} \label{table}
+  \captionof{table}{Tabla 2. Arquitecturas resultantes del entrenamiento parcial en Iris y sus métricas} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
     & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
@@ -698,7 +698,7 @@
   \end{tabular}
 \end{center} \par
   \begin{center}
-  \captionof{table}{Tabla 3. Arquitecturas de entrenamientos} \label{table}
+  \captionof{table}{Tabla 3. Métricas de las arquitecturas de la Tabla 2 entrenadas hasta el final} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
     & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
@@ -730,7 +730,94 @@
   Al tratarse de un entrenamiento parcial, el escalón se acentúa también en los mejores individuos a lo largo de las generaciones. Evidentemente, se trata de un entrenamiento parcial, que tiene como objetivo la reducción del tiempo invertido en entrenar a los individuos, haciendo que el programa finalice mucho antes que con un entrenamiento total. \par
   Sobre este conjunto de datos, se puede concluir que el entrenamiento parcial ha sido completamente útil para acortar en más de un 60\%  el tiempo necesario para la obtención de la mejor arquitectura neuronal.
   \section*{\Large 7.2. Car evaluation}
-  Este conjunto de datos fue obtenido del UCI Repository y fue publicado (Bohanec and Rajkovic, 1988) como un ejemplo de DEX. Cada una de las instancias representa una evaluación de un coche de acuerdo a un conjunto de características, como el precio de compra, de mantenimiento y las características técnicas: confort y seguridad.
+  Este conjunto de datos fue obtenido del UCI Repository y fue publicado (Bohanec and Rajkovic, 1988) como un ejemplo de DEX. Cada una de las instancias representa una evaluación de un coche de acuerdo a un conjunto de características, como el precio de compra, de mantenimiento y las características técnicas: confort y seguridad. \par
+\begin{center}
+  \captionof{table}{Tabla 4. Arquitecturas resultantes del entrenamiento total en Car evaluation y sus métricas} \label{table}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    16:5:4 & 0.97791 & 0.97570 & 0.94549 & 17.50\% \\ 
+    16:4:4 & 0.96435 & 0.96364 & 0.93152 & 16.25\% \\
+    16:6:4 & 0.98286 & 0.97809 & 0.94026 & 15.00\% \\
+    16:7:4 & 0.98715 & 0.97813 & 0.95953 & 13.75\% \\
+    16:3:4 & 0.94617 & 0.95309 & 0.93063 & 7.50\% \\
+    16:8:4 & 0.98826 & 0.97971 & 0.95838 & 6.25\% \\
+    16:6:6:4 & 0.98540 & 0.98025 & 0.95520 & 5.00\% \\
+    16:5:5:4 & 0.98199 & 0.97747 & 0.95664 & 2.50\% \\
+    16:7:7:4 & 0.98719 & 0.97971 & 0.93641 & 2.50\% \\
+    16:9:4 & 0.98595 & 0.97536 & 0.96531 & 2.50\% \\
+    16:10:4 & 0.99008 & 0.98260 & 0.98265 & 2.50\% \\
+    Otras & 0.91673 & 0.91256 & 0.90173 & 8.75\% \\[1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig20.pdf}
+    \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento total de los individuos.}
+    \label{fig:20}
+  \end{figure} \par
+  La Tabla 4 contiene las arquitecturas resultantes del entrenamiento total con este conjunto de datos. \par
+  En este conjunto de datos no hay una presencia significativa de arquitecturas con varias capas ocultas, siendo mayoritariamente individuos con una única capa. Esto quiere decir que, según las propias características del conjunto de datos, las arquitecturas con una capa oculta funcionan mejor que las que tienen varias, ya que las 6 arquitecturas más utilizadas cuentan con una capa oculta (acumulan el 76,25\% de los resultados). \par
+  Además, con respecto a las precisiones, si bien aquellas con varias capas ocultas son superiores, lo son por centésimas. En cualquier caso, ninguna red, de media, ha alcanzado el 100\% de precisión. \par
+  La evolución de las generaciones mostrada en la Fig. \ref{fig:20} es la esperada también: una reducción de la media de los individuos de las 80 ejecuciones del \emph{categorical crossentropy}, según avanzan las generaciones. Sin embargo, no se alcanzan valores tan bajos como en el conjunto de datos anterior.
+  El tiempo de entrenamiento por individuo oscila entre los 1 y 2 minutos, con un tiempo medio de ejecución de 30 a 40 minutos, dependiendo de su arquitectura. \par
+  La Tabla 5 reúne los resultados de las arquitecturas de las 80 ejecuciones y sus precisiones parciales.
+\begin{center}
+  \captionof{table}{Tabla 5. Arquitecturas resultantes del entrenamiento parcial en Car evaluation y sus métricas} \label{table}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    16:3:4 & 0.73468 & 0.73546 & 0.69837 & 13.75\% \\
+    16:5:4 & 0.73790 & 0.73944 & 0.71518 & 13.75\% \\
+    16:4:4 & 0.73347 & 0.72732 & 0.70057 & 12.50\% \\
+    16:8:4 & 0.75820 & 0.75628 & 0.74104 & 12.50\% \\
+    16:2:4 & 0.72077 & 0.72267 & 0.68882 & 7.50\% \\
+    16:7:4 & 0.74390 & 0.73406 & 0.72832 & 7.50\% \\
+    16:6:4 & 0.74936 & 0.75068 & 0.73988 & 5.00\% \\
+    16:9:9:4 & 0.76114 & 0.76684 & 0.75337 & 3.75\% \\
+    16:2:2:4 & 0.73591 & 0.73907 & 0.69364 & 2.50\% \\
+    16:3:3:4 & 0.72413 & 0.70628 & 0.70231 & 2.50\%\\ 
+    Otras & 0.71993 & 0.71584 & 0.70520 & 18.75\% \\ [1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+  Con el entrenamiento parcial de los individuos se hace más notable el protagonismo de las arquitecturas con una única capa oculta. Además, las predicciones parciales obtenidas por esas redes con varias capas ocultas son, por regla general, inferiores a las de las redes con una capa oculta. \par
+  En la Tabla 6 se muestran los individuos de la Tabla 5 entrenados hasta el final.
+\begin{center}
+  \captionof{table}{Tabla 6. Métricas de las arquitecturas de la Tabla 5 entrenadas hasta el final} \label{table}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    16:3:4 & 0.90525 & 0.92252 & 0.89910 & 13.75\% \\
+    16:5:4 & 0.96055 & 0.95783 & 0.93063 & 13.75\% \\
+    16:4:4 & 0.92735 & 0.93565 & 0.91040 & 12.50\% \\
+    16:8:4 & 0.98338 & 0.97159 & 0.94739 & 12.50\% \\
+    16:2:4 & 0.87754 & 0.89999 & 0.87668 & 7.50\% \\
+    16:7:4 & 0.98181 & 0.97874 & 0.95568 & 7.50\% \\
+    16:6:4 & 0.97499 & 0.97101 & 0.94508 & 5.00\% \\
+    16:9:9:4 & 0.98347 & 0.97777 & 0.95953 & 3.75\% \\
+    16:2:2:4 & 0.89049 & 0.90434 & 0.89017 & 2.50\% \\
+    16:3:3:4 & 0.92685 & 0.93333 & 0.88728 & 2.50\% \\
+    Otras & 0.84628 & 0.87826 & 0.85549 & 18.75\% \\ [1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+  En la tabla anterior se puede apreciar que, salvo la primera arquitectura, la 16:3:4, tienen una precisión superior a las de las redes con varias capas ocultas. \par
+  El historial con la evolución de las distintas poblaciones a lo largo de las 80 ejecuciones se muestra en la Fig. \ref{fig:21}. \par
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig21.pdf}
+    \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento parcial de los individuos.}
+    \label{fig:21}
+  \end{figure} \vfill
+  \section*{\Large 7.3. California housing}
+  Este conjunto de datos fue obtenido del UCI Repository y fue publicado por el Censo Californiano en los años 90. Cada una de las instancias representa la ubicación de la vivienda y las características de la localización: población, número de habitaciones, renta media... \par
+  Los anteriores conjuntos de datos fueron probados en entrenamientos totales y parciales, ya que todo el Programa Genético pudo ser ejecutado sin problemas en un ordenador con 16,0 GB de RAM, Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz y una tarjeta gráfica NVIDIA GTX 1050 Ti. Sin embargo, este dispositivo no pudo hacer frente al modo de ejecución con entrenamiento total con este conjunto de datos, debido a su gran cantidad de instancias. \par
+  Por tanto, sólo se ha ejecutado el modo de entrenamiento parcial, convirtiendo un problema irresoluble en una aproximación acertada. En la Tabla 7 se detallan las arquitecturas y sus precisiones con un entrenamiento parcial, mientras que en la Tabla 8 se muestran esas arquitecturas entrenadas hasta el final.
   
   \chapter{\vspace{-3cm}{\LARGE 8. Conclusiones y líneas futuras}}
   \vfill
