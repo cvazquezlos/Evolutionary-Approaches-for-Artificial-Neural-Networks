@@ -8,7 +8,7 @@ library("stringr")
 # setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
 setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
 
-TARGET_FOLDER <- "./classification/ocean_proximity/total/"
+TARGET_FOLDER <- "./classification/car/total/"
 
 BASE_DATA_FRAME <- data.frame(execution = integer(),
                               architecture = character(),

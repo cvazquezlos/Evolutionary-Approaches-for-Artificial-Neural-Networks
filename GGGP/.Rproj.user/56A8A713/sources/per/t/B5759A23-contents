@@ -44,20 +44,26 @@ write.xlsx(analysis_results, file = "../results/classification/ocean_proximity/e
 # Plotting the executions
 executions_plotting_data <- data.frame(generation = c(1:29), stringsAsFactors = F)
 z <- lapply(c(1:80), function(x) {
-  df = readRDS(paste0("../results/classification/ocean_proximity/partial/", x, "/", x, "_results.rds"))[, c(2:3)]
-  n_colnames = c(paste0("avg_loss", x), paste0("best_loss", x))
-  colnames(df) = n_colnames
-  n = nrow(df)
-  if (n != 29) {
-    remaining_rows = 29 - n
-    print(remaining_rows)
-    aux = data.frame(col1 = rep(NA, remaining_rows), col2 = rep(NA, remaining_rows), stringsAsFactors = F)
-    colnames(aux) = n_colnames
-    df = rbind(df, aux)
-  }
-  df[,paste0("avg_loss", x)] = as.double(df[,paste0("avg_loss", x)])
-  df[,paste0("best_loss", x)] = as.double(df[,paste0("best_loss", x)])
-  executions_plotting_data <<- cbind(executions_plotting_data, df)
+  tryCatch({
+    print(x)
+    df = readRDS(paste0("../results/classification/ocean_proximity/partial/", x, "/", x, "_results.rds"))[, c("avg_loss", "best_loss")]
+    print(df$best_loss)
+    n_colnames = c(paste0("avg_loss", x), paste0("best_loss", x))
+    colnames(df) = n_colnames
+    n = nrow(df)
+    if (n != 29) {
+      remaining_rows = 29 - n
+      aux = data.frame(col1 = rep(NA, remaining_rows), col2 = rep(NA, remaining_rows), stringsAsFactors = F)
+      colnames(aux) = n_colnames
+      df = rbind(df, aux)
+    }
+    df[,paste0("avg_loss", x)] = as.double(as.character(df[,paste0("avg_loss", x)]))
+    df[,paste0("best_loss", x)] = as.double(as.character(df[,paste0("best_loss", x)]))
+    print(df[,paste0("best_loss", x)])
+    executions_plotting_data <<- cbind(executions_plotting_data, df)
+  }, error = function(e) {
+    print(paste0("Error: ", x))
+  })
 })
 
 avg_selected_cols <- colnames(executions_plotting_data)[c(FALSE, TRUE)]
@@ -75,7 +81,6 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   geom_point(aes(y = avg_loss4), shape = 20, colour = "gray") +
   geom_point(aes(y = avg_loss5), shape = 20, colour = "gray") +
   geom_point(aes(y = avg_loss6), shape = 20, colour = "gray") +
-  geom_point(aes(y = avg_loss7), shape = 20, colour = "gray") +
   geom_point(aes(y = avg_loss8), shape = 20, colour = "gray") +
   geom_point(aes(y = avg_loss9), shape = 20, colour = "gray") +
   geom_point(aes(y = avg_loss10), shape = 20, colour = "gray") +
@@ -147,15 +152,12 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   geom_point(aes(y = avg_loss76), shape = 20, colour = "gray") +
   geom_point(aes(y = avg_loss77), shape = 20, colour = "gray") +
   geom_point(aes(y = avg_loss78), shape = 20, colour = "gray") +
-  geom_point(aes(y = avg_loss79), shape = 20, colour = "gray") +
-  geom_point(aes(y = avg_loss80), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss1), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss2), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss3), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss4), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss5), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss6), shape = 20, colour = "gray") +
-  geom_point(aes(y = best_loss7), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss8), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss9), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss10), shape = 20, colour = "gray") +
@@ -227,14 +229,12 @@ executions_plot <- ggplot(data = executions_plotting_data, aes(x = generation)) 
   geom_point(aes(y = best_loss76), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss77), shape = 20, colour = "gray") +
   geom_point(aes(y = best_loss78), shape = 20, colour = "gray") +
-  geom_point(aes(y = best_loss79), shape = 20, colour = "gray") +
-  geom_point(aes(y = best_loss80), shape = 20, colour = "gray") +
   geom_line(aes(y = avg_loss_mean, colour = "Media"), size = 1) +
   geom_line(aes(y = best_loss_mean, colour = "Mejores"), size = 1) +
   xlab("Generaciones") +
   scale_x_continuous(breaks = seq(1, 29, 2)) +
   ylab("Categorical cross-entropy") + 
-  ylim(0.4, 1.4) +
+  #ylim(0.4, 1.4) +
   scale_colour_manual("Individuos", values = c("Media" = "red", "Mejores" = "blue")) +
   ggtitle("Entrenamiento parcial de los individuos") + 
   theme_classic() + 

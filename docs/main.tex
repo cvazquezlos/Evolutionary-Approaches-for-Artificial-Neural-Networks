@@ -818,9 +818,65 @@
   Este conjunto de datos fue obtenido del UCI Repository y fue publicado por el Censo Californiano en los años 90. Cada una de las instancias representa la ubicación de la vivienda y las características de la localización: población, número de habitaciones, renta media... \par
   Los anteriores conjuntos de datos fueron probados en entrenamientos totales y parciales, ya que todo el Programa Genético pudo ser ejecutado sin problemas en un ordenador con 16,0 GB de RAM, Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz y una tarjeta gráfica NVIDIA GTX 1050 Ti. Sin embargo, este dispositivo no pudo hacer frente al modo de ejecución con entrenamiento total con este conjunto de datos, debido a su gran cantidad de instancias. \par
   Por tanto, sólo se ha ejecutado el modo de entrenamiento parcial, convirtiendo un problema irresoluble en una aproximación acertada. En la Tabla 7 se detallan las arquitecturas y sus precisiones con un entrenamiento parcial, mientras que en la Tabla 8 se muestran esas arquitecturas entrenadas hasta el final.
+\begin{center}
+  \captionof{table}{Tabla 7. Arquitecturas resultantes del entrenamiento parcial en California housing y sus métricas} \label{table}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    9:5:4 & 0.81498 & 0.81786 & 0.81560 & 22.50\% \\
+    9:6:4 & 0.81792 & 0.82049 & 0.81895 & 21.25\% \\
+    9:4:4 & 0.80862 & 0.81172 & 0.80899 & 20.50\% \\
+    9:7:4 & 0.81895 & 0.82277 & 0.81945 & 13.75\% \\
+    9:8:4 & 0.82332 & 0.82551 & 0.82532 & 12.50\% \\
+    9:3:4 & 0.80083 & 0.80428 & 0.80112 & 2.50\% \\
+    9:9:4 & 0.82675 & 0.82966 & 0.82706 & 2.50\% \\
+    Otras & 0.81601 & 0.81627 & 0.81385 & 4.5\% \\ [1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+\begin{center}
+  \captionof{table}{Tabla 8. Métricas de las arquitecturas de la Tabla 7 entrenadas hasta el final} \label{table}
+  \begin{tabular}{l c c c r}
+    \hline \\ [-2ex]
+    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    \hline \\ [-1ex]
+    9:5:4 & 0.92465 & 0.92784 & 0.92562 & 22.50\% \\
+    9:6:4 & 0.93175 & 0.93470 & 0.93168 & 21.25\% \\
+    9:4:4 & 0.91808 & 0.92134 & 0.91972 & 20.50\% \\
+    9:7:4 & 0.93077 & 0.93376 & 0.93098 & 13.75\% \\
+    9:8:4 & 0.93742 & 0.93960 & 0.93748 & 12.50\% \\
+    9:3:4 & 0.90857 & 0.91228 & 0.91173 & 2.50\% \\
+    9:9:4 & 0.93722 & 0.94067 & 0.93604 & 2.50\% \\
+    Otras & 0.92426 & 0.92851 & 0.92315 & 4.50\% \\ [1ex]
+    \hline
+  \end{tabular}
+\end{center} \par
+  Al ser ejecuciones parciales, no hay rastro de arquitecturas con varias capas ocultas, ya que, si bien la gramática favorece a las arquitecturas pequeñas, las ejecuciones parciales también. A pesar de ello, hay un buen rendimiento general en las arquitecturas. \par
+  En la Fig. \ref{fig:22} se muestra la evolución de las poblaciones a lo largo de las 80 generaciones. \par
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width = 1\textwidth]{resources/Fig22.pdf}
+    \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento parcial de los individuos.}
+    \label{fig:22}
+  \end{figure} \par
+  El número de épocas seleccionado hacen que los individuos sobrepasen el 80\% de precisión. Como consecuencia, se logra una notable reducción en el \emph{categorical cross-entropy} a lo largo de las generaciones.\par
+  Por tanto, el número estimado de épocas mostrado en la Eq. \ref{eq:6} para conjuntos de datos de más de 3500 instancias es mayor de lo estrictamente necesario, ya que bastaría con que los individuos llegasen al 60-70\% de precisión. Si tal fuera el caso, se podría determinar con más precisión si en este problema realmente no son útiles las arquitecturas con varias capas ocultas  y se reduciría el tiempo de ejecución. \par
+  Para un entrenamiento parcial, el entrenamiento por individuo oscila entre los 9 y 14 minutos, llegando a un tiempo medio de ejecución de 5 horas y media. Reduciendo el número de épocas un 25\%, se reduce el tiempo medio a 4 horas. \par
+  
+  \newpage\cleardoublepage
   
   \chapter{\vspace{-3cm}{\LARGE 8. Conclusiones y líneas futuras}}
-  \vfill
+  \setcounter{figure}{22}
+  \vspace{-1cm}
+  En este Trabajo de Fin de Máster se propone una mejora para ahorrar tiempo en la selección de la mejor arquitectura neuronal utilizando Programación Genética Guiada por Gramáticas. \par
+  El entrenamiento parcial por reducción de épocas se propone como una medida útil para acortar este tiempo de ejecución. Con este decremento en el tiempo de ejecución, el objetivo es determinar si las arquitecturas solución en el entrenamiento total se corresponden, en la justa medida, con las arquitecturas solución en el entrenamiento parcial. \par
+  Se ha demostrado que, efectivamente, las soluciones obtenidas en el entrenamiento parcial, se corresponden en gran medida con las obtenidas en el entrenamiento total. \par
+  Sin embargo, la gramática utilizada favorece a las arquitecturas pequeñas porque es recursiva. La construcción de redes más grandes depende del azar y cada recursión posterior es el doble de improbable que la anterior, por lo que sería necesaria la creación de una gramática que no favorezca a las redes pequeñas y genere individuos aleatorios con igual probabilidad entre sí, para dar una mayor diversidad a la población. \par
+  De no ser así, la población cuenta con un sesgo introducido de forma involuntaria: no es tan divergente como se pretende, ya que hay cerca de un 23\% de individuos semejantes entre sí. Con una gramática que generase individuos totalmente diversos sin fundamentarse en las recursiones, se lograría reducir en gran medida esta proporción, llegando, incluso, a darse poblaciones sin individuos semejantes.  \par
+  Una segunda propuesta para la mejora de los resultados es la posibilidad de desarrollar un Programa Genético que sea asíncrono y que tenga la capacidad de paralelizar el ciclo evolutivo. De esta forma, se podrían entrenar a \emph{n} individuos de forma simultánea y poder aplicar una única vez la selección y el cruce por generación.
+  
+  \newpage\cleardoublepage
   
   \begin{thebibliography}{00}
   \vspace{-1cm}

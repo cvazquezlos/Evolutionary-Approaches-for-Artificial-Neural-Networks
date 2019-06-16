@@ -1,0 +1,57 @@
+library("xlsx")
+library("ggplot2")
+library("sets")
+library("keras")
+library("stringr")
+#install.packages("xlsx")
+
+setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
+# setwd("~/GitHub/Evolutionary-Approaches-for-Artificial-Neural-Networks/results")
+
+TARGET_FOLDER <- "./classification/ocean_proximity/partial/"
+
+BASE_DATA_FRAME <- data.frame(execution = integer(),
+                              architecture = character(),
+                              partial_acc_train = double(),
+                              partial_acc_validation = double(),
+                              partial_acc_test = double(),
+                              time = double(),
+                              saved_model = character(),
+                              total_acc_train = double(),
+                              total_acc_validation = double(),
+                              total_acc_test = double(),
+                              stringsAsFactors = FALSE)
+executions <- list.files(TARGET_FOLDER)
+
+bad_executions <- list()
+executions_results <- BASE_DATA_FRAME
+y <- lapply(executions, function (x) {
+  tryCatch({
+    df = readRDS(paste0(TARGET_FOLDER, "/", x, "/final_population.rds"))
+    df <- head(df[order(df$metric, decreasing = TRUE),], 1)
+    model <- load_model_hdf5(paste0(TARGET_FOLDER, "/", x, "/model/", df$saved_model, ".h5"))
+    partial_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
+    partial_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
+    partial_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+    model %>% fit(rbind(X_train, X_validation), rbind(y_train, y_validation), validation_split = 0.235294, epochs = 450, verbose = 0,
+                  callbacks = list(
+                    callback_early_stopping(monitor = "val_loss", patience = 50, verbose = 0, mode ="auto")
+                  ))
+    total_acc_train <- (model %>% evaluate(X_train, y_train))['acc'][[1]]
+    total_acc_validation <- (model %>% evaluate(X_validation, y_validation))['acc'][[1]]
+    total_acc_test <- (model %>% evaluate(X_test, y_test))['acc'][[1]]
+    saveRDS(data.frame(architecture = df$architecture,
+                       partial_acc_train = partial_acc_train,
+                       partial_acc_validation = partial_acc_validation,
+                       partial_acc_test = partial_acc_test,
+                       saved_model = df$saved_model,
+                       total_acc_train = total_acc_train,
+                       total_acc_validation = total_acc_validation,
+                       total_acc_test = total_acc_test), file = paste0(TARGET_FOLDER, "/", x, "/execution_results.rds"))
+    executions_results <<- rbind(executions_results, df)
+  }, error = function(cond) {
+    bad_executions <<- c(bad_executions, x)
+  }, warning = function(cond) {
+    bad_executions <<- c(bad_executions, x)
+  })
+})
