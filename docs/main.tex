@@ -671,10 +671,10 @@
     \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento total de los individuos.}
     \label{fig:18}
   \end{figure} \par
-  En cambio, por las propias peculiaridades de la gramática, ya desde la primera generación hay individuos que pueden considerarse buenos por su elevado grado de adaptación, pero nunca se encontraron individuos que satisfacieran la condición de parada de solución óptima. \par
-  El entrenamiento total de los individuos con este conjunto de datos permite resolver el problema de forma muy sencilla, incluso en las primeras generaciones, sin la necesidad de llegar a ejecutar hasta la treintava. \par
-  Además, el tiempo de entrenamiento por individuo oscila entre los 5 y 15 segundos, con un tiempo medio de ejecución de 3 a 5 minutos, dependiendo de su arquitectura. \par
-  El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo medio de ejecución de 1 a 2 minutos, dependiendo de su arquitectura. \par
+  En cambio, por las propias peculiaridades de la gramática, como que favorece a las arquitecturas pequeñas al ser recursiva, además de ser ambigua, ya desde la primera generación hay individuos que pueden considerarse adecuados por su elevado grado de adaptación, pero nunca se encontraron individuos que satisfacieran la condición de parada de solución óptima. \par
+  El entrenamiento total de los individuos con este conjunto de datos permite resolver el problema de forma muy sencilla, incluso en las primeras generaciones, sin la necesidad de llegar a ejecutar 30 generaciones. \par
+  Además, el tiempo de entrenamiento por individuo oscila entre los 5 y 15 segundos, con un tiempo medio de ejecución total del sistema evolutivo de 3 a 5 minutos, dependiendo de su arquitectura. \par
+  El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo de ejecución del algoritmo evolutivo de 1 a 2 minutos, dependiendo de su arquitectura. \par
   En este entrenamiento parcial, se ha entrenado a cada uno de los individuos con el número de épocas especificado con anterioridad, con unos resultados a ese nivel de entrenamiento que se muestran en la Tabla 2 y en la Tabla 3, los resultados de los individuos entrenados de forma total con las épocas restantes. \par
   \begin{center}
   \captionof{table}{Tabla 2. Arquitecturas resultantes del entrenamiento parcial en Iris y sus métricas} \label{table}
