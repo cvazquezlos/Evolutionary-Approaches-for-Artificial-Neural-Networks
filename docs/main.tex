@@ -58,7 +58,7 @@
       \\[3cm]
 
       \HRule \\[0.4cm]
-      {\huge \bfseries Sistema evolutivo híbrido para la construcción de Redes de Neuronas}
+      {\huge \bfseries Sistema evolutivo síncrono para la construcción de Redes de Neuronas con entrenamiento parcial}
       \HRule \\[4cm]
     
       \textsc{\LARGE Trabajo Fin de Máster}\\[0.5cm]
@@ -87,7 +87,7 @@
   \vspace{-1cm}
   Este Trabajo de Fin de Máster consiste en la construcción de un sistema evolutivo para la generación de Redes de Neuronas Artificiales. Concretamente, se estudia si es posible entrenar parcialmente las Redes de Neuronas Artificiales, en lugar de un entrenamiento completo, para el cálculo del grado de adaptación. \par
   La Programación Genética es una técnica evolutiva que se utiliza en problemas de optimización cuyas soluciones son programas informáticos. La Programación Genética Guiada por Gramáticas extiende las posibilidades de la Programación Genética tradicional con la introducción de las gramáticas, que permiten crear individuos sintácticamente válidos. \par
-  Una Gramática Libre de Contexto permite definir arquitecturas de Redes de Neuronas Artificiales válidas dado cualquier número de neuronas en la capa de entrada y en la capa de salida. El resultado de la ejecución del programa genético devuelve la arquitectura de red que mejor se adapte al problema dado. El grado de adaptación de una arquitectura neuronal se obtiene en base a su error en el proceso de entrenamiento. Este trabajo aborda la posibilidad de que este entrenamiento se realice de forma parcial con el fin de disminuir considerablemente la carga computacional de la técnica evolutiva utilizada. \vfill
+  Una Gramática Libre de Contexto permite definir arquitecturas de Redes de Neuronas Artificiales válidas dado cualquier número de neuronas en la capa de entrada y en la capa de salida. El resultado de la ejecución del programa genético devuelve la arquitectura de red que mejor se adapte al problema dado. El grado de adaptación de una arquitectura neuronal se obtiene en base a su error en el proceso de entrenamiento. Este trabajo aborda la posibilidad de que este entrenamiento se realice de forma parcial con el fin de disminuir considerablemente la carga computacional de la técnica evolutiva utilizada y será síncrono: el sistema evolutivo queda parado meintras se evalúan (entrenan) los nuevos individuos de la población. \vfill
   \newpage\cleardoublepage
   
   \chapter{\vspace{-3cm}{\LARGE Summary}}
@@ -111,7 +111,7 @@
   La Computación Evolutiva y las Redes de Neuronas Artificiales, ambas inspiradas en la biología, no son opuestas sino que se complementan. La Computación Evolutiva permite resolver problemas de optimización y búsqueda, mientras que las Redes de Neuronas Artificiales son indicadas para el Aprendizaje Automático. La Programación Genética y la Programación Genética Guiada por Gramáticas son una alternativa a la búsqueda de la mejor Red de Neuronas Artificiales, ya que la selección de la arquitectura se basa tradicionalmente en la experiencia previa, y en la preba y el error. \par
   El objetivo principal de este trabajo es la construcción de Redes de Neuronas Artificiales con Programación Genética Guiada por Gramáticas. En este proceso, el entrenamiento es necesario para obtener el grado de adaptación de cada red candidata. Dado que el entrenamiento es costoso, se plantea la posibilidad de entrenar a los individuos de forma parcial. Se establecen varios subobjetivos:
   \begin{enumerate}
-    \item Implementar un Programa Genético Guiado por Gramáticas que construya Redes de Neuronas y donde el grado de adaptación de los individuos que representan redes neuronales se calcula en base a su error en el proceso de entrenamiento.
+    \item Implementar un Programa Genético Guiado por Gramáticas que construya Redes de Neuronas y donde el grado de adaptación de los individuos que representan redes neuronales se calcula en base a su error en el proceso de entrenamiento. Este Programa Genético será síncrono, es decir, que mientras se esté desarrollando el programa genético (todos los operadores y elementos exceptuando el entrenamiento), ningún entrenamiento se puede llevar a cabo. Por el contrario, si se está ejecutando un entrenamiento, el programa genético se encuentra a la espera de que finalice para continuar.
     \item Establecer, para cada problema, dos modos de entrenamiento: uno parcial y otro total, con las mismas características de ejecución.
     \item Realizar estudios comparativos de ambos modelos evolutivos: con entrenamiento parcial y total.
   \end{enumerate} \par
@@ -611,22 +611,22 @@
   \vspace{-1cm}
   La implementación del Programa Genético Guiado por Gramáticas ha sido probada con tres conjuntos de datos diferentes:
   \begin{itemize}
-    \item \emph{Iris}. Este conjunto de datos (Fisher, 1936) es un ejemplo de análisis discriminante lineal y es multivariante y cuenta con 50 muestras de cada una de las tres especies de Iris: iris setosa, virginica y versicolor. Las 150 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 105, 30 y 15 instancias respectivamente, de forma aleatoria.
+    \item \emph{Iris}. Este conjunto de datos (Fisher, 1936) es un ejemplo de análisis discriminante multivariante y cuenta con 50 muestras de cada una de las tres especies de Iris: iris setosa, virginica y versicolor. Las 150 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 105, 30 y 15 instancias respectivamente, de forma aleatoria.
     \item \emph{Cars evaluation}. Este conjunto de datos (Bohanec and Rajkovic, 1988) es multivariante y cuenta con 1728 valoraciones de coches etiquetadas en 4 clases, según el coche tenga un estado inaceptable, aceptable, bueno o muy bueno. Las 1728 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 1210, 346 y 172 instancias respectivamente, de forma aleatoria.
     \item \emph{California housing}. Este conjunto de datos proviene del Censo Californiano de la década de los 90. Es multivariante y cuenta con 20428 instancias y 4 clases, según la proximidad al océano de la casa en cuestión. Las 20428 instancias han sido dividas en subconjuntos de entrenamiento, validación y prueba con 14300, 4086 y 2042 instancias respectivamente, de forma aleatoria.
   \end{itemize} \par
-  Estos conjuntos de datos han permitido probar la implementación realizada y dar forma a nuestro estudio sobre la comparación del entrenamiento parcial y total de los individuos. \par
-  Para cada uno de estos datasets excepto para el de California se han lanzado un total de 160 ejecuciones; 80 para el entrenamiento total de los individuos y otras 80 para el entrenamiento parcial. Para el de California, solo se ha ejecutado en modo parcial ya que no se contaba con capacidad de cómputo suficiente. \par
+  Estos conjuntos de datos han permitido probar la implementación realizada y comparar el entrenamiento parcial y total de los individuos. \par
+  Para cada uno de estos conjuntos de datos excepto para el de California se han lanzado un total de 160 ejecuciones; 80 para el entrenamiento total de los individuos y otras 80 para el entrenamiento parcial. Para el de California, solo se ha ejecutado en modo parcial ya que no se contaba con capacidad de cómputo suficiente. \par
   El criterio de parada seleccionado para este programa consta de tres condiciones: \par
   \begin{itemize}
-    \item Se ha encontrado la solución en la población. Se considera solución a un individuo con una precisión (\emph{accuracy} en Keras) superior al 98,5\% y un error (\emph{categorical crossentropy} en Keras) inferior al 0.05.
-    \item La población ha convergido. La población converge cuando todos los individuos tienen la misma arquitectura. En tal caso, se selecciona aquél con mayor precisión y menor error.
-    \item Se ha alcanzado el número máximo de generaciones. El número máximo de generaciones es de 30. Alcanzado este número, la ejecución se detiene, devolviendo el mejor individuo.
+    \item Se ha encontrado la solución codificada en la población. Se considera solución a una red neuronal con una precisión superior al 98,5\% y un error (\emph{categorical cross-entropy}) inferior al 0.05.
+    \item La población ha convergido. La población converge cuando todos los individuos tienen la misma arquitectura. En tal caso, se selecciona aquél con mayor precisión y menor error en caso de precisiones similares. Esto es así ya que, al inicializarse los pesos de las redes neuronales de forma aleatoria, dos individuos pueden representar dos arquitecturas idénticas pero con distinta precisión y error.
+    \item Se ha alcanzado el número máximo de generaciones. El número máximo de generaciones es de 30. Alcanzado este número, la ejecución se detiene, devolviendo la solución codificada por el mejor individuo.
   \end{itemize}
-  De cada una de las ejecuciones se ha guardado el entrenamiento de cada uno de los individuos de la población, tanto la evolución del accuracy como del loss a lo largo de las épocas. También se ha guardado la población de la última generación de cada ejecución, que contiene los mejores individuos de la misma, incluyendo la solución final. \par
-  Por último, para cada ejecución, se guarda la infromación más relevante del individuo mejor adaptado (solución), segun se haya llevado a cabo un entrenamiento parcial o total. Para un entrenamiento total, se almacena la arquitectura representada por el individuo y su accuracy en entrenamiento, validación y prueba, además de su loss en ambos conjuntos. Para un entrenamiento parcial, se almacena la arquitectura, su accuracy en entrenamiento, validación y prueba parcial y el accuracy en entrenamiento, validación y prueba completando el proceso de entrenamiento del individuo. \par
+  De cada una de las ejecuciones se ha guardado el entrenamiento de cada uno de los individuos de la población, tanto la evolución de la precisión como del error a lo largo de las iteraciones. También se ha guardado la población de la última generación de cada ejecución, que contiene los mejores individuos de la misma, incluyendo la solución final. \par
+  Por último, para cada ejecución, se guarda la infromación más relevante del individuo mejor adaptado, según se haya llevado a cabo un entrenamiento parcial o total. Para un entrenamiento total, se almacena la arquitectura representada por el individuo y su precisión en entrenamiento, validación y prueba, además de su error en ambos conjuntos. Para un entrenamiento parcial, se almacena la arquitectura, su precisión en entrenamiento, validación y prueba parcial y la precisión en entrenamiento, validación y prueba completando el proceso de entrenamiento del individuo. \par
   \section*{\Large 7.1. Iris}
-  El conjunto de datos fue obtenido del UCI Repository y fue publicado (Fisher, 1936) como un ejemplo de prueba para algoritmos de Machine Learning. Cada una de las instancias representa una flor iris, incluyendo su especie y las dimensiones de sus partes botánicas: sépalo y pétalo, en centímetros. \par
+  El conjunto de datos fue obtenido del UCI Repository y fue publicado (Fisher, 1936) como un ejemplo de prueba para algoritmos de Machine Learning. Cada una de las instancias representa una flor iris, incluyendo su especie y las dimensiones de los sépalos y pétalos, en centímetros. \par
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig17.pdf}
@@ -640,7 +640,7 @@
   \captionof{table}{Tabla 1. Arquitecturas resultantes del entrenamiento total en Iris y sus métricas} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
-    & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+    Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
     \hline \\ [-1ex]
     4:5:3 & 0.98254 & 0.96667 & 0.99630 & 22.50\% \\
     4:4:3 & 0.97871 & 0.97059 & 0.97647 & 21.25\% \\
@@ -660,10 +660,11 @@
     \hline
   \end{tabular}
 \end{center} \par
-  De esta tabla se puede extraer que todas las arquitecturas seleccionadas tienen unos buenos resultados para este conjunto de datos. Tras estudiar las arquitecturas a lo largo de las poblaciones de las 80 ejecuciones, se ha podido determinar que aquellas que no han aparecido en esta tabla (como la 4:1:3, 4:2:3, 4:10:3, 4:1:1:3, entre muchas otras) fueron descartadas en el proceso evolutivo por no alcanzar valores tan altos de precisión como otras. \par
-  Además, las arquitecturas profundas alcanzan, generalmente, precisiones superiores a las de otras que no lo son, pero, a su vez, son más difíciles de obtener, ya que la gramática favorece a las arquitecturas pequeñas. \par
-  Las tres arquitecturas más comunes han sido, por orden de proporción, la 4:5:3, 4:4:3 y 4:6:3. La cantidad de recursiones de cada una de ellas han sido de 4, 3 y 5, respectivamente, por lo que son bastante fáciles de conseguir. En cambio, arquitecturas como, por ejemplo, la 4:4:1:4:4:1:4:3 requieren de 27 recursiones, por lo que son complicadas de obtener, aunque tengan mejores resultados. \par
-  En la Fig. \ref{fig:18} se muestra la evolución de las poblaciones de las 80 ejecuciones con el modo de entrenamiento total. Se puede apreciar que el \emph{categorical cross-entropy} (inversa del grado de adaptación del individuo) decrementa según avanzas las generaciones. Esto es así porque la población va convergiendo con el paso de las generaciones.
+  En la Tabla 1 (y en sucesivas), la primera columna referencia a la arquitectura representada por un individuo, donde el primer y último valor hacen referencia a las neuronas de la capa de entrada y de salida respectivamente, mientras que los valores intermedios representan las capas ocultas. Para cada una de estas arquitecturas, se ha calculado el valor medio de la precisión en entrenamiento, validación y pruebas, y añadido la proporción de cada una de ellas en las 80 ejecuciones. Además, la última fila de cada tabla referencia a otras arquitecturas en mucha menor proporción, calculándose, para todas ellas, la precisión media en entrenamiento, validación y pruebas. \par
+  De la Tabla 1 se puede extraer que todas las arquitecturas seleccionadas tienen unos buenos resultados para este conjunto de datos. Tras estudiar las arquitecturas a lo largo de las poblaciones de las 80 ejecuciones, se ha podido determinar que aquellas que no han aparecido en esta tabla (como la 4:1:3, 4:2:3, 4:10:3, 4:1:1:3, entre muchas otras) fueron descartadas en el proceso evolutivo por no alcanzar valores tan altos de precisión como otras. \par
+  Además, las arquitecturas profundas (por ejemplo, la 4:4:1:4:4:1:4:3 o 4:4:4:3) alcanzan, generalmente, precisiones superiores a las de otras que no lo son, pero, a su vez, son más difíciles de obtener, ya que la gramática favorece a las arquitecturas pequeñas. \par
+  Las tres arquitecturas más comunes han sido, por orden de proporción, la 4:5:3, 4:4:3 y 4:6:3. La cantidad de recursiones que la gramática ha experimentado para generar cada una de ellas han sido de 4, 3 y 5, respectivamente, por lo que son bastante fáciles de conseguir. En cambio, arquitecturas como, por ejemplo, la 4:4:1:4:4:1:4:3 requieren de 27 recursiones, por lo que son complicadas de obtener, aunque tengan mejores resultados. \par
+  En la Fig. \ref{fig:18} se muestra la evolución de las poblaciones de las 80 ejecuciones con el modo de entrenamiento total. Se puede apreciar que la media del error (\emph{categorical cross-entropy}), que es la inversa del grado de adaptación del individuo, decrementa según avanza el número de generaciones. Esto es así porque la población va convergiendo con el paso de las generaciones.
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig18.pdf}
