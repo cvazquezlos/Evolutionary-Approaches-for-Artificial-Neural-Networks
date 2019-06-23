@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1560624383471.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2344181760",
+    "id" : "A066CA05",
+    "lastKnownWriteTime" : 1561321248,
+    "last_content_update" : 1561321248013,
+    "path" : "D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/GGGP/auxiliary_functions.R",
+    "project_path" : "auxiliary_functions.R",
+    "properties" : {
+        "cursorPosition" : "58,58",
+        "scrollLine" : "48",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

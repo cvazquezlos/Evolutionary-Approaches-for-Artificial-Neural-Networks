@@ -18,28 +18,28 @@ BASE_DATA_FRAME <- data.frame(architecture = character(),
                               stringsAsFactors = FALSE)
 executions <- list.files(TARGET_FOLDER)
 
-executions_results <- BASE_DATA_FRAME
+executions_results_part <- BASE_DATA_FRAME
 y <- lapply(executions, function (x) {
   df = readRDS(paste0(TARGET_FOLDER, "/", x, "/execution_results.rds"))
-  executions_results <<- rbind(executions_results, df)
+  executions_results_part <<- rbind(executions_results_part, df)
 })
 rm("y")
-# executions_results <- executions_results[order(executions_results$execution, decreasing = FALSE),]
-row.names(executions_results) <- c(1:nrow(executions_results))
-executions_results$architecture <- as.character(executions_results$architecture)
+# executions_results_part <- executions_results_part[order(executions_results_part$execution, decreasing = FALSE),]
+row.names(executions_results_part) <- c(1:nrow(executions_results_part))
+executions_results_part$architecture <- as.character(executions_results_part$architecture)
 
-analysis_results <- aggregate(executions_results[,c(1:4,6:8)], 
-                              by = list(executions_results$architecture), 
-                              FUN = mean)
+analysis_results <- aggregate(executions_results_part[,c(1:4,6:8)], 
+                              by = list(executions_results_part$architecture), 
+                              FUN = sd)
 analysis_results <- analysis_results[,c(1,3:8)]
 colnames(analysis_results) <- c("architecture", "partial_acc_train", "partial_acc_validation", "partial_acc_test", "total_acc_train", "total_acc_validation", "total_acc_test")
 analysis_results$percentage <- unlist(lapply(analysis_results$architecture, function(x) {
-  round((nrow(executions_results[executions_results$architecture == x,])/nrow(executions_results) * 100), 2)
+  round((nrow(executions_results_part[executions_results_part$architecture == x,])/nrow(executions_results_part) * 100), 2)
 }))
 analysis_results <- analysis_results[order(analysis_results$percentage, decreasing = TRUE),]
 row.names(analysis_results) <- c(1:nrow(analysis_results))
-write.csv(analysis_results, file = "../results/classification/ocean_proximity/executions_results_partial.csv")
-write.xlsx(analysis_results, file = "../results/classification/ocean_proximity/executions_results_partial.xlsx")
+write.csv(analysis_results, file = "../results/classification/ocean_proximity/executions_results_part_partial_SD.csv")
+write.xlsx(analysis_results, file = "../results/classification/ocean_proximity/executions_results_part_partial_SD.xlsx")
 
 # Plotting the executions
 executions_plotting_data <- data.frame(generation = c(1:29), stringsAsFactors = F)

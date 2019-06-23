@@ -55,3 +55,51 @@ y <- lapply(executions, function (x) {
     bad_executions <<- c(bad_executions, x)
   })
 })
+
+##################################################################################
+plot_df = data.frame("Entrenamiento total" = executions_results$acc_validation,
+                     "Entrenamiento parcial hasta el final" = executions_results_part$total_acc_validation,
+                     stringsAsFactors = FALSE)
+boxplot(plot_df$Entrenamiento.total)
+boxplot(executions_results_part$total_acc_validation)
+
+ggplot(plot_df) +
+  geom_boxplot(aes(x = 1, y = Entrenamiento.total)) +
+  geom_boxplot(aes(x = 2, y = Entrenamiento.parcial.hasta.el.final)) +
+  xlab("\nModo de entrenamiento") +
+  scale_x_continuous(breaks = c(1, 2), labels = c("Total", "Parcial (hasta el final)")) +
+  ylab("Accuracy\n") +
+  scale_y_continuous(breaks = c(0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00)) +
+  ggtitle("Comparativa de las ejecuciones para\nlos datos de validación") + 
+  theme_classic() + 
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "#E8E8E8"),
+    text = element_text(size = 25, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", size = 30, hjust = 0.5, margin = margin(0, 0, 25, 0)))
+
+aux = data.frame(acc_train = )
+
+ggplot(executions_results) +
+  geom_histogram(aes(x = acc_test)) + 
+  xlab("") +
+  ylab("") +
+  scale_x_continuous(breaks=c(0.90, 0.92, 0.94, 0.96, 0.98, 1.00, 1.20)) +
+  ggtitle("Entrenamiento total - pruebas") + 
+  theme_classic() + 
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "#E8E8E8"),
+    text = element_text(size = 35, family = "Cambria"),
+    plot.title = element_text(family = "Cambria", size = 35, hjust = 0.5, margin = margin(0, 0, 25, 0)))
+
+
+
+plot(density(executions_results$acc_train))
+plot(density(executions_results_part$partial_acc_train))
+
+plot(density(executions_results$acc_validation))
+plot(density(executions_results_part$partial_acc_validation))
+
+plot(density(executions_results$acc_test))
+plot(density(executions_results_part$partial_acc_test))
