@@ -77,7 +77,7 @@
   \end{titlepage}
   \newpage\cleardoublepage
 
-  \chapter{\vspace{-3cm}{\LARGE Agradecimientos}}
+  \chapter*{\vspace{-3cm}{\LARGE Agradecimientos}}
   \vspace{-1cm}
     Deseo expresar mi agradecimiento, en primer lugar, a Daniel, un investigador incansable y un profesor excepcional. Gracias por dedicarme tu tiempo y adaptarte a mis horarios, y gracias por despertar en mi el interés en la Computación Evolutiva con tus clases y con tu implicación.\par
     A mis padres, Isabel Losada y Fco. Javier Vázquez, por su amor, comprensión y por su apoyo incondicional en todo aquello que me he propuesto.\par
@@ -85,25 +85,34 @@
   \vfill
   \newpage\cleardoublepage
   
-  \chapter{\vspace{-3cm}{\LARGE Resumen}}
+  \chapter*{\vspace{-3cm}{\LARGE Resumen}}
   \vspace{-1cm}
   Este Trabajo de Fin de Máster consiste en la construcción de un sistema evolutivo para la generación de Redes de Neuronas Artificiales. Concretamente, se estudia si es posible entrenar parcialmente las Redes de Neuronas Artificiales, en lugar de un entrenamiento completo, para el cálculo del grado de adaptación. \par
   La Programación Genética es una técnica evolutiva que se utiliza en problemas de optimización cuyas soluciones son programas informáticos. La Programación Genética Guiada por Gramáticas extiende las posibilidades de la Programación Genética tradicional con la introducción de las gramáticas, que permiten crear individuos sintácticamente válidos. \par
   Una Gramática Libre de Contexto permite definir arquitecturas de Redes de Neuronas Artificiales válidas dado cualquier número de neuronas en la capa de entrada y en la capa de salida. El resultado de la ejecución del programa genético devuelve la arquitectura de red que mejor se adapte al problema dado. El grado de adaptación de una arquitectura neuronal se obtiene en base a su error en el proceso de entrenamiento. Este trabajo aborda la posibilidad de que este entrenamiento se realice de forma parcial con el fin de disminuir considerablemente la carga computacional de la técnica evolutiva utilizada y será síncrono: el sistema evolutivo queda parado meintras se evalúan (entrenan) los nuevos individuos de la población. \vfill
   \newpage\cleardoublepage
   
-  \chapter{\vspace{-3cm}{\LARGE Summary}}
+  \chapter*{\vspace{-3cm}{\LARGE Summary}}
   \vspace{-1cm}
   This Master Thesis Dissertation consists in a research about how appropiate is to use Evolutionary Computation for creating Artificial Neural Networks. A technique of Evolutionary Computation is used for this purpose; Grammar-Guided Genetic Programming. It will be used for looking the best Artificial Neural Network for a concrete dataset, by checking both partially and fully trained networks. \par
   Genetic Programming is an evolutionary technique (it is inspired by biology as Evolutionary Computation does) and it is used for solving optimization problems whose solution is a computer program. The Grammar-Guided Genetic Programming extends Genetic Programming by adding grammars, that allow to create valid individuals. \par
   These grammars allow creating Neural Network architectures that are all valid, given any number of neurons in both input and output layers. The result of an execution would be the architecture that best fixes (in terms of accuracy) the given data.
   \vfill
   \newpage\cleardoublepage
+
+  \renewcommand{\baselinestretch}{0.75}\normalsize
+  \tableofcontents
+  \renewcommand{\baselinestretch}{1.0}\normalsize
+  
+  \listoffigures
+  \newpage
+  \listoftables
   
   \newpage\cleardoublepage
   \pagenumbering{arabic}
   
-  \chapter{\vspace{-3cm}{\LARGE 1. Introducción}}
+  \chapter*{\vspace{-3cm}{\LARGE 1. Introducción}}
+  \addcontentsline{toc}{chapter}{\protect\numberline{1}{Introducción}}
   \vspace{-1cm}
   La optimización matemática estudia un tipo concreto de problemas donde se desea elegir el mejor de entre un conjunto de elementos. El problema clásico (Boyd and Vandenberghe, 2004) consiste en maximizar o minimizar una función objetivo que represente o mida la calidad de las decisiones. Además, esta función está sujeta a un conjunto de restricciones que acotan el espacio de soluciones. \par
   Para resolver estos problemas, existen algoritmos de optimización, métodos iterativos y heurísticas. Uno de los primeros algoritmos de optimización es el algoritmo de Simplex (Dantzig, 1990). Los métodos iterativos buscan la convergencia hacia una solución determinada. Un ejemplo es el Método de Newton (Nocedal et al., 1999). Las heurísticas (Polya, 1945), en cambio, aproximan la solución. \par
@@ -119,16 +128,19 @@
   \end{enumerate} \par
   Este documento se estructura en siete secciones después de esta introducción. Las dos primeras se centran en la \emph{Computación Evolutiva} y en las \emph{Redes de Neuronas Artificiales}, respectivamente. La tercera sección trata sobre la \emph{construcción de Redes de Neuronas}, seguida del \emph{planteamiento del problema}, en la que se describe con profundidad el propósito de este trabajo y la necesidad real de él. A esta sección le sigue la \emph{solución propuesta}, que contiene la metodología y el procedimiento seguido, exponiendo los \emph{resultados} obtenidos en la séptima sección. Finalmente, el trabajo finaliza con las \emph{conclusiones y líneas futuras} propuestas. \par
   
-  \chapter{\vspace{-3cm}{\LARGE 2. Computación Evolutiva}}
+  \chapter*{\vspace{-3cm}{\LARGE 2. Computación Evolutiva}}
+  \addcontentsline{toc}{chapter}{\protect\numberline{2}{Computación Evolutiva}}
   \vspace{-1cm}
   La Computación Evolutiva comprende un conjunto de técnicas para la resolución de problemas de búsqueda y optimización inspiradas en la evolución biológica de los seres vivos. En este capítulo se ofrece, en primer lugar, un resumen de la \emph{historia} de la Computación Evolutiva. Seguidamente, un apartado de \emph{funcionamiento general} sobre esta rama de estudio y que finaliza hablando sobre la \emph{Programación Genética} y la \emph{Programación Genética Guiada por Gramáticas}.
   \section*{\Large 2.1. Historia}
+  \addcontentsline{toc}{section}{\protect\numberline{2.1}{Historia}}
   La Computación Evolutiva surge con los trabajos de Box (Box, 1957),  Friedberg (Friedberg, 1958, 1959) y Bremermann (Bremermann, 1962). Sin embargo, no se consiguieron grandes avances debido a la pobre metodología todavía sin desarrollar y a las limitaciones computacionales de la época. \par
   Algunos años después surgen los primeros desarrollos metodológicos en una década de destacable logro científico. El trabajo de Fogel (Fogel et al., 1966) sienta las bases de la Programación Evolutiva (\emph{evolutionary programming}) y el de Holland (Holland, 1967) las de los Algoritmos Genéticos (\emph{genetic algorithms}). También, en esa misma época, las Estrategias Evolutivas (\emph{evolution strategies}) fueron introducidas por Rechenberg (Rechenberg, 1965) y Schwefel (Schwefel, 1965). \par
   Posteriormente, en los años 80, los avances computacionales permitieron aplicar las técnicas evolutivas descubiertas para resolver problemas de optimización del mundo real. En esa misma década, los estudios de Cramer (Cramer, 1985) y Koza (Koza, 1988) desembocaron en la aparición de una nueva técnica perteneciente a la Computación Evolutiva: la Programación Genética (\emph{genetic programming}). Pocos años después, la Programación Genética contaba con más de 10.000 artículos publicados (Hu et al., 2014), convirtiéndose en una heurística destacada en el ámbito académico y empresarial por versatilidad. También se sucedieron una gran cantidad de conferencias internacionales y talleres centrados en aspectos teóricos de los Algoritmos Genéticos (Grefenstette, 1985, 1987; Schaffer, 1989), entre muchos otros. Estos años destacaron también por la aparición de otras técnicas de Computación Evolutiva como la Vida Artificial (\emph{artificial life}) abreviada muy comúnmente como \emph{A-Life} (Langton, 1986), los Sistemas Inmunitarios Artificiales (\emph{artificial immune systems}) (Farmer et al., 1986), la Inteligencia de Enjambre (\emph{swarm intelligence}) (Beni and Wang, 1989) y los Algoritmos Meméticos (Moscato, 1989). \par
   Hacia 1990, era innegable admitir que parte de la comunidad científica del mundo ponía sus ojos en la Computación Evolutiva. A las conferencias anteriormente expuestas le siguieron las cuatro conferencias de IEEE sobre Computación Evolutiva, que asentaron esta rama de estudio como una de las articulaciones de la Inteligencia Artificial y herramienta indispensable para la resolución de problemas de optimización y búsqueda en el ámbito académico y empresarial. La conferencia de Programación Genética (Koza et al., 1996) tuvo gran éxito y aceptación, a la cual le siguieron otras conferencias sobre el mismo ámbito, como la EuroGP (Banzhaf, 1998). Destacaron también conferencias sobre desarrollos metodológicos sobre los Algoritmos Genéticos (Rawlins, 1991; Whitley, 1993; Vose, 1995), que se consolidó como la técnica de Computación Evolutiva más destacable. Esta década se cierra con la llegada de nuevas técnicas de Computación Evolutiva: los Algoritmos Culturales (\emph{cultural algorithms}) (Reynolds, 1994), la Evolución Diferencial (\emph{differential evolution}) (Storn, 1996; Storn and Price, 1997) y la Evolución Gramatical (\emph{grammatical evolution}) (Ryan et al., 1998), además de la aparición de una variante de la Programación Genética, la Programación Genética Guiada por Gramáticas (Whigham, 1995) \par
   A estas casi cuatro décadas de logro científico le siguieron dos más de un impecable desarrollo metodológico. En estos años destacaron los estudios sobre los Algoritmos Genéticos (Deb et al., 2002; Hassan et al., 2005; Pezzella et al., 2008), entre muchos otros, además de la aparición de nuevas heurísticas como la Búsqueda Armónica (\emph{harmony search}) (Geem et al., 2001) o los Algoritmos Genéticos Basados en Humanos (\emph{human based genetic algorithms}) (Kosorukoff, 2001). Otras técnicas evolutivas también tuvieron su amplio desarrollo metodológico y crecimiento teórico (Couchet and Manrique, 2006; De Araujo and Tavares, 2014; Beni, 2004).
   \section*{\Large 2.2. Funcionamiento general}
+  \addcontentsline{toc}{section}{\protect\numberline{2.2}{Funcionamiento general}}
   La Computación Evolutiva se fundamenta en la evolución biológica y cuenta con un conjunto de heurísticas para la resolución de problemas de búsqueda y optimización. La evolución biológica se basa en la Teoría de la Evolución de Darwin (Darwin, 1959), donde los individuos son los protagonistas. Estos individuos viven en poblaciones, de tal forma que se produce una evolución conjunta de la población mediante la aplicación de operadores evolutivos tales como la selección, el reemplazo, el cruce y la mutación. \par
   Para la Computación Evolutiva, los individuos representan las soluciones candidatas al problema de búsqueda u optimización dado. La población se compone del conjunto de individuos sobre la que se aplican los operadores evolutivos (referidos en este ámbito como operadores genéticos) anteriormente mencionados, con el objetivo de que se produzca una mejora y un acercamiento gradual hacia la solución óptima en cada generación. Teóricamente, se espera que tras un número finito de generaciones, la población haya convergido hacia la solución óptima al problema dado. En la práctica, puede que sea conveniente limitar este número de generaciones por las capacidades computacionales limitadas que hoy en día existen, y la población llegue hasta un cierto grado de optimalidad. \par
   Este proceso se lleva a cabo conformando el Ciclo Evolutivo (Koza, 1992) que se repite hasta que finalmente se cumple la condición de parada.
@@ -159,8 +171,10 @@
   Según los operadores que se implementen, la técnica evolutiva tiende a explorar o explotar más el espacio de búsqueda. La exploración consiste en muestrear regiones desconocidas en el espacio de búsqueda donde pueden encontrarse las soluciones óptimas. La explotación trata de mejorar al individuo más destacado, acortando la búsqueda de la solución óptima en una búsqueda local. Por tanto, estos operadores (y en especial el operador de cruce) se deben comportar de forma explotativa en las primeras generaciones, ya que hay una gran diversidad y de otra forma se produce una convergencia muy lenta. Sin embargo, a medida que la población va convergiendo hacia una solución, es necesario que los operadores exploren, es decir, tengan la posibilidad de dirigirse hacia otras regiones de búsqueda para evitar la caida en óptimos no globales. \par
   
   \section*{\Large 2.3. Programación Genética}
+  \addcontentsline{toc}{section}{\protect\numberline{2.3}{Programación Genética}}
   La Programación Genética (Cramer, 1985; Koza, 1988) es una heurística de la familia de la Computación Evolutiva que permite resolver problemas de búsqueda y optimización cuya solución es un programa informático. La Programación Genética es similar a los Algoritmos Genéticos (Holland, 1967), donde el espacio de soluciones está compuesto por programas informáticos.
     \subsection*{\large 2.3.1. Codificación y representación de los individuos}
+    \addcontentsline{toc}{subsection}{\protect\numberline{2.3.1}{Codificación y representación de los individuos}}
     Los individuos en la Programación Genética se representan mediante árboles, formados por operadores o funciones y operandos. Los operadores son los nodos intermedios, mientras que los operandos son los nodos hoja. Esta representación permite la codificación de programas informáticos. En la Fig. \ref{fig:2} se ejemplifican dos individuos en forma de árbol y su codificación. \par
     La creación de los individuos debe cumplir dos propiedades. La primera de ellas se refiere a la propiedad del cierre (\emph{closure property}), que evita la creación de individuos sintácticamente no válidos, estableciendo que la salida de una función debe poder servir de entrada para otra. La segunda propiedad es la explosión de código (\emph{code bloat}) (Tackett, 1995), que recoge el crecimiento desmesurado del código sin mejora de la adaptación, y, por lo tanto, debe evitarse en la medida de lo posible. La explosión de código propicia el aparecimiento de intrones (\emph{introns}), que son fragmentos de código totalmente inútiles y que no favorecen la adaptación y que se traduce en una convergencia lenta y una demora en la evaluación de los individuos. El alfabeto $A$ y la función de codificación $\Omega$ debe buscar en la medida de lo posible la biyección entre el espacio de soluciones y el espacio de búsqueda y que sea completo, es decir, que se puedan codificar todas las soluciones. \par
     \begin{figure}[H]
@@ -171,6 +185,7 @@
     \end{figure} \par
   
     \subsection*{\large 2.3.2. Generación de la población inicial}
+    \addcontentsline{toc}{subsection}{\protect\numberline{2.3.2}{Generación de la población inicial}}
     El programa genético debe partir de una población de individuos inicial, que es un subconjunto del espacio de búsqueda. La metodología de creación de individuos en Programación Genética suele ser aleatoria. \par
     Si se generan individuos de forma aleatoria, hay una gran probabilidad de que no se cumpla la propiedad del cierre y que haya explosión de código. Por tanto, es necesario un proceso de reparación de individuos. Normalmente, se basan en la sustitución de nodos mal colocados por otros correctos de forma aleatoria, como se muestra en la Fig. \ref{fig:5}. \par
     Este proceso de reparación muchas veces es más lento que la generación de un nuevo individuo, por lo que en la práctica los individuos inválidos se descartan y se sustituyen por otros, que si son nuevamente no válidos se descartan, repitiendo ese proceso hasta que se alcanza una población del tamaño deseado, con todos sus individuos siendo sintácticamente válidos.
@@ -182,9 +197,10 @@
     \end{figure} \par
   
     \subsection*{\large 2.3.3. Operadores}
+    \addcontentsline{toc}{subsection}{\protect\numberline{2.3.3}{Operadores}}
     La Programación Genética cuenta con cuatro operadores: selección, cruce, mutación y reemplazo. Aquellos que no modifican a los individuos son el de selección y el de reemplazo, por lo que funcionan de forma análoga a como hacen en otras heurísticas como en los Algoritmos Genéticos o en la Evolución Gramatical, por lo que solo se explica el operador de cruce y el de mutación.
     
-      \subsubsection*{\normalsize 2.3.2.1. Cruce}
+      \subsubsection*{\normalsize 2.3.3.1. Cruce}
       El operador de cruce se aplica con cierta probabilidad sobre los individuos que han sido seleccionados y que se encuentran en el mating pool, por tanto, no se aplica en todos los individuos. El cruce debe asegurar que se cumple la propiedad del cierre y que no haya explosión de código. \par
       
         \subsubsection*{\vspace{-0.5cm}{\normalsize Operador de Koza}}
@@ -208,14 +224,16 @@
         \end{figure} \par
         Este operador selecciona un nodo de forma aleatoria de entre los coincidentes entre los dos padres. El problema que tiene este operador es que si la estructura de los padres es totalmente distinta, entonces el único símbolo coincidente entre los padres será el símbolo raíz, produciendo entonces una descendencia idéntica a los progenitores, por lo que se puede dar una convergencia prematura a un óptimo local.
         
-      \subsubsection*{\normalsize 2.3.2.2. Mutación}
+      \subsubsection*{\normalsize 2.3.3.2. Mutación}
       El operador de mutación se aplica con una muy baja probabilidad a los individuos seleccionados y a su descendencia. Debido a la baja probabilidad, puede que haya generaciones en las que no haya mutación. De hecho, hay programas genéticos que no utilizan este operador. Este operador selecciona un nodo de forma aleatoria en el individuo seleccionado, y a continuación, genera un subárbol a partir de ese nodo seleccionado de forma análoga a como se inicializan las poblaciones.
 
   \section*{\Large 2.4. Programación Genética Guiada por Gramáticas}
+  \addcontentsline{toc}{section}{\protect\numberline{2.4}{Programación Genética Guiada por Gramáticas}}
   La Programación Genética Guiada por Gramáticas (Whigham, 1995) surge por las dificultades encontradas en el desarrollo de los programas genéticos en relación con la propiedad del cierre. En concreto, la aleatoriedad en la creación de individuos resulta una dificultad cuando los problemas son grandes y la cantidad de símbolos es elevada, pues hay más probabilidades de generar un individuo no válido (Vanneschi et al., 2010). Además, la función de reparación o la sustitución de individuos no válidos por otros bien formados aumenta la complejidad computacional. \par
   La Programación Genética Guiada por Gramáticas evita los problemas de la creación de individuos no válidos gracias a la utilización de Gramáticas Libres de Contexto (\emph{context-free grammars}) (Chomsky, 1959), que permiten que las soluciones que codifican los individuos formen parte del espacio de soluciones aunque sean generados de forma aleatoria.
   
     \subsection*{\large 2.4.1. Gramáticas Libres de Contexto}
+    \addcontentsline{toc}{subsection}{\protect\numberline{2.4.1}{Gramáticas Libres de Contexto}}
     Una Gramática Libre de Contexto $G$ está definida por una 4-tupla (Hopcroft and Ullman, 1979) de la forma: 
     \begin{align}
     G = (\Sigma_{N}, \Sigma_{T}, S, P), \label{eq:1}\tag{1}
@@ -245,14 +263,17 @@
     La Fig. \ref{fig:6} muestra dos individuos diferentes que representan la misma palabra. Se puede comprobar que los símbolos no terminales $F$ y $E$ son equivalentes, ya que de ellos derivan reglas idénticas. \par
     
     \subsection*{\large 2.4.2. Codificación y representación de los individuos}
+    \addcontentsline{toc}{subsection}{\protect\numberline{2.4.2}{Codificación y representación de los individuos}}
     Los individuos son árboles de derivación. Estos árboles son creados empleando una Gramática Libre de Contexto. La decodificación de estos individuos se obtiene leyendo los nodos terminales de izquierda a derecha, sin incluir los nodos interiores. \par
     Una gramática es recursiva cuando tiene producciones recursivas. Por ejemplo, la gramática mostrada en la Eq. \ref{eq:2} es recursiva, ya que tres de las cuatro producciones del nodo no terminal $E$ son recursivas. En tal caso, dependiendo del algoritmo de generación de individuos que se utilice, se pueden producir o no intrones. 
     
     \subsection*{\large 2.4.3. Generación de la población inicial}
+    \addcontentsline{toc}{subsection}{\protect\numberline{2.4.3}{Generación de la población inicial}}
     Para la creación de individuos para la población inicial, hay dos técnicas: una aleatoria y otra controlada. La primera de ellas, utiliza la Gramática Libre de Contexto y genera derivaciones de forma aleatoria, siguiendo las reglas de producción. A pesar de que genera individuos sintácticamente válidos y es simple de aplicar, es incapaz de controlar la profundidad, facilitando la aparición de la explosión de código. \par
     El segundo método es una variante del primero, ya que los individuos también se generan de forma aleatoria, pero controlando en todo momento la profundidad de la derivación, no permitiendo en ningún caso que se sobrepase la profundidad máxima. Para ello, el algoritmo conoce en todo momento la profundidad actual del individuo que está generando y busca reglas de producción que mantengan la profundidad del individuo dentro del límite de profundidad (García-Arnau et al., 2007).
     
     \subsection*{\large 2.4.4. Operadores}
+    \addcontentsline{toc}{subsection}{\protect\numberline{2.4.4}{Operadores}}
     Los operadores de la Programación Genética de cruce y mutación son también útiles en la Programación Genética Guiada por Gramáticas, al igual que los operadores comunes de selección y de reemplazo. Con la adición de las gramáticas, existen varias implementaciones nuevas sobre el operador de cruce.
     
       \vspace{-0.5cm}
@@ -288,20 +309,21 @@
  
   \newpage\cleardoublepage
     
-  \chapter{\vspace{-3cm}{\LARGE 3. Redes de Neuronas Artificiales}}
+  \chapter*{\vspace{-3cm}{\LARGE 3. Redes de Neuronas Artificiales}}
+  \addcontentsline{toc}{chapter}{\protect\numberline{3}{Redes de Neuronas Artificiales}}
   \setcounter{figure}{9}
   \vspace{-1cm}
   Las Redes de Neuronas Artificiales son un modelo matemático inspirado en cómo el sistema nervioso procesa la información. El sistema nervioso está compuesto por un gran número de unidades de procesamiento de información denominadas neuronas (\emph{neurons}). En este capítulo se ofrece, en primer lugar, un resumen de la \emph{historia} de las Redes de Neuronas Artificiales. Seguidamente, un apartado de \emph{funcionamiento general} sobre esta rama de estudio y finalmente se describe la \emph{construcción de redes de neuronas} mediante la Programación Genética Guiada por Gramáticas. \par
   
     \section*{\Large 3.1. Historia}
+    \addcontentsline{toc}{section}{\protect\numberline{3.1}{Historia}}
     Los primeros trabajos sobre Redes de Neuronas Artificiales fueron las células de McCulloch y Pitts (McCulloch and Pitts, 1943) que no constituían redes ni tenían capacidad de aprendizaje. Pronto se verían reforzadas con las aportaciones de Hebb (Hebb, 1949) y Joseph Erlanger (1944). Sus descubrimientos sobre el aprendizaje humano y las fibras de conexión entre neuronas, respectivamente, fueron clave en los siguientes años de desarrollo de las Redes de Neuronas Artificiales. Pocos años después aparece el primer desarrollo metodológico basado en Redes de Neuronas Artificiales: el Perceptrón (\emph{perceptron}) (Rosenblatt, 1958, 1962), que incorpora un algoritmo de aprendizaje. \par
     Los años 60 destacó el trabajo de Widrow y Hoff (Widrow and Hoff, 1960): un sistema con un método de aprendizaje alternativo al Perceptrón llamado ADALINE (ADAptive LInear Element). Dos años después, estos científicos desarrollan una mejora adaptativa sobre su sistema (Widrow and Hoff, 1962). Esta década finaliza con la publicación del artículo \emph{Perceptrons} por Minsky y Papert (Minsky and Papert, 1969), en el que muestran las limitaciones de los perceptrones como el no poder resolver problemas no lineales como el problema del XOR. \par
     A raíz de esta última publicación, el interés sobre el estudio de estos modelos de aprendizaje se perdió, hasta tal punto que pasarían más de 10 años hasta la aparición de nuevos trabajos. Este silencio sería roto por Klopf (Klopf, 1972), quien formuló un mecanismo de aprendizaje adaptativo. También, apareció la primera publicación sobre una red multicapa para interpretar caracteres manuscritos: las Redes de Neuronas Artificiales Convolucionales (Fukushima, 1975). Este trabajo consigue despertar el interés de algunos investigadores, pero sin mucho éxito. \par
     Los años 80 y 90 fueron proganizados, en primer lugar, por la publicación del mapa (o red) de Kohonen (\emph{Kohonen map}) (Kohonen, 1982). En segundo lugar, se publicó un trabajo sobre de Redes de Neuronas Artificiales Recurrentes (Hopfield, 1982), que consiguió recobrar cierto interés en la investigación en este ámbito. La aparición, algunos años más tarde, del famoso método de aprendizaje de retropropagación del grediente (\emph{back-propagation learning method}) (Rumelhart et al., 1986) supone un hito en las redes neuronales que consigue el relanzamiento de esta disciplina.
-
-% DEEP LEARNING
     
     \section*{\Large 3.2. Funcionamiento general}
+    \addcontentsline{toc}{section}{\protect\numberline{3.2}{Funcionamiento general}}
     Las Redes de Neuronas Artificiales son un modelo de procesamiento inspirado en cómo los sistemas nerviosos en la biología procesan información. En términos simples, una Red de Neuronas Artificiales es un modelo matemático simplificado del cerebro que es utilizado para procesar relaciones no lineales entre las entradas y las salidas en paralelo tal y como hace el cerebro humano. \par
     En Fig. \ref{fig:10} se puede apreciar la arquitectura de un Perceptrón con una neurona artificial en la salida. Esta neurona recibe un conjunto determinado de entradas (en este caso, $n$), con sus respectivos pesos sinápticos $w_{i\thinspace j}$. A continuación, calcula el potencial sináptico como la suma de los productos entre las entradas por sus respectivos pesos. A este potencial se le aplica una función de activación, relativa a cada neurona, que permite devolver una salida $y$, en función del estado de activación. \par
     \begin{figure}[H]
@@ -366,6 +388,7 @@
     La red utiliza el conjunto de entrenamiento durante todo el proceso, que tiene una duración limitada, medida en épocas (\emph{epochs}), que es el número de veces que la red utiliza los datos provistos para entrenar y ajustar los pesos de sus conexiones.
     
     \section*{\Large 3.3. Deep Learning}
+    \addcontentsline{toc}{section}{\protect\numberline{3.3}{Deep Learning}}
     El Aprendizaje Profundo (\emph{deep learning}) es un subcampo del Aprendizaje Automático y basado en Redes de Neuronas Artificiales. Se considera que una red es profunda si tiene más de tres capas ocultas. \par
     Una de las aplicaciones más destacadas del Deep Learning es lo relativo a clasificación de imágenes con Redes de Neuronas Convolucionales (Fukushima, 1975). La diferencia más notable entre este tipo de aprendizaje y el Aprendizaje Automático reside en que en el segundo tipo es necesario un proceso de extracción manual de las características relevantes de las imágenes, a partir de las cuales se entrena un modelo que aprende de ellas. En el Deep Learning, las características las aprende el modelo, provisto de datos (imágenes) sin procesar. \par
     \begin{figure}[H]
@@ -377,6 +400,7 @@
     En la Fig. \ref{fig:13}, se muestra una comparativa entre el Aprendizaje Automático y el Deep Learning. En ambos se utilizan Redes de Neuronas Artificiales. En el diagrama superior, se detalla el funcionamiento del Aprendizaje Automático, en el que se utiliza poca cantidad de datos, de los que se extraen características manualmente. Estas características son utilizadas para realizar predecciones. En el diagrama inferior, se detalla el funcionamiento del Deep Learning, en el que, en contraposición del Aprendizaje Automático, se utiliza una gran cantidad de información. La extracción de características de los datos se realiza de forma automática, las cuales posibilitan las predicciones.
     
     \section*{\Large 3.4. Construccion de Redes de Neuronas}
+    \addcontentsline{toc}{section}{\protect\numberline{3.4}{Construcción de Redes de Neuronas}}
     Para la construcción de Redes de Neuronas Artificiales se ha utilizado de forma satisfactoria la Programación Genética Guiada por Gramáticas (Manrique et al., 2018). \par
     En este paradigma se propone una gramática para generar arquitecturas neuronales que son sintácticamente válidas. Por tanto, los individuos no son redes como tal, sino árboles de derivación de una Gramática Libre de Contexto que codifica una red neuronal. La gramática en cuestión se muestra en la Eq. \ref{eq:3}. Recibe únicamente dos parámetros: las neuronas de entrada ($I$) y las neuronas de salida ($O$). \par
     \begin{align*}
@@ -424,7 +448,8 @@
   
   \newpage\cleardoublepage
   
-  \chapter{\vspace{-3cm}{\LARGE 5. Planteamiento del problema}}
+  \chapter*{\vspace{-3cm}{\LARGE 4. Planteamiento del problema}}
+  \addcontentsline{toc}{chapter}{\protect\numberline{4}{Planteamiento del problema}}
   \setcounter{figure}{14}
   \vspace{-1cm}
   La Programación Genética permite la resolución de problemas de búsqueda y de optimización donde las soluciones son programas informáticos. Por tanto, cada uno de los individuos que codifica una solución al problema representa un programa informático. La ampliación de esta técnica con Gramáticas Libres de Contexto permite asegurar la generación de individuos sintácticamente válido, ahorrando tiempo y esfuerzo en reparar aquellos individuos no válidos que se dan sin la inclusión de estas gramáticas. \par
@@ -447,7 +472,8 @@
   La parada prematura del entrenamiento se establece como una reducción en el número de épocas de entrenamiento de cada individuo. Se quiere mostrar si los resultados obtenidos en términos de la precisión de las redes de neuronas solución de un programa genético con un entrenamiento parcial de los individuos codificados como Redes de Neuronas Artificiales son comparables a un programa genético con un entrenamiento total, lo que supondría un ahorro de tiempo y esfuerzo computacional elevado. \par
   Ambos procesos se realizan de forma síncrona: mientras se entrena la red de neuronas codificada por un nuevo individuo de la población para calcular su grado de adaptación, el sistema evolutivo queda suspendido a la espera de que finalice el proceso de entrenamiento, ya sea de forma total o parcial.
     
-  \chapter{\vspace{-3cm}{\LARGE 6. Solución propuesta}}
+  \chapter*{\vspace{-3cm}{\LARGE 5. Solución propuesta}}
+  \addcontentsline{toc}{chapter}{\protect\numberline{5}{Solución propuesta}}
   \setcounter{figure}{15}
   \vspace{-1cm}
   La solución propuesta para este trabajo consiste en: \par
@@ -458,7 +484,8 @@
   \end{itemize} \par
   Para realizar el trabajo, se ha desarrollado el código fuente de una librería utilizando el lenguaje de programación \emph{R}. Se ha decidido implementar esta librería por el hecho de que no había ningún otro paquete en este lenguaje que permitiese ejecutar programas genéticos con gramáticas definidas por un usuario. \par
   Además, en esta librería, tanto el funcionamiento general como el entrenamiento de los individuos son dos elementos síncronos, es decir, que mientras se esté desarrollando el programa genético (todos los operadores y elementos exceptuando el entrenamiento), ningún entrenamiento se puede llevar a cabo. Por el contrario, si se está ejecutando un entrenamiento, el programa genético se encuentra a la espera de que finalice para continuar. \par
-  \section*{\Large 6.1. Generación de individuos y operadores genéticos}
+  \section*{\Large 5.1. Generación de individuos y operadores genéticos}
+  \addcontentsline{toc}{section}{\protect\numberline{5.1}{Generación de individuos y operadores genéticos}}
   La implementación de esta librería consiste en el desarrollo de todos los operadores genéticos que constituyen el ciclo evolutivo, además del resto de elementos que intervienen en él, como el entrenamiento de los individuos y la generación de la población inicial.  \par
   El algoritmo para la creación de los individuos que se evolucionan a lo largo del programa que se ha seleccionado es el aleatorio, es decir, que siguiendo la gramática mostrada en la Eq. \ref{eq:3}, los individuos se generan a partir de reglas de producción elegidas de forma aleatoria, asegurando la validez de los individuos. \vfill
   El operador de selección elegido es por torneo, que escoge al azar un conjunto de individuos de la población, en este caso sin reemplazamiento, y selecciona a los dos mejores. Este operador permite que haya un equilibrio entre exploración y explotación. Su funcionamiento puede verse en el algoritmo 1. \par\par
@@ -509,7 +536,8 @@
     \end{algorithmic}
   \end{algorithm}
   Finalmente, el operador de reemplazo que se ha escogido es por reducción elitista. En él, tras seleccionar a los individuos de la población que pasarán a formar parte del \emph{matting pool} y cruzarlos para conformar su descendencia, los progenitores, el resto de individuos y los descendientes, se juntan y posteriormente se seleccionan a los $\lambda$ mejores. \par
- \section*{\Large 6.2. Entrenamiento de individuos}
+ \section*{\Large 5.2. Entrenamiento de individuos}
+  \addcontentsline{toc}{section}{\protect\numberline{5.2}{Entrenamiento de individuos}}
   Los individuos codifican arquitecturas neuronales gracias a la gramática mostrada en \ref{eq:3}. En el proceso evolutivo, interviene el proceso de evaluación de los individuos, que consiste en la decodificación, entrenamiento y cálculo de la precisión de los mismos. \par
   Este proceso puede verse en el diagrama de la Fig. \ref{fig:16}, que comienza con la generación del individuo empleando la gramática, para su posterior decodificación en red neuronal y entrenamiento con \emph{Keras}, empleando parámetros como las épocas, el tamaño del lote y la tasa de aprendizaje, entre otros. \vfill
   \begin{figure}[H]
@@ -570,7 +598,8 @@
     donde $w_{C_i}$ es peso que se le asocia a la clase $C_i$ en el cálculo del error en cada época, $N_{C_i}$ es el número de instancias del conjunto de datos etiquetadas con la clase $C_i$ y el sumatorio es la suma de las proporciones inversas de las clases en el conjunto de datos.
   \end{itemize} \par
   El proceso de entrenamiento concluye con el cálculo del \emph{accuracy} con el subconjunto de entrenamiento. La justificación de utilizar este subconjunto y no otros reside en que si la red tiene un mal desempeño con estos datos, también lo tendrá con los de validación y test. Por tanto, aquellos individuos con un \emph{accuracy} malo en entrenamiento, son descartables por su bajo grado de adaptación.
-  \section*{\Large 6.3. Programa genético}
+  \section*{\Large 5.3. Programa genético}
+  \addcontentsline{toc}{section}{\protect\numberline{5.3}{Programa genético}}
   El programa genético sigue el ciclo evolutivo y se ejecuta un total de 80 veces, para entrenamientos totales y parciales. \par
   Para cada ejecución, se almacena el modelo entrenado de cada individuo, así como su historial de entrenamiento, con la variación del error y de la precisión para cada época. \par
   El procedimiento que sigue el programa genético se puede ver en el algoritmo 5. \par
@@ -608,17 +637,18 @@
   
   \newpage\cleardoublepage
 
-  \chapter{\vspace{-3cm}{\LARGE 7. Resultados}}
+  \chapter*{\vspace{-3cm}{\LARGE 6. Resultados}}
+  \addcontentsline{toc}{chapter}{\protect\numberline{6}{Resultados}}
   \setcounter{figure}{16}
   \vspace{-1cm}
   La implementación del Programa Genético Guiado por Gramáticas ha sido probada con tres conjuntos de datos diferentes:
   \begin{itemize}
     \item \emph{Iris}. Este conjunto de datos (Fisher, 1936) es un ejemplo de análisis discriminante multivariante y cuenta con 50 muestras de cada una de las tres especies de Iris: iris setosa, virginica y versicolor. Las 150 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 105, 30 y 15 instancias respectivamente, de forma aleatoria.
     \item \emph{Cars evaluation}. Este conjunto de datos (Bohanec and Rajkovic, 1988) es multivariante y cuenta con 1728 valoraciones de coches etiquetadas en 4 clases, según el coche tenga un estado inaceptable, aceptable, bueno o muy bueno. Las 1728 instancias han sido divididas en subconjuntos de entrenamiento, validación y prueba con 1210, 346 y 172 instancias respectivamente, de forma aleatoria.
-    \item \emph{California housing}. Este conjunto de datos proviene del Censo Californiano de la década de los 90. Es multivariante y cuenta con 20428 instancias y 4 clases, según la proximidad al océano de la casa en cuestión. Las 20428 instancias han sido dividas en subconjuntos de entrenamiento, validación y prueba con 14300, 4086 y 2042 instancias respectivamente, de forma aleatoria.
+    \item \emph{California housing}. Este conjunto de datos proviene del Censo Californiano de la década de los 90. Es multivariante y cuenta con 20428 instancias y 4 clases, según la proximidad al océano del distrito en cuestión. Las 20428 instancias han sido dividas en subconjuntos de entrenamiento, validación y prueba con 14300, 4086 y 2042 instancias respectivamente, de forma aleatoria.
   \end{itemize} \par
   Estos conjuntos de datos han permitido probar la implementación realizada y comparar el entrenamiento parcial y total de los individuos. \par
-  Para cada uno de estos conjuntos de datos excepto para el de California se han lanzado un total de 160 ejecuciones; 80 para el entrenamiento total de los individuos y otras 80 para el entrenamiento parcial. Para el de California, solo se ha ejecutado en modo parcial ya que no se contaba con capacidad de cómputo suficiente. \par
+  Para cada uno de estos conjuntos de datos excepto para el de California se han lanzado un total de 160 ejecuciones; 80 para el entrenamiento total de los individuos y otras 80 para el entrenamiento parcial. Para el de California, solo se ha ejecutado en modo parcial, suponiendo que no se contaba con capacidad de cómputo suficiente y poder observar si se puede resolver el problema en esas condiciones. \par
   El criterio de parada seleccionado para este programa consta de tres condiciones: \par
   \begin{itemize}
     \item Se ha encontrado la solución codificada en la población. Se considera solución a una red neuronal con una precisión superior al 98,5\% y un error (\emph{categorical cross-entropy}) inferior al 0.05.
@@ -627,7 +657,8 @@
   \end{itemize}
   De cada una de las ejecuciones se ha guardado el entrenamiento de cada uno de los individuos de la población, tanto la evolución de la precisión como del error a lo largo de las iteraciones. También se ha guardado la población de la última generación de cada ejecución, que contiene los mejores individuos de la misma, incluyendo la solución final. \par
   Por último, para cada ejecución, se guarda la infromación más relevante del individuo mejor adaptado, según se haya llevado a cabo un entrenamiento parcial o total. Para un entrenamiento total, se almacena la arquitectura representada por el individuo y su precisión en entrenamiento, validación y prueba, además de su error en ambos conjuntos. Para un entrenamiento parcial, se almacena la arquitectura, su precisión en entrenamiento, validación y prueba parcial y la precisión en entrenamiento, validación y prueba completando el proceso de entrenamiento del individuo. \par
-  \section*{\Large 7.1. Iris}
+  \section*{\Large 6.1. Iris}
+  \addcontentsline{toc}{section}{\protect\numberline{6.1}{Iris}}
   El conjunto de datos fue obtenido del UCI Repository y fue publicado (Fisher, 1936) como un ejemplo de prueba para algoritmos de Machine Learning. Cada una de las instancias representa una flor iris, incluyendo su especie y las dimensiones de los sépalos y pétalos, en centímetros. \par
   \begin{figure}[H]
     \centering
@@ -636,13 +667,13 @@
     \label{fig:17}
   \end{figure} \vfill
   En la Fig. \ref{fig:17} se pueden visualizar cada unas de las especies y sus diferencias estructurales. \par
-  El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13, ya que el conjunto de datos cuenta con 150 instancias. \par
-  Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestra en la Tabla 1.
+  El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13. Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestran en la Tabla 1.
   \begin{center}
     \captionof{table}{Tabla 1. Arquitecturas resultantes del entrenamiento total en Iris y sus métricas} \label{table}
     \begin{tabular}{l c c c r}
       \hline \\ [-2ex]
-      Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} & \multirow{2}*{Proporción} \\
+      & Entrenamiento & Validación & Pruebas & \\ [0.5ex]
       \hline \\ [-1ex]
       4:5:3 & 0.98254 & 0.96667 & 0.99630 & 22.50\% \\
       4:4:3 & 0.97871 & 0.97059 & 0.97647 & 21.25\% \\
@@ -662,26 +693,24 @@
       \hline
     \end{tabular}
   \end{center} \par
-  En la Tabla 1 (y en sucesivas), la primera columna referencia a la arquitectura representada por un individuo, donde el primer y último valor hacen referencia a las neuronas de la capa de entrada y de salida respectivamente, mientras que los valores intermedios representan las capas ocultas. Para cada una de estas arquitecturas, se ha calculado el valor medio de la precisión en entrenamiento, validación y pruebas, y añadido la proporción de cada una de ellas en las 80 ejecuciones. Además, la última fila de cada tabla referencia a otras arquitecturas en mucha menor proporción, calculándose, para todas ellas, la precisión media en entrenamiento, validación y pruebas. \par
+  En la Tabla 1 (y en sucesivas), la primera columna referencia a la arquitectura solución, donde el primer y último valor hacen referencia a las neuronas de la capa de entrada y de salida respectivamente, mientras que los valores intermedios representan las capas ocultas. Para cada una de estas arquitecturas, se ha calculado el valor medio de la precisión en entrenamiento, validación y pruebas, así como la proporción en que se ha obtenido como solución en las 80 ejecuciones. Además, la última fila referencia a otras arquitecturas que se han obtenido en menor proporción, calculándose, para todas ellas, la precisión media en entrenamiento, validación y pruebas. \par
   De la Tabla 1 se puede extraer que todas las arquitecturas seleccionadas tienen unos buenos resultados para este conjunto de datos. Tras estudiar las arquitecturas a lo largo de las poblaciones de las 80 ejecuciones, se ha podido determinar que aquellas que no han aparecido en esta tabla (como la 4:1:3, 4:2:3, 4:10:3, 4:1:1:3, entre muchas otras) fueron descartadas en el proceso evolutivo por no alcanzar valores tan altos de precisión como otras. \par
-  Además, las arquitecturas profundas (por ejemplo, la 4:4:1:4:4:1:4:3 o 4:4:4:3) alcanzan, generalmente, precisiones superiores a las de otras que no lo son, pero, a su vez, son más difíciles de obtener, ya que la gramática favorece a las arquitecturas pequeñas. \par
-  Las tres arquitecturas más comunes han sido, por orden de proporción, la 4:5:3, 4:4:3 y 4:6:3. La cantidad de recursiones que la gramática ha experimentado para generar cada una de ellas han sido de 4, 3 y 5, respectivamente, por lo que son bastante fáciles de conseguir. En cambio, arquitecturas como, por ejemplo, la 4:4:1:4:4:1:4:3 requieren de 27 recursiones, por lo que son complicadas de obtener, aunque tengan mejores resultados. \par
-  En la Fig. \ref{fig:18} se muestra la evolución de las poblaciones de las 80 ejecuciones con el modo de entrenamiento total. Se puede apreciar que la media del error (\emph{categorical cross-entropy}), que es la inversa del grado de adaptación del individuo, decrementa según avanza el número de generaciones. Esto es así porque la población va convergiendo con el paso de las generaciones.
+  Además, las arquitecturas profundas (por ejemplo, la 4:4:1:4:4:1:4:3 o 4:4:4:3) alcanzan, generalmente, precisiones superiores a las de otras que no lo son, pero, a su vez, son más difíciles de obtener, ya que la gramática favorece a las arquitecturas pequeñas. Las tres arquitecturas más comunes han sido, por orden de proporción, la 4:5:3, 4:4:3 y 4:6:3, con una cantidad de recursiones de 4, 3 y 5, respectivamente. \par
+  En la Fig. \ref{fig:18} se muestra la evolución de las poblaciones en las 80 ejecuciones con el modo de entrenamiento total. Se puede apreciar que la media del error (\emph{categorical cross-entropy}), decrementa según avanza el número de generaciones. Esto es así porque la población va convergiendo con el paso de las generaciones hacia la solución óptima.
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig18.pdf}
     \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento total de los individuos.}
     \label{fig:18}
   \end{figure} \par
-  En cambio, por las propias peculiaridades de la gramática, como que favorece a las arquitecturas pequeñas al ser recursiva, además de ser ambigua, ya desde la primera generación hay individuos que pueden considerarse adecuados por su elevado grado de adaptación, pero nunca se encontraron individuos que satisfacieran la condición de parada de solución óptima. \par
-  El entrenamiento total de los individuos con este conjunto de datos permite resolver el problema de forma muy sencilla, incluso en las primeras generaciones, sin la necesidad de llegar a ejecutar 30 generaciones. \par
-  Además, el tiempo de entrenamiento por individuo oscila entre los 5 y 15 segundos, con un tiempo medio de ejecución total del sistema evolutivo de 3 a 5 minutos, dependiendo de su arquitectura. \par
+  El entrenamiento total de los individuos con este conjunto de datos permite resolver el problema de forma muy sencilla, incluso en las primeras generaciones, sin la necesidad de llegar a ejecutar 30 generaciones. El tiempo de entrenamiento por individuo oscila entre los 5 y 15 segundos, con un tiempo medio de ejecución total del sistema evolutivo de 3 a 5 minutos. \par
   El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo de ejecución del algoritmo evolutivo de 1 a 2 minutos, dependiendo de su arquitectura. \par
   En este entrenamiento parcial, cada uno de los individuos de la población ha sido entrenado con 13 iteraciones, con unos resultados que se muestran en la Tabla 2. Además, cada una de las soluciones de la Tabla 2 se ha entrenado hasta el final con las épocas restantes (es decir, con 87 épocas más). Estas arquitecturas entrenadas hasta el final se muestran en la Tabla 3. \par
   \begin{center}
     \captionof{table}{Tabla 2. Arquitecturas resultantes del entrenamiento parcial en Iris (13 iteraciones)} \label{table}
     \begin{tabular}{l c c c r}
       \hline \\ [-2ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} & \multirow{2}*{Proporción} \\
       Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
       \hline \\ [-1ex]
       4:4:3 & 0.66507 & 0.63333 & 0.56296 & 22.50\% \\
@@ -787,7 +816,8 @@
   También hay ciertas y relevantes diferencias entre las funciones de distribución de probabilidad de los resultados obtenidos para cada conjunto de entrenamiento, validación y pruebas. Esto es debido a que los individuos son generados de forma aleatoria por la gramática. También, que los pesos de las redes neuronales se inicialicen al azar añade cierto grado de aleatoriedad al experimento. \par
   A pesar de esto, los resultados mostrados reflejan cierta similitud entre el entrenamiento total y parcial. Por tanto, este segundo modo de entrenamiento podría sustituir al primero, favoreciendo un ahorro en tiempo y esfuerzo computacional. Además, si bien las diferencias se dan más en los datos de entrenamiento y validación, en pruebas son semejantes (exceptuando 5 valores atípicos de 80 ejecuciones), que es donde realmente se determina la idoneidad de los modelos.
   
-  \section*{\Large 7.2. Car evaluation}
+  \section*{\Large 6.2. Car evaluation}
+  \addcontentsline{toc}{section}{\protect\numberline{6.2}{Car evaluation}}
   Este conjunto de datos fue obtenido del UCI Repository y fue publicado (Bohanec and Rajkovic, 1988) como un ejemplo de DEX. Cada una de las instancias representa una evaluación de un coche de acuerdo a un conjunto de características, como el precio de compra, de mantenimiento y las características técnicas. \par
 \begin{center}
     \captionof{table}{Tabla 5. Arquitecturas resultantes del entrenamiento total en Car evaluation y sus métricas} \label{table}
@@ -923,7 +953,8 @@
   Las desviaciones típicas obtenidas son cercanas al 0, indicando que hay una escasa variabilidad en los resultados obtenidos por cada individuo. Los valores más preocupantes, aunque dentro de la normalidad, son los relativos a las arquitecturas 16:4:4 y 16:2:4, cuyos entrenamientos hasta el final, de media, se sitúan más de 4 puntos por debajo del entrenamiento completo medio de estas redes neuronales. Además, las desviaciones de estos ejemplos es casi 8 veces mayor. \par
   En la Fig. \ref{fig:23} se muestran gráficamente los resultados obtenidos, para cada uno de los conjuntos (de entrenamiento, validación y pruebas). También se han colocado los datos de las soluciones entrenadas hasta el final frente a las soluciones del modo de entrenamiento total. Se puede ver que en este conjunto de datos, los resultados son más variables y que el rango intercuartílico del modo de entrenamiento parcial cubre el rango intercuartílico en el caso de los datos de pruebas, mientras que en el resto de los casos, el tercer cuartil es inferior a la media en el entrenamiento parcial, lo que quiere indicar que, con un 75\% de certeza, hay individuos peores de media que en el entrenamiento total. \par
   Sin embargo, este decremento en la precisión de los individuos solución en el modo de entrenamiento parcial involucra décimas de centésimas de diferencia, por lo que no supone una diferencia demasiado significativa, ya que el tiempo de cómputo que reduce (de 30 a 40 minutos en el entrenamiento total a un tiempo de ejecución del algoritmo genético que oscila entre los 13 y 17 minutos en el entrenamiento parcial) supone que en lo que se tarda en realizar una ejecución con entrenamiento total del programa, pueden llevarse a cabo más de dos ejecuciones con entrenamiento parcial.
-  \section*{\Large 7.3. California housing}
+  \section*{\Large 6.3. California housing}
+  \addcontentsline{toc}{section}{\protect\numberline{6.3}{California housing}}
   Este conjunto de datos fue obtenido del UCI Repository y fue publicado por el Censo Californiano en los años 90. Cada una de las instancias representa la ubicación de la vivienda y las características de la localización: población, número de habitaciones, renta media... \par
   Los anteriores conjuntos de datos fueron probados en entrenamientos totales y parciales, ya que todo el Programa Genético pudo ser ejecutado sin problemas en un ordenador con 16,0 GB de RAM, Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz y una tarjeta gráfica NVIDIA GTX 1050 Ti. Sin embargo, este dispositivo no pudo hacer frente al modo de ejecución con entrenamiento total con este conjunto de datos, debido a su gran cantidad de instancias. \par
   Por tanto, sólo se ha ejecutado el modo de entrenamiento parcial, convirtiendo un problema irresoluble (en estas condiciones) en una aproximación acertada. En la Tabla 9 se detallan las arquitecturas y sus precisiones con un entrenamiento parcial compuesto por 300 épocas, mientras que en la Tabla 10 se muestran esas arquitecturas entrenadas hasta el final (hasta las 5000 épocas).
@@ -996,7 +1027,8 @@
   
   \newpage\cleardoublepage
   
-  \chapter{\vspace{-3cm}{\LARGE 8. Conclusiones y líneas futuras}}
+  \chapter*{\vspace{-3cm}{\LARGE 7. Conclusiones y líneas futuras}}
+  \addcontentsline{toc}{chapter}{\protect\numberline{7}{Conclusiones y líneas futuras}}
   \setcounter{figure}{24}
   \vspace{-1cm}
   En este Trabajo de Fin de Máster se propone una mejora para ahorrar tiempo en la selección de la mejor arquitectura neuronal utilizando Programación Genética Guiada por Gramáticas. \par
