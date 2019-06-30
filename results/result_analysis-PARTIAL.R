@@ -4,7 +4,7 @@ library("ggplot2")
 
 setwd("D:/Usuarios/cvazquezlos/GitHub/Genetic-programming-for-Artificial-Neural-Networks/results")
 
-TARGET_FOLDER <- "./classification/ocean_proximity/partial/"
+TARGET_FOLDER <- "./classification/iris/partial/"
 
 # Analysis of the resulting dataframes for each execution
 BASE_DATA_FRAME <- data.frame(architecture = character(),
@@ -38,15 +38,15 @@ analysis_results$percentage <- unlist(lapply(analysis_results$architecture, func
 }))
 analysis_results <- analysis_results[order(analysis_results$percentage, decreasing = TRUE),]
 row.names(analysis_results) <- c(1:nrow(analysis_results))
-write.csv(analysis_results, file = "../results/classification/ocean_proximity/executions_results_part_partial_SD.csv")
-write.xlsx(analysis_results, file = "../results/classification/ocean_proximity/executions_results_part_partial_SD.xlsx")
+write.csv(analysis_results, file = "../results/classification/iris/executions_results_part_partial_SD.csv")
+write.xlsx(analysis_results, file = "../results/classification/iris/executions_results_part_partial_SD.xlsx")
 
 # Plotting the executions
 executions_plotting_data <- data.frame(generation = c(1:29), stringsAsFactors = F)
 z <- lapply(c(1:80), function(x) {
   tryCatch({
     print(x)
-    df = readRDS(paste0("../results/classification/ocean_proximity/partial/", x, "/", x, "_results.rds"))[, c("avg_loss", "best_loss")]
+    df = readRDS(paste0("../results/classification/iris/partial/", x, "/", x, "_results.rds"))[, c("avg_loss", "best_loss")]
     print(df$best_loss)
     n_colnames = c(paste0("avg_loss", x), paste0("best_loss", x))
     colnames(df) = n_colnames

@@ -57,8 +57,8 @@ y <- lapply(executions, function (x) {
 })
 
 ##################################################################################
-plot_df = data.frame("Entrenamiento total" = executions_results$acc_validation,
-                     "Entrenamiento parcial hasta el final" = executions_results_part$total_acc_validation,
+plot_df = data.frame("Entrenamiento total" = executions_results$acc_train,
+                     "Entrenamiento parcial hasta el final" = executions_results_part$total_acc_train,
                      stringsAsFactors = FALSE)
 boxplot(plot_df$Entrenamiento.total)
 boxplot(executions_results_part$total_acc_validation)
@@ -68,9 +68,9 @@ ggplot(plot_df) +
   geom_boxplot(aes(x = 2, y = Entrenamiento.parcial.hasta.el.final)) +
   xlab("\nModo de entrenamiento") +
   scale_x_continuous(breaks = c(1, 2), labels = c("Total", "Parcial (hasta el final)")) +
-  ylab("Accuracy\n") +
+  ylab("Precisión\n") +
   scale_y_continuous(breaks = c(0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00)) +
-  ggtitle("Comparativa de las ejecuciones para\nlos datos de validación") + 
+  ggtitle("Comparativa de las ejecuciones para\nlos datos de entrenamiento") + 
   theme_classic() + 
   theme(
     panel.grid.minor = element_blank(),

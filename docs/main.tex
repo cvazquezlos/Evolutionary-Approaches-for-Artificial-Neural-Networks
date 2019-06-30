@@ -8,6 +8,7 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{geometry}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{indentfirst}
@@ -60,7 +61,7 @@
       \\[3cm]
 
       \HRule \\[0.4cm]
-      {\huge \bfseries Sistema evolutivo síncrono para la construcción de Redes de Neuronas con entrenamiento parcial}
+      {\huge \bfseries Sistema evolutivo síncrono para la construcción de redes de neuronas con entrenamiento parcial}
       \HRule \\[4cm]
     
       \textsc{\LARGE Trabajo Fin de Máster}\\[0.5cm]
@@ -71,12 +72,12 @@
       \\[2.1cm]
     \end{flushright}
     \begin{center}
-      {{20 de julio de 2019}}
+      {{18 de julio de 2019}}
     \end{center}
     \vfill
   \end{titlepage}
   \newpage\cleardoublepage
-
+  
   \chapter*{\vspace{-3cm}{\LARGE Agradecimientos}}
   \vspace{-1cm}
     Deseo expresar mi agradecimiento, en primer lugar, a Daniel, un investigador incansable y un profesor excepcional. Gracias por dedicarme tu tiempo y adaptarte a mis horarios, y gracias por despertar en mi el interés en la Computación Evolutiva con tus clases y con tu implicación.\par
@@ -96,16 +97,20 @@
   \vspace{-1cm}
   This Master Thesis Dissertation consists in a research about how appropiate is to use Evolutionary Computation for creating Artificial Neural Networks. A technique of Evolutionary Computation is used for this purpose; Grammar-Guided Genetic Programming. It will be used for looking the best Artificial Neural Network for a concrete dataset, by checking both partially and fully trained networks. \par
   Genetic Programming is an evolutionary technique (it is inspired by biology as Evolutionary Computation does) and it is used for solving optimization problems whose solution is a computer program. The Grammar-Guided Genetic Programming extends Genetic Programming by adding grammars, that allow to create valid individuals. \par
-  These grammars allow creating Neural Network architectures that are all valid, given any number of neurons in both input and output layers. The result of an execution would be the architecture that best fixes (in terms of accuracy) the given data.
+  A Context-Free Grammar allows to create any valid neural network architecture given any number of both input and output neurons. The result of an execution of this Genetic Program would be the architecture that best fixes (in terms of accuracy) the given data. \par
+  This work is a research about the training process and how appropiate is to create a break point in the training process for saving time. The Genetic Programm is synchronous: when the training process is working, all other process are stopped and vice versa.
   \vfill
   \newpage\cleardoublepage
-
-  \renewcommand{\baselinestretch}{0.75}\normalsize
+  
+  \addtocontents{toc}{\vskip -1cm}
+  \addtocontents{lof}{\vskip -1cm}
+  \addtocontents{lot}{\vskip -1cm}
+  \renewcommand{\baselinestretch}{0.35}\normalsize
   \tableofcontents
   \renewcommand{\baselinestretch}{1.0}\normalsize
-  
   \listoffigures
   \newpage
+  \renewcommand{\listtablename}{Índice de tablas}
   \listoftables
   
   \newpage\cleardoublepage
@@ -669,7 +674,7 @@
   En la Fig. \ref{fig:17} se pueden visualizar cada unas de las especies y sus diferencias estructurales. \par
   El número de épocas para el caso del entrenamiento total es de 100, y para el entrenamiento parcial, 13. Los resultados obtenidos tras 80 ejecuciones con el entrenamiento total de los individuos se muestran en la Tabla 1.
   \begin{center}
-    \captionof{table}{Tabla 1. Arquitecturas resultantes del entrenamiento total en Iris y sus métricas} \label{table}
+    \captionof{table}{Tabla 1. Arquitecturas resultantes del entrenamiento total en Iris y sus precisiones tras 80 ejecuciones} \label{table}
     \begin{tabular}{l c c c r}
       \hline \\ [-2ex]
       \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} & \multirow{2}*{Proporción} \\
@@ -704,14 +709,14 @@
     \label{fig:18}
   \end{figure} \par
   El entrenamiento total de los individuos con este conjunto de datos permite resolver el problema de forma muy sencilla, incluso en las primeras generaciones, sin la necesidad de llegar a ejecutar 30 generaciones. El tiempo de entrenamiento por individuo oscila entre los 5 y 15 segundos, con un tiempo medio de ejecución total del sistema evolutivo de 3 a 5 minutos. \par
-  El entrenamiento parcial de los individuos no supone un cambio sustancial con respecto a los resultados del entrenamiento total, pero sí que conlleva un ahorro en el tiempo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo de ejecución del algoritmo evolutivo de 1 a 2 minutos, dependiendo de su arquitectura. \par
-  En este entrenamiento parcial, cada uno de los individuos de la población ha sido entrenado con 13 iteraciones, con unos resultados que se muestran en la Tabla 2. Además, cada una de las soluciones de la Tabla 2 se ha entrenado hasta el final con las épocas restantes (es decir, con 87 épocas más). Estas arquitecturas entrenadas hasta el final se muestran en la Tabla 3. \par
+  El entrenamiento parcial de los individuos implica que solo se entrena de forma total, hasta el final, la red de neuronas solución, y se observa que no supone un cambio sustancial con respecto a los resultados del entrenamiento total, aunque conlleva un ahorro en el tiempo significativo. Con la reducción de las épocas de entrenamiento, el tiempo de entrenamiento por individuo oscila entre los 1 y 3 segundos, con un tiempo de ejecución del algoritmo evolutivo de 1 a 2 minutos. \par
+  En este entrenamiento parcial, cada uno de los individuos de la población ha sido entrenado con 13 iteraciones, con unos resultados que se muestran en la Tabla 2. Cada una de las soluciones de la Tabla 2 se ha entrenado hasta el final con las épocas restantes (es decir, con 87 épocas más). Estas arquitecturas entrenadas hasta el final se muestran en la Tabla 3. \par
   \begin{center}
-    \captionof{table}{Tabla 2. Arquitecturas resultantes del entrenamiento parcial en Iris (13 iteraciones)} \label{table}
+    \captionof{table}{Tabla 2. Arquitecturas resultantes del entrenamiento parcial en Iris y sus precisiones tras 13 épocas y 80 ejecuciones} \label{table}
     \begin{tabular}{l c c c r}
       \hline \\ [-2ex]
       \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} & \multirow{2}*{Proporción} \\
-      Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      & Entrenamiento & Validación & Pruebas & \\ [0.5ex]
       \hline \\ [-1ex]
       4:4:3 & 0.66507 & 0.63333 & 0.56296 & 22.50\% \\
       4:3:3 & 0.70842 & 0.67179 & 0.64102 & 16.25\% \\ 
@@ -729,37 +734,39 @@
       \hline
     \end{tabular}
   \end{center} \par
-  Si bien la selección de individuos se ha llevado a cabo utilizando el entrenamiento parcial, han aparecido arquitecturas que, al ser entrenadas de forma total, dan resultados muy inferiores a los esperados, como la arquitectura 4:2:3, con unos resultados en el entrenamiento total que apenas alcanzan el 82\% de precisión. \par
-  Sin embargo, se mantienen en buena posición las arquitecturas más destacadas en el entrenamiento total, por lo que el estudio mantiene la consistencia. En la Fig. \ref{fig:19} se muestra la evolución de las poblaciones de las 80 ejecuciones con el modo de entrenamiento parcial.
   \begin{center}
     \captionof{table}{Tabla 3. Métricas de las arquitecturas de la Tabla 2 entrenadas hasta el final} \label{table}
-    \begin{tabular}{l c c c r}
+    \begin{tabular}{l c c c}
       \hline \\ [-2ex]
-      Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} \\
+      & Entrenamiento & Validación & Pruebas \\ [0.5ex]
       \hline \\ [-1ex]
-      4:4:3 & 0.95714 & 0.93333 & 0.97407 & 22.50\% \\
-      4:3:3 & 0.93186 & 0.91282 & 0.93846 & 16.25\% \\ 
-      4:5:3 & 0.97619 & 0.94999 & 1.00000 & 10.00\% \\
-      4:2:3 & 0.81768 & 0.78571 & 0.79047 & 8.75\% \\
-      4:7:3 & 0.97904 & 0.96666 & 1.00000 & 6.25\% \\ 
-      4:1:3 & 0.69047 & 0.63333 & 0.61666 & 5.00\% \\
-      4:4:4:3 & 0.97380 & 0.96666 & 1.00000 & 5.00\% \\
-      4:5:5:3 & 0.83333 & 0.79999 & 0.80000 & 2.50\% \\
-      4:6:3 & 0.98095 & 0.96666 & 1.00000 & 2.50\% \\
-      4:8:3 & 0.97619 & 0.96666 & 1.00000 & 2.50\% \\ 
-      4:9:3 & 0.98095 & 0.96666 & 1.00000 & 2.50\% \\
-      4:10:3 & 0.97619 & 0.96666 & 1.00000 & 2.50\% \\ 
-      Otras & 0.98095 & 0.96666 & 1.00000 & 13.75\% \\ [1ex]
+      4:4:3 & 0.95714 & 0.93333 & 0.97407 \\
+      4:3:3 & 0.93186 & 0.91282 & 0.93846 \\ 
+      4:5:3 & 0.97619 & 0.94999 & 1.00000 \\
+      4:2:3 & 0.81768 & 0.78571 & 0.79047 \\
+      4:7:3 & 0.97904 & 0.96666 & 1.00000 \\ 
+      4:1:3 & 0.69047 & 0.63333 & 0.61666 \\
+      4:4:4:3 & 0.97380 & 0.96666 & 1.00000 \\
+      4:5:5:3 & 0.83333 & 0.79999 & 0.80000 \\
+      4:6:3 & 0.98095 & 0.96666 & 1.00000 \\
+      4:8:3 & 0.97619 & 0.96666 & 1.00000 \\ 
+      4:9:3 & 0.98095 & 0.96666 & 1.00000 \\
+      4:10:3 & 0.97619 & 0.96666 & 1.00000 \\ 
+      Otras & 0.98095 & 0.96666 & 1.00000 \\ [1ex]
       \hline
     \end{tabular}
   \end{center} \par
+  Si bien el grado de adaptación de los individuos se ha calculado a partir del entrenamiento parcial, han aparecido arquitecturas que, al ser entrenadas de forma total, dan resultados muy inferiores a los esperados, como la arquitectura 4:2:3, con unos resultados en el entrenamiento total que apenas alcanzan el 82\% de precisión, aunque se han obtenido únicamente en el 8.75\% de los casos. Se mantienen en buena posición las arquitecturas más destacadas en el entrenamiento total. En la Fig. \ref{fig:19} se muestra la evolución de las poblaciones de las 80 ejecuciones con el modo de entrenamiento parcial.
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig19.pdf}
     \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento parcial de los individuos.}
     \label{fig:19}
   \end{figure} \par
-  Al tratarse de un entrenamiento parcial, el escalón se acentúa también en los mejores individuos a lo largo de las generaciones. Evidentemente, se trata de un entrenamiento que tiene como objetivo la reducción del tiempo invertido en el algo-\\
+  Al tratarse de un entrenamiento parcial, el escalón se acentúa también en los mejores individuos a lo largo de las generaciones. Evidentemente, se trata de un entrenamiento que tiene como objetivo la reducción del tiempo invertido en el algoritmo evolutivo, haciendo que el programa finalice mucho antes que con un entrenamiento total. \par
+  En la Tabla 4 se muestra una comparación entre los dos modos de entrenamiento probados. Las arquitecturas seleccionadas pertenecen a los resultados del entrenamiento total. Para cada una de ellas se ha calculado la media, desviación típica, máximo, mínimo y proporción en el modo de entrenamiento total y parcial, pero para este segundo se han utilizado los datos de la Tabla 3, con los entrenamientos hasta el final. \par
+  Las desviaciones típicas, en arquitecturas que se hayan repetido más de una vez (con proporciones superiores al 1.25\%) son cercanos al 0, indicando que hay una-
   \begin{landscape}
     \begin{center}
       \captionof{table}{Tabla 4. Comparativa entre el entrenamiento total y el entrenamiento parcial con entrenamiento hasta el final} \label{table}
@@ -768,9 +775,9 @@
         \multirow{2}*{Arquitectura} & \multicolumn{5}{c}{Entrenamiento total de los individuos} & \multicolumn{5}{c}{Entrenamiento parcial hasta el final} \\
         & $\bar{X}$ & $\sigma$ & max & min & Proporción &  $\bar{X}$ & $\sigma$ & max & min & Proporción \\ [0.5ex]
         \hline \\ [-1ex]
-        4:5:3 & 0.98254 & 0.00673 & 1.00000 & 0.97143 & 22.50\% & 0.97063 & 0.00949 & 0.98095 & 0.95238 & 15.00\% \\
-        4:4:3 & 0.97871 & 0.01143 & 1.00000 & 0.96191 & 21.25\% & 0.96889 & 0.01547 & 0.98095 & 0.92381 & 18.75\% \\
-        4:6:3 & 0.97983 & 0.01003 & 1.00000 & 0.96190 & 21.25\% & 0.98095 & - & 0.98095 & 0.98095 & 1.25\% \\
+        \textbf{4:5:3} & \textbf{0.98254} & \textbf{0.00673} & \textbf{1.00000} & \textbf{0.97143} & \textbf{22.50\%} & \textbf{0.97063} & \textbf{0.00949} & \textbf{0.98095} & \textbf{0.95238} & \textbf{15.00\%} \\
+        \textbf{4:4:3} & \textbf{0.97871} & \textbf{0.01143} & \textbf{1.00000} & \textbf{0.96191} & \textbf{21.25\%} & \textbf{0.96889} & \textbf{0.01547} & \textbf{0.98095} & \textbf{0.92381} & \textbf{18.75\%} \\
+        \textbf{4:6:3} & \textbf{0.97983} & \textbf{0.01003} & \textbf{1.00000} & \textbf{0.96190} & \textbf{21.25\%} & \textbf{0.98095} & - & \textbf{0.98095} & \textbf{0.98095} & \textbf{1.25\%} \\
         4:3:3 & 0.97524 & 0.01086 & 0.99048 & 0.96190 & 6.25\% & 0.94459 & 0.05599 & 0.98095 & 0.79047 & 13.75\% \\ 
         4:7:3 & 0.98730 & 0.00550 & 0.99048 & 0.98095 & 3.75\% & 0.97714 & 0.00522 & 0.98095 & 0.97143 & 6.25\% \\ 
         4:8:3 & 0.98730 & 0.00550 & 0.99048 & 0.98095 & 3.75\% & 0.97143 & - & 0.97143 & 0.97143 & 1.25\% \\
@@ -792,11 +799,10 @@
       \end{tabular}
     \end{center}
   \end{landscape}
-  \noindent ritmo evolutivo, haciendo que el programa finalice mucho antes que con un entrenamiento total. \par
-  En la Tabla 4 se muestra una comparación entre los distintos modos de entrenamiento probados. Las arquitecturas seleccionadas pertenecen a los resultados del entrenamiento total. Para cada una de ellas se ha calculado la media, desviación típica, máximo, mínimo y proporción en el modo de entrenamiento total y parcial, pero para este segundo se han utilizado los datos de la Tabla 3, con los entrenamientos hasta el final. \par
-  Las desviaciones típicas, en arquitecturas que se hayan repetido más de una vez (con proporciones superiores al 1.25\%) son cercanos al 0, indicando que hay una escasa variabilidad en los resultados obtenidos para cada individuo.\par
-  Se puede comprobar que las tres arquitecturas solución más seleccionadas, 4:5:3, 4:4:3 y 4:6:3, en el entrenamiento total también son protagonistas del entrenamiento parcial y que los resultados obtenidos son semajantes, teniendo en cuenta que en el segundo modo de entrenamiento las proporciones son inferiores que en el total. \par
-  En la Fig. 20 se muestran gráficamente los resultados obtenidos, para cada uno de los conjuntos de datos (de entrenamiento, validación y pruebas) y sus medias, cuartiles y valores atípicos. Para que estén en la misma dimensión, se han colocado, para las ejecuciones parciales, los datos del entrenamiento hasta el final de los individuos. Si bien los datos no se distribuyen de una forma muy común, se puede apreciar que si se eliminan los outliers, seguiría habiendo cierta diferencia en los rangos intercuartílicos de ambos modos de entrenamiento.
+  \noindent escasa variabilidad en los resultados obtenidos para cada individuo, por lo que el algoritmo es bastante predecible. \par
+  Se puede comprobar que las tres arquitecturas solución más frecuentes, 4:5:3, 4:4:3 y 4:6:3, en el entrenamiento total, marcadas en negrita, y que suponen el 65\% de las soluciones, también son protagonistas del entrenamiento parcial y que los resultados obtenidos (en cuanto a precisión) son semajantes. \par
+  En la Fig. 20 se muestran mediante diagramas de caja los resultados obtenidos, para cada uno de los subconjuntos de datos de Iris (de entrenamiento, validación y pruebas). Para que estén en la misma escala, se han representado, para las ejecuciones parciales, los datos del entrenamiento hasta el final de los individuos. Los datos se distribuyen de forma semejante, sobre todo en el conjunto de pruebas, que es donde verdaderamente se prueban las soluciones obtenidas. \par
+  Los resultados mostrados reflejan cierta similitud entre el entrenamiento total y parcial. Por tanto, este segundo modo de entrenamiento podría sustituir al primero, favoreciendo un ahorro en tiempo y esfuerzo computacional. Además, si bien las diferencias se dan más en los datos de entrenamiento y validación, en pruebas son semejantes (exceptuando 5 valores atípicos de 80 ejecuciones), que es donde realmente se determina la idoneidad de los modelos.
   \begin{figure}[H]
     \begin{minipage}{0.49\textwidth}
       \centering
@@ -810,20 +816,21 @@
   \begin{figure}[H]
     \centering
     \includegraphics[width = 0.5\textwidth]{resources/Fig20_3.pdf}
-    \caption{Comparativa de los datos obtenidos en el entrenamiento total y en el entrenamiento parcial con entrenamiento hasta el final.}
+    \caption{Comparativa de los datos obtenidos en el entrenamiento total y en el entrenamiento parcial con entrenamiento hasta el final tras 80 ejecuciones}
     \label{fig:20}
   \end{figure} \par
-  También hay ciertas y relevantes diferencias entre las funciones de distribución de probabilidad de los resultados obtenidos para cada conjunto de entrenamiento, validación y pruebas. Esto es debido a que los individuos son generados de forma aleatoria por la gramática. También, que los pesos de las redes neuronales se inicialicen al azar añade cierto grado de aleatoriedad al experimento. \par
-  A pesar de esto, los resultados mostrados reflejan cierta similitud entre el entrenamiento total y parcial. Por tanto, este segundo modo de entrenamiento podría sustituir al primero, favoreciendo un ahorro en tiempo y esfuerzo computacional. Además, si bien las diferencias se dan más en los datos de entrenamiento y validación, en pruebas son semejantes (exceptuando 5 valores atípicos de 80 ejecuciones), que es donde realmente se determina la idoneidad de los modelos.
   
   \section*{\Large 6.2. Car evaluation}
   \addcontentsline{toc}{section}{\protect\numberline{6.2}{Car evaluation}}
-  Este conjunto de datos fue obtenido del UCI Repository y fue publicado (Bohanec and Rajkovic, 1988) como un ejemplo de DEX. Cada una de las instancias representa una evaluación de un coche de acuerdo a un conjunto de características, como el precio de compra, de mantenimiento y las características técnicas. \par
+  Este conjunto de datos fue obtenido del UCI Repository y fue publicado (Bohanec and Rajkovic, 1988) como un ejemplo para demostrar DEX (Decision EXpert) (Bohanec and Rajkovic, 1990). Cada una de las instancias representa una evaluación de un coche de acuerdo a un conjunto de características, como el precio de compra, de mantenimiento y las características técnicas. \par
+  El número de épocas para el caso del entrenamiento total es de 500, y para el entrenamiento parcial, 20, ya que el conjunto de datos cuenta con 1728 instancias. La Tabla 5 muestra las arquitecturas resultantes y sus valores de precisión para el entrenamiento total. \par
+  En este conjunto de datos no hay una presencia significativa de arquitecturas muy profundas, siendo mayoritariamente individuos con una única capa oculta. Esto quiere decir que, según las propias características del conjunto de datos, las arquitecturas con una capa oculta funcionan mejor que las que tienen varias, ya que las 6 arquitecturas más utilizadas cuentan con una capa oculta (acumulan el 76,25\% de los resultados), con unos valores de precisión que rondan o son superiores al 90\% en el conjunto de pruebas final. \par
 \begin{center}
     \captionof{table}{Tabla 5. Arquitecturas resultantes del entrenamiento total en Car evaluation y sus métricas} \label{table}
     \begin{tabular}{l c c c r}
       \hline \\ [-2ex]
-      Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} & \multirow{2}*{Proporción} \\
+      & Entrenamiento & Validación & Pruebas & \\ [0.5ex]
       \hline \\ [-1ex]
       16:5:4 & 0.97791 & 0.97570 & 0.94549 & 17.50\% \\ 
       16:4:4 & 0.96435 & 0.96364 & 0.93152 & 16.25\% \\
@@ -846,18 +853,15 @@
     \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento total de los individuos.}
     \label{fig:21}
   \end{figure} \par
-  La Tabla 5 contiene las arquitecturas resultantes del entrenamiento total con 500 épocas para este conjunto de datos. \par
-  El número de épocas para el caso del entrenamiento total es de 500, y para el entrenamiento parcial, 20, ya que el conjunto de datos cuenta con 1728 instancias. \par
-  En este conjunto de datos no hay una presencia significativa de arquitecturas muy profundas, siendo mayoritariamente individuos con una única capa oculta. Esto quiere decir que, según las propias características del conjunto de datos, las arquitecturas con una capa oculta funcionan mejor que las que tienen varias, ya que las 6 arquitecturas más utilizadas cuentan con una capa oculta (acumulan el 76,25\% de los resultados). \par
-  Además, con respecto a las precisiones, si bien aquellas con varias capas ocultas son superiores, lo son por centésimas. En cualquier caso, ninguna red, de media, ha alcanzado el 100\% de precisión. \par
-  La evolución de las generaciones mostrada en la Fig. \ref{fig:21} es la esperada también: una reducción de la media de los individuos de las 80 ejecuciones del error (\emph{categorical crossentropy}), según avanzan las generaciones. Sin embargo, no se alcanzan valores tan bajos como en el conjunto de datos anterior. \par
-  El tiempo de entrenamiento por individuo oscila entre los 1 y 2 minutos, con un tiempo medio de ejecución del algoritmo evolutivo de 30 a 40 minutos, dependiendo de su arquitectura. \par
-  La Tabla 6 reúne los resultados de las arquitecturas de las 80 ejecuciones y sus precisiones parciales.
+  La evolución de las generaciones mostrada en la Fig. \ref{fig:21} es la esperada también: una reducción de la media de los individuos de las 80 ejecuciones del error (\emph{categorical crossentropy}), según avanzan las generaciones. \par
+  El tiempo de entrenamiento por individuo oscila entre los 1 y 2 minutos, con un tiempo medio de ejecución del algoritmo evolutivo de 30 a 40 minutos. \par
+  La Tabla 6 muestra los resultados obtenidos por las arquitecturas solución en las 80 ejecuciones en términos de precisión con entrenamientos parciales de 20 épocas.
 \begin{center}
   \captionof{table}{Tabla 6. Arquitecturas resultantes del entrenamiento parcial en Car evaluation (20 iteraciones)} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
-    Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} & \multirow{2}*{Proporción} \\
+      & Entrenamiento & Validación & Pruebas & \\ [0.5ex]
     \hline \\ [-1ex]
     16:3:4 & 0.73468 & 0.73546 & 0.69837 & 13.75\% \\
     16:5:4 & 0.73790 & 0.73944 & 0.71518 & 13.75\% \\
@@ -877,21 +881,22 @@
   En la Tabla 7 se muestran los individuos de la Tabla 6 entrenados hasta el final.
 \begin{center}
   \captionof{table}{Tabla 7. Métricas de las arquitecturas de la Tabla 6 entrenadas hasta el final} \label{table}
-  \begin{tabular}{l c c c r}
+  \begin{tabular}{l c c c}
     \hline \\ [-2ex]
-    Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} \\
+      & Entrenamiento & Validación & Pruebas \\ [0.5ex]
     \hline \\ [-1ex]
-    16:3:4 & 0.90525 & 0.92252 & 0.89910 & 13.75\% \\
-    16:5:4 & 0.96055 & 0.95783 & 0.93063 & 13.75\% \\
-    16:4:4 & 0.92735 & 0.93565 & 0.91040 & 12.50\% \\
-    16:8:4 & 0.98338 & 0.97159 & 0.94739 & 12.50\% \\
-    16:2:4 & 0.87754 & 0.89999 & 0.87668 & 7.50\% \\
-    16:7:4 & 0.98181 & 0.97874 & 0.95568 & 7.50\% \\
-    16:6:4 & 0.97499 & 0.97101 & 0.94508 & 5.00\% \\
-    16:9:9:4 & 0.98347 & 0.97777 & 0.95953 & 3.75\% \\
-    16:2:2:4 & 0.89049 & 0.90434 & 0.89017 & 2.50\% \\
-    16:3:3:4 & 0.92685 & 0.93333 & 0.88728 & 2.50\% \\
-    Otras & 0.84628 & 0.87826 & 0.85549 & 18.75\% \\ [1ex]
+    16:3:4 & 0.90525 & 0.92252 & 0.89910 \\
+    16:5:4 & 0.96055 & 0.95783 & 0.93063 \\
+    16:4:4 & 0.92735 & 0.93565 & 0.91040 \\
+    16:8:4 & 0.98338 & 0.97159 & 0.94739 \\
+    16:2:4 & 0.87754 & 0.89999 & 0.87668 \\
+    16:7:4 & 0.98181 & 0.97874 & 0.95568 \\
+    16:6:4 & 0.97499 & 0.97101 & 0.94508 \\
+    16:9:9:4 & 0.98347 & 0.97777 & 0.95953 \\
+    16:2:2:4 & 0.89049 & 0.90434 & 0.89017 \\
+    16:3:3:4 & 0.92685 & 0.93333 & 0.88728 \\
+    Otras & 0.84628 & 0.87826 & 0.85549 \\ [1ex]
     \hline
   \end{tabular}
 \end{center} \par
@@ -902,7 +907,10 @@
     \includegraphics[width = 1\textwidth]{resources/Fig22.pdf}
     \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento parcial de los individuos.}
     \label{fig:22}
-  \end{figure} \vfill
+  \end{figure} \par
+  En la Tabla 8 se muestra una comparación entre los dos modos de entrenamiento probados. Nuevamente se muestran los resultados de precisión tras el entrenamiento total. Para el modo de entrenamiento parcial se han utilizado los datos de la Tabla 7, con los entrenamientos hasta el final. \par
+  El 62.5\% de los resultados pertenecen a arquitecturas no profundas: 16:5:4, 16:4:4, 16:6:4 y 16:7:4, en orden de proporción. \par
+  En la Fig. \ref{fig:23} se muestran mediante diagramas de caja los resultados obtenidos, para cada uno de los subconjuntos (entrenamiento, validación y pruebas) en que se ha dividido este conjunto de datos. También se han colocado los datos de las soluciones entrenadas hasta el final frente a las soluciones del modo de entrenamiento total. Se puede ver que en este conjunto de datos, los resultados tienen una desviación típica mayor y que el rango intercuartílico del modo de entrenamiento parcial cubre el rango intercuartílico del entrenamiento total en el caso de los datos de pruebas. \par
   \begin{landscape}
     \begin{center}
       \captionof{table}{Tabla 8. Comparativa entre el entrenamiento total y el entrenamiento parcial con entrenamiento hasta el final} \label{table}
@@ -911,10 +919,10 @@
         \multirow{2}*{Arquitectura} & \multicolumn{5}{c}{Entrenamiento total de los individuos} & \multicolumn{5}{c}{Entrenamiento parcial hasta el final} \\
         & $\bar{X}$ & $\sigma$ & max & min & Proporción &  $\bar{X}$ & $\sigma$ & max & min & Proporción \\ [0.5ex]
         \hline \\ [-1ex]
-        16:5:4 & 0.97791 & 0.00571 & 0.98595 & 0.96468 & 17.50\% & 0.96055 & 0.01741 & 0.97851 & 0.92727 & 13.75\% \\ 
-        16:4:4 & 0.96435 & 0.00716 & 0.97645 & 0.94954 & 16.25\% & 0.92735 & 0.03229 & 0.95868 & 0.84628 & 12.50\% \\
-        16:6:4 & 0.98286 & 0.00281 & 0.98843 & 0.97897 & 15.00\% & 0.97500 & 0.00256 & 0.97851 & 0.97272 & 5.00\% \\
-        16:7:4 & 0.98715 & 0.00223 & 0.99091 & 0.98512 & 13.75\% & 0.98182 & 0.00952 & 0.99504 & 0.97025 & 7.50\% \\
+        \textbf{16:5:4} & \textbf{0.97791} & \textbf{0.00571} & \textbf{0.98595} & \textbf{0.96468} & \textbf{17.50\%} & \textbf{0.96055} & \textbf{0.01741} & \textbf{0.97851} & \textbf{0.92727} & \textbf{13.75\%} \\ 
+        \textbf{16:4:4} & \textbf{0.96435} & \textbf{0.00716} & \textbf{0.97645} & \textbf{0.94954} & \textbf{16.25\%} & \textbf{0.92735} & \textbf{0.03229} & \textbf{0.95868} & \textbf{0.84628} & \textbf{12.50\%} \\
+        \textbf{16:6:4} & \textbf{0.98286} & \textbf{0.00281} & \textbf{0.98843} & \textbf{0.97897} & \textbf{15.00\%} & \textbf{0.97500} & \textbf{0.00256} & \textbf{0.97851} & \textbf{0.97272} & \textbf{5.00\%} \\
+        \textbf{16:7:4} & \textbf{0.98715} & \textbf{0.00223} & \textbf{0.99091} & \textbf{0.98512} & \textbf{13.75\%} & \textbf{0.98182} & \textbf{0.00952} & \textbf{0.99504} & \textbf{0.97025} & \textbf{7.50\%} \\
         16:3:4 & 0.94617 & 0.01092 & 0.96215 & 0.93355 & 7.50\% & 0.90526 & 0.02923 & 0.94793 & 0.85124 & 13.75\% \\
         16:8:4 & 0.98826 & 0.00197 & 0.99091 & 0.98595 & 6.25\% & 0.98339 & 0.01082 & 1.00000 & 0.96446 & 12.50\% \\
         16:6:6:4 & 0.98540 & 0.00154 & 0.98760 & 0.98402 & 5.00\% & 0.98016 & - & 0.98016 & 0.98016 & 1.25\% \\
@@ -949,20 +957,18 @@
     \caption{Comparativa de los datos obtenidos en el entrenamiento total y en el entrenamiento parcial con entrenamiento hasta el final.}
     \label{fig:23}
   \end{figure} \par
-  En la Tabla 8 se muestra una comparación entre los distintos modos de entrenamiento probados. Las arquitecturas seleccionadas, nuevamente pertenecen a los resultados del entrenamiento total. Para el modo de entrenamiento parcial se han utilizado los datos de la Tabla 7, con los entrenamientos hasta el final. \par
-  Las desviaciones típicas obtenidas son cercanas al 0, indicando que hay una escasa variabilidad en los resultados obtenidos por cada individuo. Los valores más preocupantes, aunque dentro de la normalidad, son los relativos a las arquitecturas 16:4:4 y 16:2:4, cuyos entrenamientos hasta el final, de media, se sitúan más de 4 puntos por debajo del entrenamiento completo medio de estas redes neuronales. Además, las desviaciones de estos ejemplos es casi 8 veces mayor. \par
-  En la Fig. \ref{fig:23} se muestran gráficamente los resultados obtenidos, para cada uno de los conjuntos (de entrenamiento, validación y pruebas). También se han colocado los datos de las soluciones entrenadas hasta el final frente a las soluciones del modo de entrenamiento total. Se puede ver que en este conjunto de datos, los resultados son más variables y que el rango intercuartílico del modo de entrenamiento parcial cubre el rango intercuartílico en el caso de los datos de pruebas, mientras que en el resto de los casos, el tercer cuartil es inferior a la media en el entrenamiento parcial, lo que quiere indicar que, con un 75\% de certeza, hay individuos peores de media que en el entrenamiento total. \par
-  Sin embargo, este decremento en la precisión de los individuos solución en el modo de entrenamiento parcial involucra décimas de centésimas de diferencia, por lo que no supone una diferencia demasiado significativa, ya que el tiempo de cómputo que reduce (de 30 a 40 minutos en el entrenamiento total a un tiempo de ejecución del algoritmo genético que oscila entre los 13 y 17 minutos en el entrenamiento parcial) supone que en lo que se tarda en realizar una ejecución con entrenamiento total del programa, pueden llevarse a cabo más de dos ejecuciones con entrenamiento parcial.
+  En algunos casos hay diferencias significativas en la media de precisión para los datos de prueba a favor del entrenamiento hasta el final. Sin embargo, el tiempo de cómputo se reduce notablemente (de 30 a 40 minutos en el entrenamiento total a un tiempo de ejecución del algoritmo genético que oscila entre los 13 y 17 minutos en el entrenameinto parcial). \par
   \section*{\Large 6.3. California housing}
   \addcontentsline{toc}{section}{\protect\numberline{6.3}{California housing}}
-  Este conjunto de datos fue obtenido del UCI Repository y fue publicado por el Censo Californiano en los años 90. Cada una de las instancias representa la ubicación de la vivienda y las características de la localización: población, número de habitaciones, renta media... \par
+  Este conjunto de datos fue obtenido de Kaggle y fue publicado por el Censo Californiano en los años 90. Cada una de las instancias representa la ubicación de un distrito de viviendas y las características de la localización: población, número de habitaciones, renta media... \par
   Los anteriores conjuntos de datos fueron probados en entrenamientos totales y parciales, ya que todo el Programa Genético pudo ser ejecutado sin problemas en un ordenador con 16,0 GB de RAM, Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz y una tarjeta gráfica NVIDIA GTX 1050 Ti. Sin embargo, este dispositivo no pudo hacer frente al modo de ejecución con entrenamiento total con este conjunto de datos, debido a su gran cantidad de instancias. \par
   Por tanto, sólo se ha ejecutado el modo de entrenamiento parcial, convirtiendo un problema irresoluble (en estas condiciones) en una aproximación acertada. En la Tabla 9 se detallan las arquitecturas y sus precisiones con un entrenamiento parcial compuesto por 300 épocas, mientras que en la Tabla 10 se muestran esas arquitecturas entrenadas hasta el final (hasta las 5000 épocas).
 \begin{center}
   \captionof{table}{Tabla 9. Arquitecturas mínimas resultantes del entrenamiento parcial en California housing (300 épocas)} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
-    Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} & \multirow{2}*{Proporción} \\
+      & Entrenamiento & Validación & Pruebas & \\ [0.5ex]
     \hline \\ [-1ex]
     9:5:4 & 0.81498 & 0.81786 & 0.81560 & 22.50\% \\
     9:6:4 & 0.81792 & 0.82049 & 0.81895 & 21.25\% \\
@@ -974,46 +980,48 @@
     Otras & 0.81601 & 0.81627 & 0.81385 & 4.5\% \\ [1ex]
     \hline
   \end{tabular}
-\end{center} \par
+\end{center}
+\vfill
 \begin{center}
   \captionof{table}{Tabla 10. Métricas de las arquitecturas de la Tabla 7 entrenadas hasta el final} \label{table}
   \begin{tabular}{l c c c r}
     \hline \\ [-2ex]
-    Arquitectura & Entrenamiento & Validación & Pruebas & Proporción \\ [0.5ex]
+      \multirow{2}*{Arquitectura} & \multicolumn{3}{c}{Precisión} \\
+      & Entrenamiento & Validación & Pruebas \\ [0.5ex]
     \hline \\ [-1ex]
-    9:5:4 & 0.92465 & 0.92784 & 0.92562 & 22.50\% \\
-    9:6:4 & 0.93175 & 0.93470 & 0.93168 & 21.25\% \\
-    9:4:4 & 0.91808 & 0.92134 & 0.91972 & 20.50\% \\
-    9:7:4 & 0.93077 & 0.93376 & 0.93098 & 13.75\% \\
-    9:8:4 & 0.93742 & 0.93960 & 0.93748 & 12.50\% \\
-    9:3:4 & 0.90857 & 0.91228 & 0.91173 & 2.50\% \\
-    9:9:4 & 0.93722 & 0.94067 & 0.93604 & 2.50\% \\
-    Otras & 0.92426 & 0.92851 & 0.92315 & 4.50\% \\ [1ex]
+    9:5:4 & 0.92465 & 0.92784 & 0.92562 \\
+    9:6:4 & 0.93175 & 0.93470 & 0.93168 \\
+    9:4:4 & 0.91808 & 0.92134 & 0.91972 \\
+    9:7:4 & 0.93077 & 0.93376 & 0.93098 \\
+    9:8:4 & 0.93742 & 0.93960 & 0.93748 \\
+    9:3:4 & 0.90857 & 0.91228 & 0.91173 \\
+    9:9:4 & 0.93722 & 0.94067 & 0.93604 \\
+    Otras & 0.92426 & 0.92851 & 0.92315 \\ [1ex]
     \hline
   \end{tabular}
-\end{center} \par
+\end{center} 
   Al ser ejecuciones parciales, no hay rastro de arquitecturas con varias capas ocultas, ya que, si bien la gramática favorece a las arquitecturas pequeñas, las ejecuciones parciales también. A pesar de ello, hay un buen rendimiento general en las arquitecturas. \par
   En la Fig. \ref{fig:24} se muestra la evolución de las poblaciones a lo largo de las 80 generaciones. \par
   El número de épocas seleccionado para el entrenamiento parcial, 300, hacen que los individuos sobrepasen el 80\% de precisión. Como consecuencia, se logra una notable reducción del error (\emph{categorical cross-entropy}) a lo largo de las generaciones.\par
+  Por tanto, el número estimado de épocas mostrado en la Eq. \ref{eq:6} para conjuntos de datos de más de 3500 instancias es mayor de lo estrictamente necesario, ya que bastaría con que los individuos llegasen al 60-70\% de precisión. Por tanto, la fórmula es verdaderamente útil, aunque para este conjunto de datos es una estimación superior a la estrictamente necesaria. \par
+  Para un entrenamiento parcial, el entrenamiento por individuo oscila entre los 9 y 14 minutos, llegando a un tiempo medio de ejecución del algoritmo evolutivo de 5 horas y media. Reduciendo el número de épocas un 25\%, se reduce el tiempo medio total a 4 horas. \par
+  En la Tabla 11 se muestran las medias, desviaciones, máximos y mínimos de cada una de las arquitecturas mínimas solución del entrenamiento parcial con los datos de pruebas. \par
+  Los resultados mostrados sobre este conjunto de datos revelan que es posible entrenar a los individuos de forma parcial para resolver el problema. Al contrario de lo que podría pensar la experiencia, que recomendaría una arquitectura profunda, las soluciones no lo son.
   \begin{figure}[H]
     \centering
     \includegraphics[width = 1\textwidth]{resources/Fig24.pdf}
     \caption{Evolución de las 80 poblaciones a lo largo de las generaciones con un entrenamiento parcial de los individuos.}
     \label{fig:24}
   \end{figure} \par
-  Por tanto, el número estimado de épocas mostrado en la Eq. \ref{eq:6} para conjuntos de datos de más de 3500 instancias es mayor de lo estrictamente necesario, ya que bastaría con que los individuos llegasen al 60-70\% de precisión. Por tanto, la fórmula es verdaderamente útil, aunque para este conjunto de datos es una estimación superior a la estrictamente necesaria. \par
-  Para un entrenamiento parcial, el entrenamiento por individuo oscila entre los 9 y 14 minutos, llegando a un tiempo medio de ejecución del algoritmo evolutivo de 5 horas y media. Reduciendo el número de épocas un 25\%, se reduce el tiempo medio total a 4 horas. \par
-  En la Tabla 11 se muestran las medias, desviaciones, máximos y mínimos de cada una de las arquitecturas mínimas solución del entrenamiento parcial con los datos de pruebas. \par
-  La desviación típica, nuevamente cercana a 0 indica que no existe una gran variabilidad entre los resultados obtenidos para cada arquitectura neuronal. Además, ninguno de ellos alcanza ni de cerca el 0.01, mientras que en otros conjuntos de datos sí. \vfill
 \begin{center}
   \captionof{table}{Tabla 11. Métricas de las arquitecturas de la Tabla 7 entrenadas hasta el final} \label{table}
   \begin{tabular}{l c c c c r}
     \hline \\ [-2ex]
     Arquitectura & $\bar{X}$ & $\sigma$ & max & min & Proporción \\ [0.5ex]
     \hline \\ [-1ex]
-    9:5:4 & 0.92562 & 0.00650 & 0.93686 & 0.91336 & 22.50\% \\
-    9:6:4 & 0.93168 & 0.00531 & 0.94077 & 0.92364 & 21.25\% \\
-    9:4:4 & 0.91972 & 0.00627 & 0.93049 & 0.90896 & 20.50\% \\
+    \textbf{9:5:4} & \textbf{0.92562} & \textbf{0.00650} & \textbf{0.93686} & \textbf{0.91336} & \textbf{22.50\%} \\
+    \textbf{9:6:4} & \textbf{0.93168} & \textbf{0.00531} & \textbf{0.94077} & \textbf{0.92364} & \textbf{21.25\%} \\
+    \textbf{9:4:4} & \textbf{0.91972} & \textbf{0.00627} & \textbf{0.93049} & \textbf{0.90896} & \textbf{20.50\%} \\
     9:7:4 & 0.93098 & 0.00667 & 0.94077 & 0.91924 & 13.75\% \\
     9:8:4 & 0.93748 & 0.00592 & 0.94811 & 0.92902 & 12.50\% \\
     9:3:4 & 0.91173 & 0.00502 & 0.91728 & 0.90749 & 2.50\% \\
@@ -1041,6 +1049,7 @@
   \newpage\cleardoublepage
   
   \begin{thebibliography}{00}
+  \addcontentsline{toc}{chapter}{Bibliografía}
   \vspace{-1cm}
   \makeatletter
   \def\@biblabel#1{}
@@ -1053,6 +1062,7 @@
   \bibitem{Beni1989} Beni, G. and Wang, J. (1989). Swarm intelligence in cellular robotic systems. \emph{Proceedings5 of the NATO Advance Workshop on Robots and Biological Systems}. 102:703-712.
   \bibitem{Beni2004} Beni, G. (2004). From Swarm Intelligence to Swarm Robotics. \emph{International Workshop on Swarm Robotics}. 3342:1-9.
   \bibitem{Bohanec1988} Bohanec, M. and Rajkovic, V. (1988). Knowledge acquisition and explanation for multi-attribute decision marking. \emph{8th Intl Workshop on Expert Systems and their Applications}. 59-78.
+  \bibitem{Bohanec1988} Bohanec, M. and Rajkovic, V. (1990). DEX: An Expert System Shell for Decision Support. \emph{Sistemica}. 145-157.
   \bibitem{Boyd2004} Boyd, S. and Vandenberghe, L. (2004). Convex Optimization. \emph{Cambridge University Press 2004}: 129.
   \bibitem{Box1957} Box, G.E.P. (1957). Evolutionary operation: A method for increasing industrial productivity. \emph{Journal of the Royal Statistical Society. Series C}. 6(2):81-101.
   \bibitem{Box1969} Box, G.E.P. and Draper, N.P. (1969). \emph{Evolutionary Operation. A method for Increasing Industrial Productivity}.
